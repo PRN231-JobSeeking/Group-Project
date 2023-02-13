@@ -21,7 +21,7 @@ namespace AppCore
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("server=(local);database=JobSeekingDB;uid=sa;pwd=1237890;trusted_connection=true");
+                optionsBuilder.UseSqlServer("server=WILLIAMTRUNG\\MYSQL;database=JobSeekingDB;uid=sa;pwd=123;trusted_connection=true");
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
