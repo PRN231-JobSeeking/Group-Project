@@ -17,11 +17,19 @@ namespace AppCore
         public DbSet<Skill> Skills { get; set; } = null!;
         public DbSet<UserSkill> UserSkills { get; set; } = null!;
 
+        public Context()
+        {
+
+        }
+        public Context(DbContextOptions<Context> options) : base(options)
+        {
+
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("server=WILLIAMTRUNG\\MYSQL;database=JobSeekingDB;uid=sa;pwd=123;trusted_connection=true");
+                optionsBuilder.UseSqlServer(GlobalVariables.ConnectionString);
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,6 +39,7 @@ namespace AppCore
             modelBuilder.Entity<PostSkillRequired>().HasKey(ps => new { ps.SkillId, ps.PostId});
             modelBuilder.Entity<UserSkill>().HasKey(us => new { us.SkillId, us.AccountId});
             //modelBuilder.Entity<>
+            modelBuilder.Seed();
             base.OnModelCreating(modelBuilder);
         }
     }

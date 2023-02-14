@@ -18,19 +18,19 @@ namespace AppRepository.Generic
             _context= context;
             _entities = _context.Set<TEntity>();
         }
-        public async Task Add(TEntity entity)
+        public virtual async Task Add(TEntity entity)
         {
             _entities.Add(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Delete(TEntity entity)
+        public virtual async Task Delete(TEntity entity)
         {
             _entities.Remove(entity);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>>? expression = null, params string[] includeProperties)
+        public virtual async Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>>? expression = null, params string[] includeProperties)
         {
             var filter = _entities.AsNoTracking();
             foreach(var property in includeProperties)
@@ -44,7 +44,7 @@ namespace AppRepository.Generic
             return await filter.ToListAsync();
         }
 
-        public async Task Update(TEntity entity)
+        public virtual async Task Update(TEntity entity)
         {
             _entities.Update(entity);
             await _context.SaveChangesAsync();
