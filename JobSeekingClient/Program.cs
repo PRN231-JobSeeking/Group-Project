@@ -1,8 +1,22 @@
+using ClientRepository.Service;
+using ClientRepository.Service.Implementation;
+using System.Linq.Expressions;
+using System.Net.Http.Headers;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+//builder.Services.AddHttpClient();
+builder.Services
+    .AddHttpClient("BaseClient", client =>
+    {
+        client.BaseAddress = new Uri(builder.Configuration.GetSection("ApiURI").Value);
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+    });
+builder.Services.AddSession();
+builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<IRoleService, RoleService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
