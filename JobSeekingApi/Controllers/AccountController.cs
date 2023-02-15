@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AppCore;
 using AppCore.Models;
 using AppRepository.UnitOfWork;
+using ClientRepository.Models;
 
 namespace JobSeekingApi.Controllers
 {
@@ -43,6 +44,33 @@ namespace JobSeekingApi.Controllers
 
             return account;
         }
+
+        //[HttpPost]
+        //[Route("Register")]
+        //public async Task<ActionResult<Account>> CreateAccount([FromBody] RegisterModel model)
+        //{
+        //    var account = new Account()
+        //    {
+        //        Email= model.Email,
+        //        FirstName= model.FirstName,
+        //        LastName= model.LastName,
+        //        Address= model.Address,
+        //        Phone= model.Phone,
+        //        RoleId=2                                        
+        //    };
+        //    try
+        //    {
+        //        await _unitOfWork.AccountRepository.Add(account);
+
+        //        return Ok(account);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError,
+        //            ex.Message
+        //            );
+        //    }
+        //}
 
         // PUT: api/Account/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -81,6 +109,8 @@ namespace JobSeekingApi.Controllers
             await _unitOfWork.AccountRepository.Delete(account);
             return NoContent();
         }
+
+
     }
 
 }

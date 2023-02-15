@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ClientRepository.Service
 {
-    public interface IAccountService : IBaseService<AccountModel>
+    public interface IAuthenService : IBaseService<UserLogin>
     {
-        
+        Task<string> Login(UserLogin model);
     }
 }
