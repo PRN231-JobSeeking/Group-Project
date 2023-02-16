@@ -12,5 +12,6 @@ namespace ClientRepository
         public static readonly string Role = "roles";
         public static readonly string Login = "Login";
         public static readonly string Skill = "Skill";
+        public static readonly string UserSkill = "UserSkill";
     }
 }

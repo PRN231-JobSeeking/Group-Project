@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
+using AppCore.Models;
 
 namespace JobSeekingClient.Pages.Auth
 {
@@ -25,27 +26,37 @@ namespace JobSeekingClient.Pages.Auth
 
         public async Task<IActionResult> OnGetAsync()
         {
-            this.Skills = new SelectList(await _skillService.GetListAsync(path: StoredURI.Skill, expression: null, param: null, token: null), "Id", "Name");
+           
+            this.Skills = this.PopulateSkills();           
             return Page();
+        }
+
+        private List<SelectListItem> PopulateSkills()
+        {
+            List<ClientRepository.Models.Skill> skills = _skillService.GetListAsync(path: StoredURI.Skill, expression: null, param: null, token: null).Result;
+            List<SelectListItem> SkillList = (from p in skills
+                                               select new SelectListItem
+                                               {
+                                                   Text = p.Name,
+                                                   Value = p.Id.ToString()
+                                               }).ToList();
+
+            return SkillList;
         }
 
         [BindProperty]
         public RegisterDTO RegisterUser { get; set; }
 
-        public SelectList Skills { get; set; }
+        public  List<SelectListItem> Skills { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync(string[] SkillIds)
         {
-
-          
+        
             if (!ModelState.IsValid)
             {
                 return Page();
-            }
-            this.Skills = new SelectList(await _skillService.GetListAsync(path: StoredURI.Skill, expression: null, param: null, token: null), "Id", "Name");
-            string message = "";                    
-            ViewData["Message"] = message;
+            }         
             AccountModel user = new AccountModel()
             {                          
                 Email = RegisterUser.Email,
@@ -59,16 +70,15 @@ namespace JobSeekingClient.Pages.Auth
             };
             await _accountService.Add(user, path: StoredURI.Account, token: null);
             IList<AccountModel> list = await _accountService.GetListAsync(path: StoredURI.Account, expression: null, param: null, token: null);
-            AccountModel tmp = list.FirstOrDefault(e => e.Email == user.Email);
-          
+            AccountModel tmp = list.FirstOrDefault(e => e.Email == user.Email);       
             if (tmp != null)
-            {
+            {                
                 foreach (string Id in SkillIds)
-                {
-                    //UserSkill uktmp = new UserSkill();
-                    //uktmp.AccountId = tmp.Id;
-                    //uktmp.SkillId = int.Parse(Id);
-                    //await _userskillService.Add(uktmp, path: StoredURI.Account, token: null);
+                {                   
+                    ClientRepository.Models.UserSkill uktmp = new ClientRepository.Models.UserSkill();
+                    uktmp.AccountId = tmp.Id;
+                    uktmp.SkillId = int.Parse(Id);
+                    await _userskillService.Add(uktmp, path: StoredURI.UserSkill, token: null);
                 }
             }
             return RedirectToPage("Login");
@@ -91,8 +101,6 @@ namespace JobSeekingClient.Pages.Auth
         public string Address { get; set; } = null!;
         [Required]
         public string Phone { get; set; } = null!;
-
-
     }
 
    
