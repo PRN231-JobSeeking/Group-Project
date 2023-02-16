@@ -12,6 +12,6 @@ namespace ClientRepository.Models
         public int AccountId { get; set; }
         public int SkillId { get; set; }
         public virtual Skill? Skill { get; set; }
-        public virtual Account? Account { get; set; }
+        public virtual AccountModel? Account { get; set; }
     }
 }

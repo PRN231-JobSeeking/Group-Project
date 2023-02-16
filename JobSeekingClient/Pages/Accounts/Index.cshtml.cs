@@ -20,7 +20,7 @@ namespace JobSeekingClient.Pages.Accounts
             _accountService= accountService;
         }
 
-        public IList<Account> Account { get;set; } = new List<Account>();
+        public IList<AccountModel> Account { get;set; } = new List<AccountModel>();
 
         public async Task OnGetAsync()
         {

@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClientRepository.Service
 {
-    public interface IAccountService : IBaseService<AccountModel>
+    public interface ISkillService : IBaseService<Skill>
     {
-        
     }
 }

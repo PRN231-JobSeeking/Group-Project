@@ -30,7 +30,7 @@ namespace JobSeekingClient.Pages.Accounts
         }
 
         [BindProperty]
-        public Account Account { get; set; } = null!;
+        public AccountModel Account { get; set; } = null!;
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD

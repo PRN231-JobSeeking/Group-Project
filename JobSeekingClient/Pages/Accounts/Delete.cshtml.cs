@@ -23,7 +23,7 @@ namespace JobSeekingClient.Pages.Accounts
         }
 
         [BindProperty]
-        public Account Account { get; set; } = null!;
+        public AccountModel Account { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

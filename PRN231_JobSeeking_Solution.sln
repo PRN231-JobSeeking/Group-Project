@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppRepository", "AppReposit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JobSeekingClient", "JobSeekingClient\JobSeekingClient.csproj", "{A02CA5AD-67FA-4D4F-BC6E-93C0171D0739}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientRepository", "ClientRepository\ClientRepository.csproj", "{7C71C5AC-3F18-43CB-B3B9-9CC529ED1D92}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientRepository", "ClientRepository\ClientRepository.csproj", "{7C71C5AC-3F18-43CB-B3B9-9CC529ED1D92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

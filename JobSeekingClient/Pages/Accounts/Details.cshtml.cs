@@ -22,7 +22,7 @@ namespace JobSeekingClient.Pages.Accounts
             _accountService= accountService;
         }
 
-        public Account Account { get; set; } = null!;
+        public AccountModel Account { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ClientRepository.Service.Implementation
 {
-    public class AccountService : BaseService<Account>, IAccountService
+    public class AccountService : BaseService<AccountModel>, IAccountService
     {
         public AccountService(IHttpClientFactory clientFactory) : base(clientFactory)
         {

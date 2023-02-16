@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AppCore;
 using AppCore.Models;
 using AppRepository.UnitOfWork;
+using ClientRepository.Models;
 
 namespace JobSeekingApi.Controllers
 {
@@ -44,6 +45,7 @@ namespace JobSeekingApi.Controllers
             return account;
         }
 
+       
         // PUT: api/Account/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -81,6 +83,8 @@ namespace JobSeekingApi.Controllers
             await _unitOfWork.AccountRepository.Delete(account);
             return NoContent();
         }
+
+
     }
 
 }

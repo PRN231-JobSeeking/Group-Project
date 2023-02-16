@@ -17,6 +17,11 @@ builder.Services
 builder.Services.AddSession();
 builder.Services.AddTransient<IAccountService, AccountService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
+builder.Services.AddTransient<ISkillService, SkillService>();
+builder.Services.AddTransient<IAuthenService, AuthenService>();
+builder.Services.AddTransient<IUserSkillService, UserSkillService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,7 +37,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
+
 app.UseAuthorization();
+
 
 app.MapRazorPages();
 

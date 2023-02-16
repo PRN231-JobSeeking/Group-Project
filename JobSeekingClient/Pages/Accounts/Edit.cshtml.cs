@@ -24,7 +24,7 @@ namespace JobSeekingClient.Pages.Accounts
         }
 
         [BindProperty]
-        public Account Account { get; set; } = default!;
+        public AccountModel Account { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
