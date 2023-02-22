@@ -10,5 +10,7 @@ namespace AppRepository.Repositories
 {
     public interface IPostRepository : IGenericRepository<Post>
     {
+        Task<IEnumerable<Post>> GetAll();
+        Task<Post> Get(int id);
     }
 }

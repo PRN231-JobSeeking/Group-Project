@@ -11,8 +11,8 @@ namespace AppRepository.Generic
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        private readonly Context _context;
-        private DbSet<TEntity> _entities;
+        protected readonly Context _context;
+        protected DbSet<TEntity> _entities;
         public GenericRepository(Context context)
         {
             _context= context;
