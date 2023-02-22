@@ -1,6 +1,7 @@
 ﻿using AppCore;
 using AppCore.Models;
 using AppRepository.Generic;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,16 @@ namespace AppRepository.Repositories.Implement
     {
         public PostRepository(Context context) : base(context)
         {
+        }
+
+        public async Task<Post> Get(int id)
+        {
+            return _context.Posts.Where(p => p.Id == id).FirstOrDefaultAsync().Result;
+        }
+
+        public async Task<IEnumerable<Post>> GetAll()
+        {
+            return _context.Posts.ToListAsync().Result;
         }
     }
 }

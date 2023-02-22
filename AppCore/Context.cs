@@ -1,5 +1,6 @@
 ﻿using AppCore.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace AppCore
 {
@@ -29,7 +30,10 @@ namespace AppCore
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(GlobalVariables.ConnectionString);
+                var config = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json").Build();
+                optionsBuilder.UseSqlServer(config["ConnectionStrings:DefaultConnection"]);
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
