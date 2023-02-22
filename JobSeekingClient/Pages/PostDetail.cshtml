@@ -1,0 +1,19 @@
+﻿@page "/Post/{id:int}"
+@using System.Net
+@model JobSeekingClient.Pages.PostDetailModel
+@{
+    ViewData["Title"] = "Post Detail";
+}
+<h3>@Model.Post.Title</h3>
+<h5>@Model.Post.CategoryId</h5>
+<h5>@Model.Post.LocationId</h5>
+<h5>@Model.Post.LevelId</h5>
+<h5>@Model.Post.CreateDate.ToShortDateString()</h5>
+@Html.Raw(@WebUtility.HtmlDecode(@Model.Post.Description))
+<form method="post" , enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="formFile" class="form-label">CV File</label>
+        <input class="form-control" type="file" name="cvFile" id="formFile">
+    </div>
+    <input class="btn btn-primary" asp-page-handler="Apply" type="submit" value="Apply">
+</form>
