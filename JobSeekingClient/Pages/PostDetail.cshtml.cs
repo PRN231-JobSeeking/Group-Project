@@ -1,4 +1,5 @@
-using JobSeekingClient.Models;
+using ClientRepository.Models;
+using ClientRepository.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
@@ -16,52 +17,27 @@ namespace JobSeekingClient.Pages
 
         private readonly IConfiguration config;
 
-        public PostDetailModel(IConfiguration config)
+        private readonly IPostService postService;
+
+        private readonly IApplicationService applicationService;
+
+        public PostDetailModel(IConfiguration config, IPostService postService, IApplicationService applicationService)
         {
             this.config = config;
+            this.postService = postService;
+            this.applicationService = applicationService;
         }
-        public void OnGet(int id)
+        public async void OnGet(int id)
         {
-            HttpClient client = new HttpClient();
-            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{config["ApiURI"]}Post/{id}");
-            HttpResponseMessage responseMessage = client.SendAsync(requestMessage).Result;
-            HttpContent content = responseMessage.Content;
-            Post = (PostDTO)content.ReadFromJsonAsync(typeof(PostDTO)).Result;
+            Post = postService.GetModelAsync(id).Result;
         }
 
         public async void OnPostApply(int id, IFormFile cvFile)
         {
             if (cvFile == null) return;
-            HttpClient client = new HttpClient();
-            HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, $"{config["ApiURI"]}Post/{id}");
-            HttpResponseMessage responseMessage = client.SendAsync(requestMessage).Result;
-            HttpContent postContent = responseMessage.Content;
-
             Trace.WriteLine(id + " " + cvFile.FileName);
-            Post = (PostDTO)postContent.ReadFromJsonAsync(typeof(PostDTO)).Result;
-            MultipartFormDataContent content = new MultipartFormDataContent();
-            StreamContent fileContent = new StreamContent(cvFile.OpenReadStream());
-            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
-            {
-                Name = "file",
-                FileName = cvFile.FileName
-            };
-            content.Add(fileContent);
-            StringContent nameContent = new StringContent($"{id}");
-            nameContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
-            {
-                Name = "postId"
-            };
-            content.Add(nameContent);
-            //var requestContent = new StringContent(JsonConvert.SerializeObject(applyReq), Encoding.UTF8, "application/json");
-            //content.Add(requestContent, "data");
-            var response = client.PostAsync($"{config["ApiURI"]}Application/Create", content);
-            if(response.IsCompletedSuccessfully)
-            {
-                var contentRes = await (await response).Content.ReadAsStringAsync();
-                var createdCompany = JsonConvert.DeserializeObject<bool>(contentRes);
-                Trace.WriteLine(createdCompany);
-            }
+            Post = postService.GetModelAsync(id).Result;
+            Trace.WriteLine(applicationService.Create(id, cvFile).Result);
         }
 
         //public static void AddTokenHeader(this HttpClient client, string? token)

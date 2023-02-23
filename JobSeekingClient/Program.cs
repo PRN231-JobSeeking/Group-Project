@@ -20,7 +20,8 @@ builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<ISkillService, SkillService>();
 builder.Services.AddTransient<IAuthenService, AuthenService>();
 builder.Services.AddTransient<IUserSkillService, UserSkillService>();
-
+builder.Services.AddTransient<IPostService, PostService>();
+builder.Services.AddTransient<IApplicationService, ApplicationService>();
 
 var app = builder.Build();
 
