@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.IO;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -27,7 +29,7 @@ namespace JobSeekingClient.Pages
             Post = (PostDTO)content.ReadFromJsonAsync(typeof(PostDTO)).Result;
         }
 
-        public void OnPostApply(int id, IFormFile cvFile)
+        public async void OnPostApply(int id, IFormFile cvFile)
         {
             if (cvFile == null) return;
             HttpClient client = new HttpClient();
@@ -37,20 +39,27 @@ namespace JobSeekingClient.Pages
 
             Trace.WriteLine(id + " " + cvFile.FileName);
             Post = (PostDTO)postContent.ReadFromJsonAsync(typeof(PostDTO)).Result;
-
-            var applyReq = new ApplyRequest()
+            MultipartFormDataContent content = new MultipartFormDataContent();
+            StreamContent fileContent = new StreamContent(cvFile.OpenReadStream());
+            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
             {
-                CvFile = cvFile,
-                PostId = 1
+                Name = "file",
+                FileName = cvFile.FileName
             };
-            var requestContent = new StringContent(JsonConvert.SerializeObject(applyReq), Encoding.UTF8, "multipart/form-data");
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("multipart/form-data"));
-            var response = client.PostAsync($"{config["ApiURI"]}Application/Create", requestContent);
-            Trace.WriteLine(response.Status.ToString());
+            content.Add(fileContent);
+            StringContent nameContent = new StringContent($"{id}");
+            nameContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            {
+                Name = "postId"
+            };
+            content.Add(nameContent);
+            //var requestContent = new StringContent(JsonConvert.SerializeObject(applyReq), Encoding.UTF8, "application/json");
+            //content.Add(requestContent, "data");
+            var response = client.PostAsync($"{config["ApiURI"]}Application/Create", content);
             if(response.IsCompletedSuccessfully)
             {
-                var content = response.Result.Content.ReadAsStringAsync().Result;
-                var createdCompany = JsonConvert.DeserializeObject<bool>(content);
+                var contentRes = await (await response).Content.ReadAsStringAsync();
+                var createdCompany = JsonConvert.DeserializeObject<bool>(contentRes);
                 Trace.WriteLine(createdCompany);
             }
         }
