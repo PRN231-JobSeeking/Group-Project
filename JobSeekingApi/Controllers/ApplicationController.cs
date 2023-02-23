@@ -1,6 +1,5 @@
 ﻿using AppCore.Models;
 using AppRepository.UnitOfWork;
-using JobSeekingClient.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -65,7 +64,7 @@ namespace JobSeekingApi.Controllers
             {
                 PostId = postId,
                 CV = $"{id}{ext}",
-                ApplicantId = 1,
+                ApplicantId = 2,
                 Status = true,
             };
             await unitOfWork.ApplicationRepository.Add(aplication);

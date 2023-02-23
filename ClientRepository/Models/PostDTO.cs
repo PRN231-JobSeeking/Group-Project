@@ -1,4 +1,4 @@
-﻿namespace JobSeekingClient.Models
+﻿namespace ClientRepository.Models
 {
     public class PostDTO
     {
