@@ -6,7 +6,10 @@ using System.Net.Http.Headers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages().AddRazorPagesOptions(options =>
+{
+    options.Conventions.AddPageRoute("/Auth/Login", "");
+}); ;
 //builder.Services.AddHttpClient();
 builder.Services
     .AddHttpClient("BaseClient", client =>

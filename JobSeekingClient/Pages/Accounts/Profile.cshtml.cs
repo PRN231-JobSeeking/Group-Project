@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ClientRepository.Models;
+using ClientRepository.Service;
+using ClientRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using ClientRepository.Service;
-using ClientRepository.Service.Implementation;
-using ClientRepository;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using ClientRepository.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace JobSeekingClient.Pages.Accounts
 {
-   
-    public class DetailsModel : PageModel
+    public class ProfileModel : PageModel
     {
-        
         private readonly IAccountService _accountService;
 
-        public DetailsModel(IAccountService accountService)
+        public ProfileModel(IAccountService accountService)
         {
-            _accountService= accountService;
+            _accountService = accountService;
         }
 
         public AccountModel Account { get; set; } = null!;
