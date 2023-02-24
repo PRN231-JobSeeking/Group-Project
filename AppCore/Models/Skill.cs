@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace AppCore.Models
 {
-    public class Skill
+    public class Skill : IDeleted
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; } = null!;
+        public bool IsDeleted { get; set ; }
     }
 }

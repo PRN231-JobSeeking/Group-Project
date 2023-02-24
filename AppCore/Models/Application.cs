@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppCore.Models
 {
-    public class Application
+    public class Application : IDeleted
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -21,5 +21,6 @@ namespace AppCore.Models
 
         public virtual Account? Applicant { get; set; }
         public virtual Post? Post { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }
