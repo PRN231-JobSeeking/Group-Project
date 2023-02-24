@@ -29,6 +29,6 @@ namespace AppCore.Models
         public virtual Location? Location { get; set; }
         public virtual Level? Level { get; set; }
         public virtual ICollection<PostSkillRequired>? SkillRequired { get; set; }
-        public bool IsDeleted { get; set ; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

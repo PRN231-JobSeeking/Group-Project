@@ -14,6 +14,6 @@ namespace AppCore.Models
         public TimeSpan StartTime { get; set; } 
         public TimeSpan EndTime { get; set; }
         public virtual ICollection<Interview>? Interviews { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

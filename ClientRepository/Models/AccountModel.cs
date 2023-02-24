@@ -18,7 +18,7 @@ namespace ClientRepository.Models
         public string Phone { get; set; } = null!;
         public bool IsLockout { get; set; }
         public int RoleId { get; set; }
-        public virtual Role? Role { get; set; }
-        public virtual ICollection<UserSkill>? UserSkill { get; set; }
+        public Role? Role { get; set; }
+        public ICollection<UserSkill>? UserSkill { get; set; }
     }
 }

@@ -8,6 +8,6 @@ namespace AppCore
 {
     public static class GlobalVariables
     {
-        public static readonly string ConnectionString = "server=(local);database=JobSeekingDB;uid=sa;pwd=1237890;trusted_connection=true";
+        public static readonly string ConnectionString = "server=WILLIAMTRUNG\\MYSQL;database=JobSeekingDB;uid=sa;pwd=123;trusted_connection=true";
     }
 }

@@ -24,6 +24,6 @@ namespace AppCore.Models
         public virtual Application? Application { get; set; }
         public virtual Account? Interviewer { get; set; }
         public virtual Slot? Slot { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

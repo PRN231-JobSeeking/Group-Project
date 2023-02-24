@@ -15,6 +15,6 @@ namespace AppCore.Models
         public int SkillId { get; set; }
         public virtual Skill? Skill { get; set; }
         public virtual Post? Post { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

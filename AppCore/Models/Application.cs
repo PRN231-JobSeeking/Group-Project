@@ -21,6 +21,6 @@ namespace AppCore.Models
 
         public virtual Account? Applicant { get; set; }
         public virtual Post? Post { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }
