@@ -1,6 +1,7 @@
 ﻿using AppCore;
 using AppCore.Models;
 using AppRepository.Generic;
+using AppRepository.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace AppRepository.Repositories.Implement
 {
     internal class CategoryRepository : GenericRepository<Category>, ICategoryRepository
     {
-        public CategoryRepository(Context context) : base(context)
+        public CategoryRepository(Context context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

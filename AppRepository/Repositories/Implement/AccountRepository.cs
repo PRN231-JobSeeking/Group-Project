@@ -1,6 +1,7 @@
 ﻿using AppCore;
 using AppCore.Models;
 using AppRepository.Generic;
+using AppRepository.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,8 @@ namespace AppRepository.Repositories.Implement
 {
     internal class AccountRepository : GenericRepository<Account>, IAccountRepository
     {
-        public AccountRepository(Context context) : base(context)
+        public AccountRepository(Context context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
-
-       
     }
 }

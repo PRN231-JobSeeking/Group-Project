@@ -1,6 +1,7 @@
 ﻿using AppCore;
 using AppCore.Models;
 using AppRepository.Generic;
+using AppRepository.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace AppRepository.Repositories.Implement
 {
     internal class LocationRepository : GenericRepository<Location>, ILocationRepository
     {
-        public LocationRepository(Context context) : base(context)
+        public LocationRepository(Context context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }
