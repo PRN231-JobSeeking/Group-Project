@@ -19,6 +19,7 @@ namespace AppRepository.Generic
         {
             _context= context;
             _entities = _context.Set<TEntity>();
+            _unitOfWork = unitOfWork;
         }
         public virtual async Task Add(TEntity entity)
         {
