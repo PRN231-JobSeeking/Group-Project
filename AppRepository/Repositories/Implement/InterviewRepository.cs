@@ -27,18 +27,18 @@ namespace AppRepository.Repositories.Implement
         private bool CheckValidSlot(Slot? slot)
         {
             var result = false;
-            if (slot != null)
-            {
-                var compare = new DateTime(slot.StartTime.Ticks);
-                if (slot.StartTime < compare)
-                {
+            //if (slot != null)
+            //{
+            //    var compare = new DateTime(slot.StartTime.Ticks);
+            //    if (slot.StartTime < compare)
+            //    {
 
-                } else
-                {
+            //    } else
+            //    {
 
-                }
-                result = false;
-            }
+            //    }
+            //    result = false;
+            //}
 
             return result;
         }
