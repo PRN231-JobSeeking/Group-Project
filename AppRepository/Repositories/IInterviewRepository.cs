@@ -10,5 +10,6 @@ namespace AppRepository.Repositories
 {
     public interface IInterviewRepository : IGenericRepository<Interview>
     {
+        Task CreateMeeting(Interview interview);
     }
 }

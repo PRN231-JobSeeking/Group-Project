@@ -1,4 +1,5 @@
 ﻿using AppCore;
+using AppRepository.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,10 @@ namespace AppRepository.Generic
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
+        public readonly IUnitOfWork _unitOfWork;
         private readonly Context _context;
         private DbSet<TEntity> _entities;
-        public GenericRepository(Context context)
+        public GenericRepository(Context context, IUnitOfWork unitOfWork)
         {
             _context= context;
             _entities = _context.Set<TEntity>();
