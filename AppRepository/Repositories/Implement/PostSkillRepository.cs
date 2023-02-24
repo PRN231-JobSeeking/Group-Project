@@ -1,6 +1,7 @@
 ﻿using AppCore;
 using AppCore.Models;
 using AppRepository.Generic;
+using AppRepository.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,9 @@ namespace AppRepository.Repositories.Implement
 {
     internal class PostSkillRepository : GenericRepository<PostSkillRequired>, IPostSkillRepository
     {
-        public PostSkillRepository(Context context) : base(context)
+        public PostSkillRepository(Context context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }
+}
 }

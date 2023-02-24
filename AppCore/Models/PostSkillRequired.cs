@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppCore.Models
 {
-    public class PostSkillRequired
+    public class PostSkillRequired : IDeleted
     {
         [ForeignKey(nameof(Post))]
         public int PostId { get; set; }
@@ -15,5 +15,6 @@ namespace AppCore.Models
         public int SkillId { get; set; }
         public virtual Skill? Skill { get; set; }
         public virtual Post? Post { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

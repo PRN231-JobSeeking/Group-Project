@@ -17,28 +17,28 @@ namespace AppRepository.UnitOfWork
             _context = context;
         }
 
-        public IAccountRepository AccountRepository => new AccountRepository(_context);
+        public IAccountRepository AccountRepository => new AccountRepository(_context, this);
 
-        public IApplicationRepository ApplicationRepository => new ApplicationRepository(_context);
+        public IApplicationRepository ApplicationRepository => new ApplicationRepository(_context, this);
 
-        public ICategoryRepository CategoryRepository => new CategoryRepository(_context);
+        public ICategoryRepository CategoryRepository => new CategoryRepository(_context, this);
 
-        public IInterviewRepository InterviewRepository => new InterviewRepository(_context);
+        public IInterviewRepository InterviewRepository => new InterviewRepository(_context, this);
 
-        public ILevelRepository LevelRepository => new LevelRepository(_context);
+        public ILevelRepository LevelRepository => new LevelRepository(_context, this);
 
-        public ILocationRepository LocationRepository => new LocationRepository(_context);
+        public ILocationRepository LocationRepository => new LocationRepository(_context, this);
 
-        public IPostRepository PostRepository =>  new PostRepository(_context);
+        public IPostRepository PostRepository =>  new PostRepository(_context, this);
 
-        public IPostSkillRepository PostSkillRepository => new PostSkillRepository(_context);
+        public IPostSkillRepository PostSkillRepository => new PostSkillRepository(_context, this);
 
-        public IRoleRepository RoleRepository => new RoleRepository(_context);
+        public IRoleRepository RoleRepository => new RoleRepository(_context, this);
 
-        public ISkillRepository SkillRepository => new SkillRepository(_context);
+        public ISkillRepository SkillRepository => new SkillRepository(_context, this);
 
-        public ISlotRepository SlotRepository => new SlotRepository(_context);
+        public ISlotRepository SlotRepository => new SlotRepository(_context, this);
 
-        public IUserSkillRepository UserSkillRepository => new UserSkillRepository(_context);
+        public IUserSkillRepository UserSkillRepository => new UserSkillRepository(_context, this);
     }
 }

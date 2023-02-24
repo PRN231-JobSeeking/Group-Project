@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppCore.Models
 {
-    public class Interview
+    public class Interview : IDeleted
     {
         [ForeignKey(nameof(Application))]
         public int ApplicationId { get; set; }
@@ -24,5 +24,6 @@ namespace AppCore.Models
         public virtual Application? Application { get; set; }
         public virtual Account? Interviewer { get; set; }
         public virtual Slot? Slot { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

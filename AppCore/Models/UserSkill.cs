@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppCore.Models
 {
-    public class UserSkill
+    public class UserSkill : IDeleted
     {
         [ForeignKey(nameof(Account))]
         public int AccountId { get; set; }
@@ -15,5 +15,6 @@ namespace AppCore.Models
         public int SkillId { get; set; }
         public virtual Skill? Skill { get; set; }
         public virtual Account? Account { get; set; }
+        public bool IsDeleted { get ; set ; } = false;
     }
 }
