@@ -1,0 +1,14 @@
+diff a/JobSeekingApi/Controllers/AccountController.cs b/JobSeekingApi/Controllers/AccountController.cs	(rejected hunks)
+@@ -21,10 +21,11 @@
+ 
+         public AccountController(IUnitOfWork unitOfWork)
+         {
+-            _unitOfWork= unitOfWork;
++            _unitOfWork = unitOfWork;
+         }
+ 
+         // GET: api/Account
++       
+         [HttpGet]
+         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
+         {
