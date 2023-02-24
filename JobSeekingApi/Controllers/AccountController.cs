@@ -9,6 +9,7 @@ using AppCore;
 using AppCore.Models;
 using AppRepository.UnitOfWork;
 using ClientRepository.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JobSeekingApi.Controllers
 {
@@ -20,10 +21,11 @@ namespace JobSeekingApi.Controllers
 
         public AccountController(IUnitOfWork unitOfWork)
         {
-            _unitOfWork= unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Account
+       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {

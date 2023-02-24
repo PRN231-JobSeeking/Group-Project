@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using ClientRepository.Service;
 using ClientRepository;
 using ClientRepository.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JobSeekingClient.Pages.Accounts
 {
+   
     public class IndexModel : PageModel
     {
         private readonly IAccountService _accountService;

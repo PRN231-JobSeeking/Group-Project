@@ -1,16 +1,13 @@
 ﻿@page
 @model JobSeekingClient.Pages.Auth.LoginModel
-
-
 @{
     ViewData["Title"] = "Login";
-}
-
+ }
 <h1>Login</h1>
-
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <span class="text-danger">@ViewBag.message</span>
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -20,21 +17,22 @@
             </div>
             <div class="form-group">
                 <label asp-for="Credential.Password" class="control-label"></label>
-                <input asp-for="Credential.Password" class="form-control" />
+                <input type="password" asp-for="Credential.Password" class="form-control" />
                 <span asp-validation-for="Credential.Password" class="text-danger"></span>
-            </div>       
+            </div>
+            </br>
             <div class="form-group">
                 <input type="submit" value="Login" class="btn btn-primary" />
             </div>
         </form>
+        <hr />
+        </br>
+        <span>You do not have account? </span>
+        <a class="text-black" asp-page="/Auth/Register"> Register here </a>
     </div>
-</div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
 </div>
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+     }
 }
