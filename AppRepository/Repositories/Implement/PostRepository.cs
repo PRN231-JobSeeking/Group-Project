@@ -2,6 +2,7 @@
 using AppCore.Models;
 using AppRepository.Generic;
 using AppRepository.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,5 @@
 using AppCore.Models;
+using ClientRepository.Models;
 using ClientRepository.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,7 +17,7 @@ namespace JobSeekingClient.Pages
             this.applicationService = applicationService;
         }
 
-        public string CvPath { get; set; }
+        public ApplicationModel Application { get; set; }
 
         public void OnGet(int id)
         {
@@ -25,7 +26,7 @@ namespace JobSeekingClient.Pages
             {
                 return;
             }
-            CvPath = application.CV;
+            Application = application;
         }
     }
 }
