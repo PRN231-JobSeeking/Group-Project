@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AppCore.Migrations
 {
-    public partial class initdb : Migration
+    public partial class initdb_initvalues : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,8 @@ namespace AppCore.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,7 +29,8 @@ namespace AppCore.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,7 +43,8 @@ namespace AppCore.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -54,7 +57,8 @@ namespace AppCore.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -67,7 +71,8 @@ namespace AppCore.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,17 +80,18 @@ namespace AppCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Slot",
+                name: "Slots",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
-                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false)
+                    EndTime = table.Column<TimeSpan>(type: "time", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Slot", x => x.Id);
+                    table.PrimaryKey("PK_Slots", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,7 +109,8 @@ namespace AppCore.Migrations
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false)
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -135,12 +142,14 @@ namespace AppCore.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsLockout = table.Column<bool>(type: "bit", nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -158,7 +167,8 @@ namespace AppCore.Migrations
                 columns: table => new
                 {
                     PostId = table.Column<int>(type: "int", nullable: false),
-                    SkillId = table.Column<int>(type: "int", nullable: false)
+                    SkillId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,7 +196,8 @@ namespace AppCore.Migrations
                     ApplicantId = table.Column<int>(type: "int", nullable: false),
                     PostId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
-                    CV = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CV = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -210,7 +221,8 @@ namespace AppCore.Migrations
                 columns: table => new
                 {
                     AccountId = table.Column<int>(type: "int", nullable: false),
-                    SkillId = table.Column<int>(type: "int", nullable: false)
+                    SkillId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -221,6 +233,12 @@ namespace AppCore.Migrations
                         principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserSkills_Skills_SkillId",
+                        column: x => x.SkillId,
+                        principalTable: "Skills",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -233,7 +251,8 @@ namespace AppCore.Migrations
                     SlotId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "date", nullable: false),
                     Feedback = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Point = table.Column<double>(type: "float", nullable: false)
+                    Point = table.Column<double>(type: "float", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -251,11 +270,109 @@ namespace AppCore.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_Interviews_Slot_SlotId",
+                        name: "FK_Interviews_Slots_SlotId",
                         column: x => x.SlotId,
-                        principalTable: "Slot",
+                        principalTable: "Slots",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "IsDeleted", "Name" },
+                values: new object[,]
+                {
+                    { 1, false, "Backend API" },
+                    { 2, false, "Frontend Web" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Levels",
+                columns: new[] { "Id", "IsDeleted", "Name" },
+                values: new object[,]
+                {
+                    { 1, false, "Intern" },
+                    { 2, false, "Fresher" },
+                    { 3, false, "Junior" },
+                    { 4, false, "Senior" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Locations",
+                columns: new[] { "Id", "IsDeleted", "Name" },
+                values: new object[] { 1, false, "location1" });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "IsDeleted", "Name" },
+                values: new object[,]
+                {
+                    { 1, false, "Administrator" },
+                    { 2, false, "HR" },
+                    { 3, false, "Interviewer" },
+                    { 4, false, "Applicant" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Skills",
+                columns: new[] { "Id", "IsDeleted", "Name" },
+                values: new object[,]
+                {
+                    { 1, false, "C#" },
+                    { 2, false, "C++" },
+                    { 3, false, "Java" },
+                    { 4, false, "Ruby" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Slots",
+                columns: new[] { "Id", "EndTime", "IsDeleted", "StartTime" },
+                values: new object[,]
+                {
+                    { 1, new TimeSpan(0, 8, 0, 0, 0), false, new TimeSpan(0, 7, 0, 0, 0) },
+                    { 2, new TimeSpan(0, 9, 0, 0, 0), false, new TimeSpan(0, 8, 0, 0, 0) },
+                    { 3, new TimeSpan(0, 10, 0, 0, 0), false, new TimeSpan(0, 9, 0, 0, 0) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Accounts",
+                columns: new[] { "Id", "Address", "Email", "FirstName", "IsDeleted", "IsLockout", "LastName", "Password", "Phone", "RoleId" },
+                values: new object[,]
+                {
+                    { 1, "abc", "hr1@email", "abc", false, false, "abc", "123", "0908123456", 2 },
+                    { 2, "abc", "interviewer1@email", "abc", false, false, "abc", "123", "0908123456", 3 },
+                    { 3, "abc", "interviewer2@email", "abc", false, false, "abc", "123", "0908123456", 3 },
+                    { 4, "abc", "interviewer3@email", "abc", false, false, "abc", "123", "0908123456", 3 },
+                    { 5, "abc", "applicant01@email", "abc", false, false, "abc", "123", "0908123456", 4 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Posts",
+                columns: new[] { "Id", "Amount", "CategoryId", "CreateDate", "Description", "EndDate", "IsDeleted", "LevelId", "LocationId", "StartDate", "Status", "Title" },
+                values: new object[] { 1, 1, 1, new DateTime(2023, 2, 27, 0, 0, 0, 0, DateTimeKind.Local), "abcdef", new DateTime(2023, 3, 9, 0, 0, 0, 0, DateTimeKind.Local), false, 1, 1, new DateTime(2023, 2, 27, 0, 0, 0, 0, DateTimeKind.Local), true, "Backend API hiring" });
+
+            migrationBuilder.InsertData(
+                table: "PostSkills",
+                columns: new[] { "PostId", "SkillId", "IsDeleted" },
+                values: new object[,]
+                {
+                    { 1, 1, false },
+                    { 1, 2, false }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserSkills",
+                columns: new[] { "AccountId", "SkillId", "IsDeleted" },
+                values: new object[,]
+                {
+                    { 2, 1, false },
+                    { 3, 1, false },
+                    { 4, 1, false },
+                    { 5, 1, false },
+                    { 2, 2, false },
+                    { 3, 2, false },
+                    { 2, 3, false },
+                    { 5, 2, false }
                 });
 
             migrationBuilder.CreateIndex(
@@ -324,7 +441,7 @@ namespace AppCore.Migrations
                 name: "Applications");
 
             migrationBuilder.DropTable(
-                name: "Slot");
+                name: "Slots");
 
             migrationBuilder.DropTable(
                 name: "Skills");

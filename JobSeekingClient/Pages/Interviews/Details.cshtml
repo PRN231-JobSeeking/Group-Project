@@ -1,0 +1,55 @@
+﻿@page
+@model JobSeekingClient.Pages.Interviews.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Interview</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Interview.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Interview.Date)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Interview.Feedback)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Interview.Feedback)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Interview.Point)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Interview.Point)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Interview.Application)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Interview.Application.CV)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Interview.Interviewer)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Interview.Interviewer.Address)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Interview.Slot)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Interview.Slot.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230212134638_add_password_t_account")]
-    partial class add_password_t_account
+    [Migration("20230227011430_initdb_initvalues")]
+    partial class initdb_initvalues
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,9 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsLockout")
                         .HasColumnType("bit");
 
@@ -67,6 +70,73 @@ namespace AppCore.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Accounts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "abc",
+                            Email = "hr1@email",
+                            FirstName = "abc",
+                            IsDeleted = false,
+                            IsLockout = false,
+                            LastName = "abc",
+                            Password = "123",
+                            Phone = "0908123456",
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "abc",
+                            Email = "interviewer1@email",
+                            FirstName = "abc",
+                            IsDeleted = false,
+                            IsLockout = false,
+                            LastName = "abc",
+                            Password = "123",
+                            Phone = "0908123456",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "abc",
+                            Email = "interviewer2@email",
+                            FirstName = "abc",
+                            IsDeleted = false,
+                            IsLockout = false,
+                            LastName = "abc",
+                            Password = "123",
+                            Phone = "0908123456",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "abc",
+                            Email = "interviewer3@email",
+                            FirstName = "abc",
+                            IsDeleted = false,
+                            IsLockout = false,
+                            LastName = "abc",
+                            Password = "123",
+                            Phone = "0908123456",
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "abc",
+                            Email = "applicant01@email",
+                            FirstName = "abc",
+                            IsDeleted = false,
+                            IsLockout = false,
+                            LastName = "abc",
+                            Password = "123",
+                            Phone = "0908123456",
+                            RoleId = 4
+                        });
                 });
 
             modelBuilder.Entity("AppCore.Models.Application", b =>
@@ -83,6 +153,9 @@ namespace AppCore.Migrations
                     b.Property<string>("CV")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
@@ -107,6 +180,9 @@ namespace AppCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -114,6 +190,20 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            Name = "Backend API"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDeleted = false,
+                            Name = "Frontend Web"
+                        });
                 });
 
             modelBuilder.Entity("AppCore.Models.Interview", b =>
@@ -132,6 +222,9 @@ namespace AppCore.Migrations
 
                     b.Property<int>("InterviewerId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<double>("Point")
                         .HasColumnType("float");
@@ -156,6 +249,9 @@ namespace AppCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -163,6 +259,32 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Levels");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            Name = "Intern"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDeleted = false,
+                            Name = "Fresher"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDeleted = false,
+                            Name = "Junior"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsDeleted = false,
+                            Name = "Senior"
+                        });
                 });
 
             modelBuilder.Entity("AppCore.Models.Location", b =>
@@ -173,6 +295,9 @@ namespace AppCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -180,6 +305,14 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Locations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            Name = "location1"
+                        });
                 });
 
             modelBuilder.Entity("AppCore.Models.Post", b =>
@@ -206,6 +339,9 @@ namespace AppCore.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LevelId")
                         .HasColumnType("int");
 
@@ -231,6 +367,23 @@ namespace AppCore.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Posts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = 1,
+                            CategoryId = 1,
+                            CreateDate = new DateTime(2023, 2, 27, 0, 0, 0, 0, DateTimeKind.Local),
+                            Description = "abcdef",
+                            EndDate = new DateTime(2023, 3, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            IsDeleted = false,
+                            LevelId = 1,
+                            LocationId = 1,
+                            StartDate = new DateTime(2023, 2, 27, 0, 0, 0, 0, DateTimeKind.Local),
+                            Status = true,
+                            Title = "Backend API hiring"
+                        });
                 });
 
             modelBuilder.Entity("AppCore.Models.PostSkillRequired", b =>
@@ -241,11 +394,28 @@ namespace AppCore.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("SkillId", "PostId");
 
                     b.HasIndex("PostId");
 
                     b.ToTable("PostSkills");
+
+                    b.HasData(
+                        new
+                        {
+                            SkillId = 1,
+                            PostId = 1,
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            SkillId = 2,
+                            PostId = 1,
+                            IsDeleted = false
+                        });
                 });
 
             modelBuilder.Entity("AppCore.Models.Role", b =>
@@ -256,6 +426,9 @@ namespace AppCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -263,6 +436,32 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            Name = "Administrator"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDeleted = false,
+                            Name = "HR"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDeleted = false,
+                            Name = "Interviewer"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsDeleted = false,
+                            Name = "Applicant"
+                        });
                 });
 
             modelBuilder.Entity("AppCore.Models.Skill", b =>
@@ -273,6 +472,9 @@ namespace AppCore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -280,6 +482,32 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Skills");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            Name = "C#"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDeleted = false,
+                            Name = "C++"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDeleted = false,
+                            Name = "Java"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsDeleted = false,
+                            Name = "Ruby"
+                        });
                 });
 
             modelBuilder.Entity("AppCore.Models.Slot", b =>
@@ -293,12 +521,38 @@ namespace AppCore.Migrations
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Slot");
+                    b.ToTable("Slots");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EndTime = new TimeSpan(0, 8, 0, 0, 0),
+                            IsDeleted = false,
+                            StartTime = new TimeSpan(0, 7, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EndTime = new TimeSpan(0, 9, 0, 0, 0),
+                            IsDeleted = false,
+                            StartTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EndTime = new TimeSpan(0, 10, 0, 0, 0),
+                            IsDeleted = false,
+                            StartTime = new TimeSpan(0, 9, 0, 0, 0)
+                        });
                 });
 
             modelBuilder.Entity("AppCore.Models.UserSkill", b =>
@@ -309,11 +563,64 @@ namespace AppCore.Migrations
                     b.Property<int>("AccountId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("SkillId", "AccountId");
 
                     b.HasIndex("AccountId");
 
                     b.ToTable("UserSkills");
+
+                    b.HasData(
+                        new
+                        {
+                            SkillId = 1,
+                            AccountId = 2,
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            SkillId = 1,
+                            AccountId = 5,
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            SkillId = 5,
+                            AccountId = 5,
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            SkillId = 2,
+                            AccountId = 2,
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            SkillId = 3,
+                            AccountId = 2,
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            SkillId = 1,
+                            AccountId = 3,
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            SkillId = 2,
+                            AccountId = 3,
+                            IsDeleted = false
+                        },
+                        new
+                        {
+                            SkillId = 1,
+                            AccountId = 4,
+                            IsDeleted = false
+                        });
                 });
 
             modelBuilder.Entity("AppCore.Models.Account", b =>

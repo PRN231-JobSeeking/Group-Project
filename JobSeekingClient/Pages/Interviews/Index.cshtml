@@ -1,0 +1,66 @@
+﻿@page
+@model JobSeekingClient.Pages.Interviews.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Interview[0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interview[0].Feedback)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interview[0].Point)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interview[0].Application)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interview[0].Interviewer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interview[0].Slot)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Interview) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Feedback)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Point)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Application.CV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Interviewer.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Slot.Id)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

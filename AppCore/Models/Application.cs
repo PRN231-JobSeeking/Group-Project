@@ -15,7 +15,7 @@ namespace AppCore.Models
         public int ApplicantId { get; set; }
         [ForeignKey(nameof(Post))] 
         public int PostId { get; set; }
-        public bool Status { get; set; }
+        public bool? Status { get; set; }
         public string CV { get; set; } = null!;
 
 
