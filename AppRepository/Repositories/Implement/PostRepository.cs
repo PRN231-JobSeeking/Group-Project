@@ -16,14 +16,14 @@ namespace AppRepository.Repositories.Implement
         {
         }
 
-        public Task<Post> Get(int id)
+        public async Task<Post> Get(int id)
         {
-            throw new NotImplementedException();
+            return _context.Posts.Where(p => p.Id == id).FirstOrDefaultAsync().Result;
         }
 
-        public Task<IEnumerable<Post>> GetAll()
+        public async Task<IEnumerable<Post>> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Posts.ToListAsync().Result;
         }
     }
 }
