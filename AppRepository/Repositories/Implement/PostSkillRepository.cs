@@ -17,4 +17,3 @@ namespace AppRepository.Repositories.Implement
         }
     }
 }
-}

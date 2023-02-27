@@ -15,5 +15,15 @@ namespace AppRepository.Repositories.Implement
         public PostRepository(Context context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
+
+        public Task<Post> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Post>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

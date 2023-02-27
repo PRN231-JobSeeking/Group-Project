@@ -17,7 +17,7 @@ namespace AppCore
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<Skill> Skills { get; set; } = null!;
         public DbSet<UserSkill> UserSkills { get; set; } = null!;
-
+        public DbSet<Slot> Slots { get; set; } = null!;
         public Context()
         {
 
@@ -35,6 +35,7 @@ namespace AppCore
                     .AddJsonFile("appsettings.json").Build();
                 optionsBuilder.UseSqlServer(config["ConnectionStrings:DefaultConnection"]);
             }
+            //optionsBuilder.UseSqlServer("server=WILLIAMTRUNG\\MYSQL;database=JobSeekingDB;uid=sa;pwd=123;trusted_connection=true;");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

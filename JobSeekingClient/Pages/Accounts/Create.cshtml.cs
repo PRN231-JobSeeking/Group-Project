@@ -25,7 +25,7 @@ namespace JobSeekingClient.Pages.Accounts
 
         public async Task<IActionResult> OnGetAsync()
         {
-            ViewData["RoleId"] = new SelectList(await _roleService.GetListAsync(path: StoredURI.Role), "Id", "Name");
+            ViewData["RoleId"] = new SelectList(await _roleService.GetListAsync(path: StoredURI.Role, token: HttpContext.Session.GetString("token")), "Id", "Name");
             return Page();
         }
 

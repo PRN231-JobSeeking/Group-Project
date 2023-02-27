@@ -16,5 +16,15 @@ namespace AppRepository.Repositories.Implement
         public AccountRepository(Context context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
+        public override async Task<IEnumerable<Account>> Get(Expression<Func<Account, bool>>? expression = null, params string[] includeProperties)
+        {
+            var list = await base.Get(expression, includeProperties);
+            foreach (var item in list)
+            {
+                var skills = await _unitOfWork.UserSkillRepository.Get(c => c.AccountId == item.Id);
+                item.UserSkill = skills.ToList();
+            }
+            return list;
+        }
     }
 }

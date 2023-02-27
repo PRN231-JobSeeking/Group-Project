@@ -1,0 +1,60 @@
+﻿@page
+@model JobSeekingClient.Pages.Interviews.ViewApplicationsModel
+
+@{
+    ViewData["Title"] = "ViewApplications";
+}
+
+<h1>ViewApplications</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Application[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application[0].CV)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application[0].Applicant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application[0].Post)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application[0].IsDeleted)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Application) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CV)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Applicant.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Post.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeleted)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
