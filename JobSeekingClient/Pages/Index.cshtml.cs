@@ -12,9 +12,15 @@ namespace JobSeekingClient.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            var role = HttpContext.Session.GetInt32("RoleId");
+            if (role == null)
+            {
+                return RedirectToAction("Get", "Login");
+            }
 
+            return Page();
         }
     }
 }
