@@ -1,0 +1,7 @@
+﻿@page "/CV/{id:int}"
+@model JobSeekingClient.Pages.ViewCvModel
+@{
+}
+<object data="@Url.Content(Model.config["ApiImages"] + Model.Application.CV)" type="application/pdf" width="100%" height="600">
+    <p>PDF viewer not available. Please download the PDF to view it: <a href="@Url.Content(Model.config["ApiImages"] + Model.Application.CV)">Download PDF</a>.</p>
+</object>
