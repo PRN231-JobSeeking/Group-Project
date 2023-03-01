@@ -1,4 +1,100 @@
 @inject IHttpContextAccessor HttpContextAccessor
-@model JobSeekingClient.Pages.IndexModel
+
+@model IndexModel
 @{
+    ViewData["Title"] = "Home page";
 }
+
+@{
+    int? RoleId = @HttpContextAccessor.HttpContext.Session.GetInt32("RoleId");
+    if (RoleId == null)
+    {
+        RoleId = 1;
+    }
+}
+
+@{
+    //switch case for differennt types of user based on their roleId, set in the Auth/Login
+    switch (RoleId)
+    {
+        //admin
+
+        //1.Admin
+        //2.HR
+        //3.Internviewer
+        //4.Applicants
+        case 1:
+            {
+                // Use the text block below to separate html elements from code
+                <text>
+                    <div class="text-center">
+                        <h1 class="display-4">Welcome, Admin</h1>
+                        @Html.ActionLink("Member Managerment", "Index", "Accounts") <br>
+                        @Html.ActionLink("Application Management", "Index", "Application")<br>
+                        @Html.ActionLink("Applicant Managerment", "Index", "Interviews")<br>
+                        @Html.ActionLink("Logout", "Logout", "Home")
+                    </div>
+                </text>
+                break;
+
+            }
+
+        case 2:
+            {
+                <text>
+                    <div class="text-center">
+                        <h1 class="display-4">Welcome, HR</h1>
+                        //View post applicants, Choose applicants, Make appointment for interview, View interview results, Approve applicants
+                        @Html.ActionLink("View my Profile", "Index", "Accounts") <br>
+                        @Html.ActionLink("Application Management", "Index", "Application")<br>
+                        @Html.ActionLink("Applicant Managerment", "Index", "Interviews")<br>
+                        @Html.ActionLink("Logout", "Logout", "Home")
+                    </div>
+                </text>
+
+            }
+
+            break;
+        case 3:
+            {
+                <text>
+                    <div class="text-center">
+                        <h1 class="display-4">Welcome, Interviewer</h1>
+                        @Html.ActionLink("View my Profile", "Index", "Accounts") <br>
+                        @Html.ActionLink("Application Management", "Index", "Application")<br>
+                        @Html.ActionLink("Applicant Managerment", "Index", "Interviews")<br>
+                        @Html.ActionLink("Logout", "Logout", "Home")
+                    </div>
+                </text>
+
+            }
+            break;
+        case 4:
+            {
+                <text>
+                    <div class="text-center">
+                        <h1 class="display-4">Welcome, Applicant</h1>
+                        //4.Applicants
+                        //Update CV, view Application history, cancel pending application
+                        @Html.ActionLink("View my CV", "Index", "Accounts") <br>
+                    </div>
+                </text>
+
+            }
+            break;
+        default:
+            {
+                <text>
+                    <p>You don't have permission for this function.</p>
+                </text>
+                break;
+            }
+
+    }
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
