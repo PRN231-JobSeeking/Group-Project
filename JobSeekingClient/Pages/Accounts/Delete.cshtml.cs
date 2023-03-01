@@ -10,6 +10,8 @@ using ClientRepository.Service.Implementation;
 using ClientRepository;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ClientRepository.Models;
+using NuGet.Common;
+using System.IO;
 
 namespace JobSeekingClient.Pages.Accounts
 {
@@ -27,28 +29,42 @@ namespace JobSeekingClient.Pages.Accounts
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            string? token = HttpContext.Session.GetString("token");
+            int? test = HttpContext.Session.GetInt32("Role");
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToPage("/Auth/Login");
+            }
+            if (test != 1)
+            {
+                return RedirectToPage("./HomePage");
+            }
             string path = StoredURI.Account + "/" + id;
-            var find = await _accountService.GetModelAsync(path: path);
+            var find = await _accountService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);
             if (find == null)
             {
                 return NotFound();
             }
-            Account = find;                        
+            Account = find;
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if(id == null)
+            string path = StoredURI.Account + "/" + id;
+            string? token = HttpContext.Session.GetString("token");
+            var find = await _accountService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);
+            find.IsDeleted = true;
+            if (id == null)
             {
                 return NotFound();
             }
-            if(id != Account.Id)
+            if (id != Account.Id)
             {
                 return BadRequest();
             }
-            await _accountService.Delete(Account, path: StoredURI.Account + "/" + Account.Id.ToString(), token: null);
-            return RedirectToPage("./Index");
+            await _accountService.Update(find, path: StoredURI.Account + "/" + Account.Id.ToString(), token: token);
+            return RedirectToPage("./IndexAdmin");
         }
     }
 }

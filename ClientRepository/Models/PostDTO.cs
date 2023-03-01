@@ -21,5 +21,6 @@ namespace ClientRepository.Models
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime EndDate { get; set; }
         public int Amount { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

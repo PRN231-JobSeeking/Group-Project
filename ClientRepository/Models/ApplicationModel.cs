@@ -13,5 +13,6 @@ namespace ClientRepository.Models
         public int PostId { get; set; }
         public bool Status { get; set; }
         public string CV { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

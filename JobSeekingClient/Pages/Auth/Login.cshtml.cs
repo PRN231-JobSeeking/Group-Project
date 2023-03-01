@@ -20,33 +20,49 @@ namespace JobSeekingClient.Pages.Auth
         [BindProperty]
         public UserLogin Credential { get; set; }
 
-        
+
         public IActionResult OnGet()
         {
-            
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-           
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-           var token= await _authenService.Login(Credential);
+            var token = await _authenService.Login(Credential);
             if (!string.IsNullOrEmpty(token))
             {
-                var list = await _accountService.GetListAsync(path: StoredURI.Account, expression: null, param: null, token: null);
+                token = token.Replace("\"", "");
+                var list = await _accountService.GetListAsync(path: StoredURI.Account, expression: c => c.IsDeleted == false, param: null, token: token);
                 var user = list.FirstOrDefault(a => a.Email == Credential.Email);
                 HttpContext.Session.SetString("token", token.ToString());
                 HttpContext.Session.SetInt32("UserId", user.Id);
-                HttpContext.Session.SetInt32("Role",user.RoleId);
-                return RedirectToPage("/Accounts/Index");
+                HttpContext.Session.SetInt32("Role", user.RoleId);
+                if (user.RoleId == 1)
+                {
+                    return RedirectToPage("/Accounts/IndexAdmin");
+                }
+                if (user.RoleId == 2)
+                {
+                    return RedirectToPage("/Accounts/Index");
+                }
+                if (user.RoleId == 3)
+                {
+                    return RedirectToPage("/Accounts/Index");
+                }
+                if (user.RoleId == 4)
+                {
+                    return RedirectToPage("/Accounts/Index");
+                }
             }
             ViewData["message"] = "Wrong email and password! Please try again!";
             return Page();
         }
-    }  
+    }
 }
 
