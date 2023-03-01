@@ -12,6 +12,6 @@ namespace ClientRepository.Models
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public bool IsDeleted { get; set; }
-        public ICollection<InterviewModel>? Interviews { get; set; }
+        public ICollection<InterviewModel>? Interviews { get; set; }       
     }
 }

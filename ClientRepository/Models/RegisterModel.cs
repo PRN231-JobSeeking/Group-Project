@@ -24,5 +24,6 @@ namespace ClientRepository.Models
         public string Address { get; set; } = null!;
         [Required]
         public string Phone { get; set; } = null!;
+        public bool IsDeleted { get; set; }
     }
 }

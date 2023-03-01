@@ -25,7 +25,7 @@ namespace JobSeekingApi.Controllers
         }
 
         // GET: api/Account
-       
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
@@ -34,6 +34,7 @@ namespace JobSeekingApi.Controllers
         }
 
         // GET: api/Account/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
@@ -47,9 +48,10 @@ namespace JobSeekingApi.Controllers
             return account;
         }
 
-       
+
         // PUT: api/Account/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAccount(int id, Account account)
         {
@@ -64,6 +66,7 @@ namespace JobSeekingApi.Controllers
 
         // POST: api/Account
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Account>> PostAccount(Account account)
         {
@@ -72,6 +75,7 @@ namespace JobSeekingApi.Controllers
         }
 
         // DELETE: api/Account/5
+        [Authorize(Roles= "Administrator")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAccount(int id)
         {

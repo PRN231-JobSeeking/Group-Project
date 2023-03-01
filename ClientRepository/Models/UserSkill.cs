@@ -13,5 +13,6 @@ namespace ClientRepository.Models
         public int SkillId { get; set; }
         public virtual Skill? Skill { get; set; }
         public virtual AccountModel? Account { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

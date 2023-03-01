@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ClientRepository.Models;
+using ClientRepository.Service;
+using ClientRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ClientRepository.Service;
-using ClientRepository.Models;
-using ClientRepository;
+using System.Security.Policy;
 
 namespace JobSeekingClient.Pages.Accounts
 {
-    public class EditModel : PageModel
+    public class UserEditModel : PageModel
     {
         private readonly IRoleService _roleService;
         private readonly IAccountService _accountService;
 
-        public EditModel(IAccountService accountService, IRoleService roleService)
+        public UserEditModel(IAccountService accountService, IRoleService roleService)
         {
             _accountService = accountService;
             _roleService = roleService;
@@ -34,7 +30,7 @@ namespace JobSeekingClient.Pages.Accounts
             {
                 return RedirectToPage("/Auth/Login");
             }
-            if (test != 1)
+            if (test != 4)
             {
                 return RedirectToPage("./HomePage");
             }
@@ -42,10 +38,9 @@ namespace JobSeekingClient.Pages.Accounts
             var find = await _accountService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);
             if (find == null)
             {
-                return NotFound();
+                return RedirectToPage("./HomePage");
             }
             Account = find;
-            ViewData["RoleId"] = new SelectList(await _roleService.GetListAsync(path: StoredURI.Role, token: token), "Id", "Name");
             return Page();
         }
 
@@ -54,14 +49,33 @@ namespace JobSeekingClient.Pages.Accounts
         public async Task<IActionResult> OnPostAsync()
         {
             string? token = HttpContext.Session.GetString("token");
+            string path = StoredURI.Account + "/" + Account.Id;
+            var find = await _accountService.GetModelAsync(path: path, token: token);
             if (!ModelState.IsValid)
             {
-                ViewData["RoleId"] = new SelectList(await _roleService.GetListAsync(path: StoredURI.Role, token: token), "Id", "Name");
                 return Page();
+            }
+            if (!Account.Email.Equals(find.Email))
+            {
+                var list = await _accountService.GetListAsync(path: StoredURI.Account, expression: c => c.Email.Equals(Account.Email), param: null, token: token);
+                if (list.Count() > 0)
+                {
+                    ViewData["messageemail"] = "Email already in use";
+                    return Page();
+                }
+            }
+            if (!Account.Phone.Equals(find.Phone))
+            {
+                var list = await _accountService.GetListAsync(path: StoredURI.Account, expression: c => c.Phone.Equals(Account.Phone), param: null, token: token);
+                if (list.Count() > 0)
+                {
+                    ViewData["messagephone"] = "Phone number already in use";
+                    return Page();
+                }
             }
 
             await _accountService.Update(Account, path: StoredURI.Account + "/" + Account.Id.ToString(), token: token);
-            return RedirectToPage("./IndexAdmin");
+            return RedirectToPage("./Index");
         }
     }
 }

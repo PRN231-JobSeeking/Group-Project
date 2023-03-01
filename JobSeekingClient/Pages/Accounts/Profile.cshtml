@@ -1,13 +1,12 @@
 ﻿@page
 @model JobSeekingClient.Pages.Accounts.ProfileModel
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Profile";
 }
 
-<h1>Details</h1>
+<h1>My Profile</h1>
 
 <div>
-    <h4>Account</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -19,7 +18,7 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Account.Password)
         </dt>
-        <dd class="col-sm-10" typeof="Password" >
+        <dd class="col-sm-10" typeof="Password">
             @Html.DisplayFor(model => model.Account.Password)
         </dd>
         <dt class="col-sm-2">
@@ -49,7 +48,7 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Profile" asp-route-id="@Model.Account?.Id">Edit</a> |
+    <a asp-page="./UserEdit" asp-route-id="@Model.Account?.Id">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
 

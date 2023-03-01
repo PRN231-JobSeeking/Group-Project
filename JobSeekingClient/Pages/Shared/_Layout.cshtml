@@ -10,24 +10,55 @@
 </head>
 <body>
     <header>
+        @{
+            var id = Context.Session.GetInt32("UserId");
+            var role = Context.Session.GetInt32("Role");
+        }
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">JobSeekingClient</a>
+                @if (role == 1)
+                {
+                    <a class="navbar-brand" asp-area="" asp-page="/IndexAdmin">JobSeekingClient</a>
+                }
+                @if (role == 4)
+                {
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">JobSeekingClient</a>
+                }
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Auth/Profile">My Profile</a>
-                        </li>
+                        @if (role == 1)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/IndexAdmin">Home</a>
+                            </li>
+                        }
+                        @if (role == 4)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            </li>
+                        }
+
+                        @{
+                            if (!string.IsNullOrEmpty(role.ToString()) && role == 4)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-route-id="@id" asp-area="" asp-page="./Profile">My Profile</a>
+                                </li>
+                            }
+                            if (!string.IsNullOrEmpty(role.ToString()))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Auth/Logout">Logout</a>
+                                </li>
+                            }
+                        }
+
                     </ul>
                 </div>
             </div>
