@@ -28,6 +28,9 @@ builder.Services.AddTransient<IPostService, PostService>();
 builder.Services.AddTransient<IApplicationService, ApplicationService>();
 builder.Services.AddTransient<ISlotService, SlotService>();
 builder.Services.AddTransient<IInterviewService, InterviewService>();
+builder.Services.AddTransient<ICategoryService, CategoryService>();
+builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddTransient<ILevelService, LevelService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

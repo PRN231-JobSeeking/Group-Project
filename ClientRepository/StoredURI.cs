@@ -17,5 +17,8 @@ namespace ClientRepository
         public static readonly string Application = "Application";
         public static readonly string Slot = "slots";
         public static readonly string Interviews = "interviews";
+        public static readonly string Location = "Location";
+        public static readonly string Level = "Level";
+        public static readonly string Category = "Category";
     }
 }
