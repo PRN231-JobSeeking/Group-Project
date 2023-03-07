@@ -11,7 +11,7 @@ namespace ClientRepository.Models
         public int Id { get; set; }
         public int ApplicantId { get; set; }
         public int PostId { get; set; }
-        public bool Status { get; set; }
+        public bool? Status { get; set; }
         public string CV { get; set; }
         public bool IsDeleted { get; set; }
     }

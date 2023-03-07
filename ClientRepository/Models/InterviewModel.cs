@@ -20,6 +20,8 @@ namespace ClientRepository.Models
         public ApplicationModel? Application { get; set; }
         public AccountModel? Interviewer { get; set; }
         public SlotModel? Slot { get; set; }
+
         public bool IsDeleted { get; set; }
+
     }
 }

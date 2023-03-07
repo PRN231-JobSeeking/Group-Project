@@ -29,7 +29,7 @@ namespace JobSeekingApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
-            var result =  await _unitOfWork.AccountRepository.Get();
+            var result =  await _unitOfWork.AccountRepository.Get(includeProperties: "Role");
             return Ok(result);
         }
 
@@ -38,7 +38,7 @@ namespace JobSeekingApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
-            var find = await _unitOfWork.AccountRepository.Get(account => account.Id == id);
+            var find = await _unitOfWork.AccountRepository.Get(account => account.Id == id,includeProperties:"Role");
             var account = find.FirstOrDefault();
             if (account == null)
             {

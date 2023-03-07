@@ -29,7 +29,7 @@ namespace JobSeekingClient.Pages.Accounts
             {
                 return RedirectToPage("./HomePage");
             }
-            var list = await _accountService.GetListAsync(path: StoredURI.Account, expression: c => c.IsDeleted == false, param: null, token: token);
+            var list = await _accountService.GetListAsync(path: StoredURI.Account, expression: c => c.IsDeleted == false & c.RoleId!=1, param: null, token: token);
             if (list != null)
             {
                 Account = list;
