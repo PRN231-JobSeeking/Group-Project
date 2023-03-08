@@ -1,5 +1,6 @@
 ﻿using AppCore.Models;
 using AppRepository.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -16,6 +17,7 @@ namespace JobSeekingApi.Controllers
             this.unitOfWork = unitOfWork;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("Get/Id/{aplicationId}")]
         public async Task<IActionResult> GetApplication([FromRoute] int aplicationId)
@@ -28,11 +30,11 @@ namespace JobSeekingApi.Controllers
             return Ok(aplication);
         }
 
+        [Authorize]
         [HttpPost]
         [Route("Create")]
         public async Task<ActionResult<bool>> Create([FromForm]int postId, IFormFile file)
         {
-            Trace.WriteLine("Test");
             if (postId <= 0 || file == null)
             {
                 return BadRequest();

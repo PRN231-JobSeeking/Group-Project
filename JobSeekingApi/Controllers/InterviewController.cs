@@ -97,5 +97,38 @@ namespace JobSeekingApi.Controllers
 
             return NoContent();
         }
+
+        [Authorize]
+        [HttpPut("feedback")]
+        public async Task<IActionResult> PutInterviewFeedback(InterviewFeedbackModel interviewFeedback)
+        {
+            var interviews = await _unitOfWork.InterviewRepository.Get(i => i.InterviewerId == interviewFeedback.InterviewerId && i.Round == interviewFeedback.Round 
+                                                    && i.ApplicationId == interviewFeedback.ApplicationId);
+            if(interviews == null || interviews.Count() == 0)
+            {
+                return NotFound("Not Exist Interview!");
+            }
+            var interview = interviews.FirstOrDefault();
+            if(interview == null)
+            {
+                return NotFound("Not Exist Interview!");
+            }
+            if(interviewFeedback.Point > 100 || interviewFeedback.Point < 0)
+            {
+                return BadRequest("Point must in range >= 0 and 100 <= ");
+            }
+            interview.Feedback = interviewFeedback.Feedback;
+            interview.Point = interviewFeedback.Point;
+            try
+            {
+                await _unitOfWork.InterviewRepository.Update(interview);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
+
+            return Ok(true);
+        }
     }
 }
