@@ -9,6 +9,7 @@ using AppCore;
 using AppCore.Models;
 using AppRepository.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
+using ClientRepository.Models;
 
 namespace JobSeekingApi.Controllers
 {
