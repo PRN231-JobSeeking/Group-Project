@@ -22,7 +22,7 @@ namespace JobSeekingClient.Pages.Accounts
             _accountService = accountService;
             _roleService = roleService;
         }
-
+        
         [BindProperty]
         public AccountModel Account { get; set; } = default!;
 
@@ -45,7 +45,7 @@ namespace JobSeekingClient.Pages.Accounts
                 return NotFound();
             }
             Account = find;
-            ViewData["RoleId"] = new SelectList(await _roleService.GetListAsync(path: StoredURI.Role, token: token), "Id", "Name");
+            ViewData["RoleId"] = new SelectList(await _roleService.GetListAsync(path: StoredURI.Role, token: token,expression:c=>!c.Name.Equals("Administrator")), "Id", "Name");
             return Page();
         }
 

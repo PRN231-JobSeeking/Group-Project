@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using AppCore;
 using AppCore.Models;
 using AppRepository.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JobSeekingApi.Controllers
 {
@@ -23,6 +24,7 @@ namespace JobSeekingApi.Controllers
         }
 
         // GET: api/Interview
+       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Interview>>> GetInterviews()
         {
