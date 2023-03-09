@@ -57,6 +57,19 @@ namespace AppCore
             modelBuilder.Entity<Account>().HasData(
                 new Account()
                 {
+                    Id = 6,
+                    Address = "abc",
+                    Email = "admin1@email",
+                    FirstName = "abc",
+                    LastName = "abc",
+                    IsDeleted = false,
+                    IsLockout = false,
+                    Password = "123",
+                    Phone = "0908123456",
+                    RoleId = 1,
+                },
+                new Account()
+                {
                     Id = 1,
                     Address = "abc",
                     Email = "hr1@email",
