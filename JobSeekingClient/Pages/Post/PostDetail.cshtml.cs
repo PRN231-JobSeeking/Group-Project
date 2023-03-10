@@ -29,15 +29,15 @@ namespace JobSeekingClient.Pages
         }
         public async void OnGet(int id)
         {
-            Post = postService.GetModelAsync(id).Result;
+            //Post = postService.GetModelAsync(id).Result;
         }
 
         public async void OnPostApply(int id, IFormFile cvFile)
         {
-            if (cvFile == null) return;
-            Trace.WriteLine(id + " " + cvFile.FileName);
-            Post = postService.GetModelAsync(id).Result;
-            Trace.WriteLine(applicationService.Create(id, cvFile).Result);
+            //if (cvFile == null) return;
+            //Trace.WriteLine(id + " " + cvFile.FileName);
+            //Post = postService.GetModelAsync(id).Result;
+            //Trace.WriteLine(applicationService.Create(id, cvFile).Result);
         }
 
         //public static void AddTokenHeader(this HttpClient client, string? token)

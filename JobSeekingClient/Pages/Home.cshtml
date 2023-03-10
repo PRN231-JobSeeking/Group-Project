@@ -1,0 +1,351 @@
+﻿@page
+@model JobSeekingClient.Pages.Home.HomeModel
+@{
+    var userRole = HttpContext.Session.GetInt32("Role");
+    <h1>Home Page</h1>
+    switch (userRole)
+    {
+        case 1:
+            {
+
+                break;
+            }
+        case 2:
+            {
+                //for HR to assign interviews
+                if (Model._applications.Count != 0)
+                {
+                    <span class="text-danger">@ViewBag.message1</span>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications[0].Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications[0].CV)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications[0].ApplicantId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications[0].PostId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications[0].Status)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications[0].IsDeleted)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model._applications)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CV)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ApplicantId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PostId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IsDeleted)
+                                    </td>
+                                    <td>
+                                        <a asp-page="/Applications/Details" asp-route-id="@item.Id">Details</a> |
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                //for HR to accept/deny
+                if (Model._applications2.Count != 0)
+                {
+                    <span class="text-danger">@ViewBag.message2</span>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].CV)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].ApplicantId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].PostId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].Status)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].IsDeleted)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model._applications2)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CV)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ApplicantId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PostId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IsDeleted)
+                                    </td>
+                                    <td>
+                                        <a asp-page="/Applications/Details" asp-route-id="@item.Id">Details</a> 
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                break;
+            }
+        case 3:
+            {
+                //for Interviewerer
+                if (Model._interviews.Count() != 0)
+                {
+                    if (@ViewBag.message3==null){
+                        <div>No pending interview was found!</div>
+                    }else{
+                        <span class="text-danger">@ViewBag.message3</span>
+                    }                 
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model._interviews[0].Date)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model._interviews[0].Slot.StartTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model._interviews[0].Slot.EndTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model._interviews[0].ApplicationId)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model._interviews)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Date)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Slot.StartTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Slot.EndTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ApplicationId)
+                                    </td>
+                                    <td>
+                                        <a asp-page="/Interviews/InterviewFeedback" asp-route-applicationId="@item.ApplicationId" asp-route-slotId="@item.SlotId">Feedback Interview</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                break;
+            }
+        case 4:
+            {
+                //for Applicants
+                if (Model._interviews.Count() != 0)
+                {
+                    if (@ViewBag.message3 == null)
+                    {
+                        <div>No pending interview was found!</div>
+                    }
+                    else
+                    {
+                        <span class="text-danger">@ViewBag.message3</span>
+                    }
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model._interviews[0].Date)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model._interviews[0].Slot.StartTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model._interviews[0].Slot.EndTime)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model._interviews[0].ApplicationId)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model._interviews)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Date)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Slot.StartTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Slot.EndTime)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ApplicationId)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+                if (Model._applications.Count != 0)
+                {
+                    if (@ViewBag.message1==null){
+                        <div>Approved applications</div>
+                    }
+                    else{
+                         <span class="text-danger">@ViewBag.message1</span>
+                    }
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications[0].Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications[0].CV)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications[0].ApplicantId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications[0].PostId)
+                                </th>
+                                <th>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model._applications)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CV)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ApplicantId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PostId)
+                                    </td>
+                                    <td>
+                                        <a asp-page="/Applications/Details" asp-route-id="@item.Id">Details</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                //for showing the failed applications
+                if (Model._applications2.Count != 0)
+                {
+                    <div>Denied applications</div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].Id)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].CV)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].ApplicantId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].PostId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].Status)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => Model._applications2[0].IsDeleted)
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model._applications2)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CV)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ApplicantId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.PostId)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.IsDeleted)
+                                    </td>
+                                    <td>
+                                        <a asp-page="/Applications/Details" asp-route-id="@item.Id">Details</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                break;
+            }
+    }
+
+    
+
+}

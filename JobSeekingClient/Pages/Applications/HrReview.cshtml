@@ -1,0 +1,95 @@
+﻿@page
+@model JobSeekingClient.Pages.Applications.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Application</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Application.Id" />
+            <input type="hidden" asp-for="Application.PostId" />
+            <input type="hidden" asp-for="Application.ApplicantId" />
+            <input type="hidden" asp-for="Application.CV" />
+            <div class="form-group">
+                <label asp-for="Application.Status" class="control-label"></label>
+                <select asp-for="ApplicationStatus">
+                    @{
+                        if (Model.Application.Status!=null){
+                            if ((bool)Model.Application.Status)
+                            {
+                                <option value="1">Passed</option>
+                            }
+                            else
+                            {
+                                <option value="0">Failed</option>
+                            }
+                        }
+                        
+                    }
+                    <option value="null">Pending</option>
+                    <option value="1">Passed</option>
+                    <option value="0">Failed</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Interview[0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interview[0].Feedback)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interview[0].Point)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interview[0].SlotId)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Interview)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Feedback)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Point)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SlotId)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
