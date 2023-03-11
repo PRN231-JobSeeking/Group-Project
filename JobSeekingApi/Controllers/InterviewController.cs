@@ -130,5 +130,50 @@ namespace JobSeekingApi.Controllers
 
             return Ok(true);
         }
+
+        [Authorize]
+        [HttpGet("Nonfeedbacks/InterviewerId/{interviewerId}")]
+        public async Task<IActionResult> GetAllNonFeedbacks(int interviewerId)
+        {
+            var interviews = await _unitOfWork.InterviewRepository.Get(i => i.IsDeleted == false && i.Point == 0
+                                                                        && string.IsNullOrEmpty(i.Feedback)
+                                                                        && i.InterviewerId == interviewerId);
+            if(interviews == null || interviews.Count() == 0)
+            {
+                return BadRequest();
+            }
+            return Ok(interviews);
+        }
+
+        [Authorize]
+        [HttpGet("Nonfeedbacks/InterviewerId/{interviewerId}/SlotId/{slotId}")]
+        public async Task<IActionResult> GetAllNonFeedbacksWithSlot(int interviewerId, int slotId)
+        {
+            var interviews = await _unitOfWork.InterviewRepository.Get(i => i.IsDeleted == false && i.Point == 0
+                                                                        && string.IsNullOrEmpty(i.Feedback)
+                                                                        && i.InterviewerId == interviewerId
+                                                                        && i.SlotId == slotId);
+            if (interviews == null || interviews.Count() == 0)
+            {
+                return BadRequest();
+            }
+            return Ok(interviews);
+        }
+
+        [Authorize]
+        [HttpGet("Nonfeedbacks/InterviewerId/{interviewerId}/ApplicantId/{applicantId}")]
+        public async Task<IActionResult> GetInterviewNonFeedback(int interviewerId, int applicantId)
+        {
+            var interview = await _unitOfWork.InterviewRepository.GetFirst(i => i.IsDeleted == false && i.Point == 0
+                                                                        && string.IsNullOrEmpty(i.Feedback)
+                                                                        && i.InterviewerId == interviewerId
+                                                                        && i.ApplicationId == applicantId);
+            if (interview == null)
+            {
+                return BadRequest();
+            }
+            return Ok(interview);
+        }
+
     }
 }

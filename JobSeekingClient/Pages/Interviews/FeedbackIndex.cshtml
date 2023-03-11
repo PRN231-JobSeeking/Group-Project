@@ -1,0 +1,54 @@
+﻿@page
+@model JobSeekingClient.Pages.Interviews.FeedbackIndexModel
+
+@{
+    ViewData["Title"] = "Applications Feedback";
+}
+
+<h1>Interviews Non-Feedback</h1>
+<form method="post" asp-action="Select">
+<div class="form-group">
+    <label asp-for="@Model.Slots" class="control-label"></label>
+    <select name="slot" asp-items="@Model.Slots"></select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+</div>
+</form>
+<p>
+    <a asp-page="Create">Create New</a> | 
+    <a href="../Interviews/FeedbackIndex">Reset</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Interviews[0].Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interviews[0].SlotId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Interviews[0].Round)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Interviews)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SlotId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Round)
+                </td>
+                <td>
+                    <a asp-page="./Feedback" asp-route-interviewId="@item.InterviewerId"
+                                             asp-route-applicantId="@item.ApplicationId">Feedback</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
