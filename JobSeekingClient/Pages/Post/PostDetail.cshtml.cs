@@ -35,10 +35,10 @@ namespace JobSeekingClient.Pages
         public async void OnPostApply(int id, IFormFile cvFile)
         {
     
-            if (cvFile == null) return;
-            Trace.WriteLine(id + " " + cvFile.FileName);
-            Post = postService.GetModelAsync(id).Result;
-            Trace.WriteLine(applicationService.Create(id, cvFile).Result);
+            //if (cvFile == null) return;
+            //Trace.WriteLine(id + " " + cvFile.FileName);
+            //Post = postService.GetModelAsync(id).Result;
+            //Trace.WriteLine(applicationService.Create(id, cvFile).Result);
         }
 
         //public static void AddTokenHeader(this HttpClient client, string? token)
