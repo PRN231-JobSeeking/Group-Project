@@ -27,7 +27,7 @@ namespace JobSeekingClient.Pages.Interviews
         [BindProperty]
         [Required]
         public int ApplicationId { get; set; }
-        public async Task<IActionResult> OnGetAsync(int applicationId = 1)
+        public async Task<IActionResult> OnGetAsync(int applicationId)
         {
             var slots = await _slotService.GetListAsync(path: StoredURI.Slot, token: HttpContext.Session.GetString("token"));
             ViewData["SlotId"] = new SelectList(slots, nameof(SlotModel.Id), nameof(SlotModel.StartTime));
@@ -66,7 +66,7 @@ namespace JobSeekingClient.Pages.Interviews
                 ViewData["Message"] = "Selected values are not valid!";
                 
             }
-            return await OnGetAsync();
+            return await OnGetAsync(ApplicationId);
         }
         private bool CheckValidValues()
         {
