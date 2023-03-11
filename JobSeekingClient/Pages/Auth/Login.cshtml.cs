@@ -4,6 +4,7 @@ using ClientRepository.Service;
 using ClientRepository.Models;
 using ClientRepository.Service.Implementation;
 using ClientRepository;
+using System.Diagnostics;
 
 namespace JobSeekingClient.Pages.Auth
 {
@@ -39,6 +40,7 @@ namespace JobSeekingClient.Pages.Auth
             {
                 token = token.Replace("\"", "");
                 var list = await _accountService.GetListAsync(path: StoredURI.Account, expression: c => c.IsDeleted == false, param: null, token: token);
+                Debug.WriteLine("Login.OnPost: list count: " + list.Count);
                 var user = list.FirstOrDefault(a => a.Email == Credential.Email);
                 HttpContext.Session.SetString("token", token.ToString());
                 HttpContext.Session.SetInt32("UserId", user.Id);
@@ -49,7 +51,7 @@ namespace JobSeekingClient.Pages.Auth
                 }
                 if (user.RoleId == 2)
                 {
-                    return RedirectToPage("/Accounts/Index");
+                    return RedirectToPage("/Home/Home");
                 }
                 if (user.RoleId == 3)
                 {

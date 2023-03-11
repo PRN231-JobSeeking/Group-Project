@@ -29,7 +29,7 @@ namespace JobSeekingClient.Pages
         }
         public async void OnGet(int id)
         {
-            Post = postService.GetModelAsync(id).Result;
+            //Post = postService.GetModelAsync(id).Result;
         }
 
         public async void OnPostApply(int id, IFormFile cvFile)

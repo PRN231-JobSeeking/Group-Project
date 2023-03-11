@@ -19,11 +19,19 @@ namespace JobSeekingApi.Controllers
 
         [Authorize]
         [HttpGet]
+        public async Task<IActionResult> GetApplicationList()
+        {
+            var aplication = unitOfWork.ApplicationRepository.Get().Result;
+            return Ok(aplication);
+        }
+
+
+        [HttpGet]
         [Route("Get/Id/{aplicationId}")]
         public async Task<IActionResult> GetApplication([FromRoute] int aplicationId)
         {
             var aplication = unitOfWork.ApplicationRepository.Get(a => a.Id == aplicationId).Result.FirstOrDefault();
-            if(aplication == null)
+            if (aplication == null)
             {
                 return NotFound("Not found aplicationId!");
             }
@@ -33,24 +41,25 @@ namespace JobSeekingApi.Controllers
         [Authorize]
         [HttpPost]
         [Route("Create")]
-        public async Task<ActionResult<bool>> Create([FromForm]int postId, IFormFile file)
+        public async Task<ActionResult<bool>> Create([FromForm] int postId, IFormFile file)
         {
             if (postId <= 0 || file == null)
             {
                 return BadRequest();
             }
             var postIdInDb = unitOfWork.PostRepository.Get(p => p.Id == postId).Result.FirstOrDefault();
-            if(postIdInDb == null)
+            if (postIdInDb == null)
             {
                 return NotFound("Not found post id!");
             }
             string ext = Path.GetExtension(file.FileName);
-            if(!ext.Equals(".pdf"))
+            if (!ext.Equals(".pdf"))
             {
                 return NotFound("File must have extension .pdf");
             }
             string id = Guid.NewGuid().ToString();
-            if(!Directory.Exists(Directory.GetCurrentDirectory() + "/wwwroot")) {
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + "/wwwroot"))
+            {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot");
             }
             if (!Directory.Exists(Directory.GetCurrentDirectory() + "/wwwroot/images"))
@@ -71,6 +80,18 @@ namespace JobSeekingApi.Controllers
             };
             await unitOfWork.ApplicationRepository.Add(aplication);
             return Ok(true);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutApplication(int id, Application application)
+        {
+            if (id != application.Id)
+            {
+                return BadRequest();
+            }
+
+            await unitOfWork.ApplicationRepository.Update(application);
+            return StatusCode(StatusCodes.Status200OK);
         }
     }
 }
