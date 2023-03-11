@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using AppCore;
-using AppCore.Models;
 using ClientRepository.Service;
-using ClientRepository.Models;
 using ClientRepository.Utils;
-using ClientRepository.Service.Implementation;
 using ClientRepository;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace JobSeekingClient.Pages.Interviews
 {
@@ -44,7 +34,7 @@ namespace JobSeekingClient.Pages.Interviews
             {
                 return RedirectToPage("../Interviews/FeedbackIndex");
             }
-            Interview = new InterviewFeedbackModel()
+            Interview = new ClientRepository.Models.InterviewFeedbackModel()
             {
                 ApplicationId = interview.ApplicationId,
                 SlotId = interview.SlotId,
@@ -57,7 +47,7 @@ namespace JobSeekingClient.Pages.Interviews
         }
 
         [BindProperty]
-        public InterviewFeedbackModel Interview { get; set; }
+        public ClientRepository.Models.InterviewFeedbackModel Interview { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
