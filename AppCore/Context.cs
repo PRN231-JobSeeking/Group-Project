@@ -33,7 +33,8 @@ namespace AppCore
                 var config = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json").Build();
-                optionsBuilder.UseSqlServer(config["ConnectionStrings:DefaultConnection"]);
+                //optionsBuilder.UseSqlServer(config["ConnectionStrings:DefaultConnection"]);
+                optionsBuilder.UseSqlServer("server=(local);database=JobSeekingDB;uid=sa;pwd=1234567890;trusted_connection=true");
             }
             //optionsBuilder.UseSqlServer("server=WILLIAMTRUNG\\MYSQL;database=JobSeekingDB;uid=sa;pwd=123;trusted_connection=true;");
         }
