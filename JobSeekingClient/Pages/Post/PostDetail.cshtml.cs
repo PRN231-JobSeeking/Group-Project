@@ -34,7 +34,6 @@ namespace JobSeekingClient.Pages
 
         public async void OnPostApply(int id, IFormFile cvFile)
         {
-    
             //if (cvFile == null) return;
             //Trace.WriteLine(id + " " + cvFile.FileName);
             //Post = postService.GetModelAsync(id).Result;
