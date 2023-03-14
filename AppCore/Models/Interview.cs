@@ -15,6 +15,7 @@ namespace AppCore.Models
         public int InterviewerId { get; set; }
         [ForeignKey(nameof(Slot))]
         public int SlotId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Round { get; set; }
         [Column(TypeName ="date")]
         public DateTime Date { get; set; }

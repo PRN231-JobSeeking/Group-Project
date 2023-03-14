@@ -246,7 +246,8 @@ namespace AppCore.Migrations
                 columns: table => new
                 {
                     ApplicationId = table.Column<int>(type: "int", nullable: false),
-                    Round = table.Column<int>(type: "int", nullable: false),
+                    Round = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     InterviewerId = table.Column<int>(type: "int", nullable: false),
                     SlotId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "date", nullable: false),

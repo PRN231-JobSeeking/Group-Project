@@ -57,7 +57,7 @@ namespace JobSeekingClient.Pages.Interviews
                     }
                 } catch
                 {
-                    ViewData["Message"] = "Already had an meeting for this application at selected time!";
+                    ViewData["Message"] = "Already had an meeting for this application at selected time or later!";
                 }
             } else
             {
