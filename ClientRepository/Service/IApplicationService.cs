@@ -10,8 +10,7 @@ namespace ClientRepository.Service
 {
     public interface IApplicationService : IBaseService<ApplicationModel>
     {
-        Task<bool> Create(int postId, IFormFile file);
+        Task<bool> Create(int postId, IFormFile file, string? token);
 
-        Task<ApplicationModel> GetModelAsync(int id);
     }
 }

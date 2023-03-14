@@ -1,5 +1,7 @@
 ﻿using AppCore.Models;
 using AppRepository.UnitOfWork;
+using ClientRepository.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobSeekingApi.Controllers
@@ -43,5 +45,35 @@ namespace JobSeekingApi.Controllers
             return Ok(post);
         }
 
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult<Post>> Post(PostDTO postModel)
+        {
+            var postInDb = await unitOfWork.PostRepository.GetFirst(p => p.Title.ToLower().Equals(postModel.Title.ToLower()));
+            if(postInDb != null)
+            {
+                return BadRequest("Already exist post title!");
+            }
+            var task = unitOfWork.PostRepository.Add(new Post()
+            {
+                Title = postModel.Title,
+                Amount = postModel.Amount,
+                CategoryId = postModel.CategoryId,
+                CreateDate = postModel.CreateDate,
+                Description = postModel.Description,
+                EndDate = postModel.EndDate,
+                IsDeleted = false,
+                LevelId = postModel.LevelId,
+                LocationId = postModel.LocationId,
+                StartDate = postModel.StartDate,
+                Status = postModel.Status,
+            });
+            await task;
+            if (task.IsCompletedSuccessfully)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }

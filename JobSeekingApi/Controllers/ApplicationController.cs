@@ -25,7 +25,7 @@ namespace JobSeekingApi.Controllers
             return Ok(aplication);
         }
 
-
+        [Authorize]
         [HttpGet]
         [Route("Get/Id/{aplicationId}")]
         public async Task<IActionResult> GetApplication([FromRoute] int aplicationId)

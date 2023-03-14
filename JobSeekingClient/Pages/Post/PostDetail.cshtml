@@ -1,8 +1,29 @@
 ﻿@page "/Post/{id:int}"
 @using System.Net
+@using ClientRepository.Utils
 @model JobSeekingClient.Pages.PostDetailModel
 @{
     ViewData["Title"] = "Post Detail";
+    string? token = HttpContext.Session.GetString("token");
+    int? role = HttpContext.Session.GetInt32("Role");
+    if (string.IsNullOrEmpty(token))
+    {
+        Response.Redirect("../Auth/Login");
+    }
+}
+@{
+    if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.Success))
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Success
+        </div>
+    }
 }
 <h4>Post Detail</h4>
 <hr />
@@ -14,22 +35,22 @@
         @Html.DisplayFor(model => model.Post.Title)
     </dd>
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Post.CategoryId)
+        @Html.DisplayNameFor(model => model.Category)
     </dt>
     <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Post.CategoryId)
+        @Html.DisplayFor(model => model.Category)
     </dd>
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Post.LocationId)
+        @Html.DisplayNameFor(model => model.Location)
     </dt>
     <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Post.LocationId)
+        @Html.DisplayFor(model => model.Location)
     </dd>
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Post.LevelId)
+        @Html.DisplayNameFor(model => model.Level)
     </dt>
     <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Post.LevelId)
+        @Html.DisplayFor(model => model.Level)
     </dd>
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.Post.CreateDate)
@@ -44,10 +65,15 @@
         @Html.DisplayFor(model => model.Post.Description)
     </dd>
 </dl>
-<form method="post" , enctype="multipart/form-data">
-    <div class="mb-3">
-        <label for="formFile" class="form-label">CV File</label>
-        <input class="form-control" type="file" name="cvFile" id="formFile">
-    </div>
-    <input class="btn btn-primary" asp-page-handler="Apply" type="submit" value="Apply">
-</form>
+@{
+    if (role == (int)AccountRole.Applicant)
+    {
+        <form method="post" , enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="formFile" class="form-label">CV File</label>
+                <input class="form-control" type="file" name="cvFile" id="formFile">
+            </div>
+            <input class="btn btn-primary" asp-page-handler="Apply" type="submit" value="Apply">
+        </form>
+    }
+}

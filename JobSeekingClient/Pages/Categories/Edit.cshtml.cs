@@ -37,7 +37,7 @@ namespace JobSeekingClient.Pages.Categories
             }
             if (role != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("../Home");
             }
             string path = StoredURI.Category + "/" + id;
             var find = await _categoryService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);
@@ -61,7 +61,7 @@ namespace JobSeekingClient.Pages.Categories
             }
             if (role != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("../Home");
             }
             await _categoryService.Update(Category, path: StoredURI.Category + "/" + Category.Id.ToString(), token: token);
             return RedirectToPage("./Index");

@@ -47,7 +47,7 @@ namespace JobSeekingClient.Pages.Categories
             }
             if (role != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("../Home");
             }
             await _categoryService.Add(Category, path: StoredURI.Category, token: token);
             return RedirectToPage("./Index");

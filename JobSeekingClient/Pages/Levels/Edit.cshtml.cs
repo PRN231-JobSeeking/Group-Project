@@ -37,7 +37,7 @@ namespace JobSeekingClient.Pages.Levels
             }
             if (role != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("../Home");
             }
             string path = StoredURI.Level + "/" + id;
             var find = await _levelService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);
@@ -61,7 +61,7 @@ namespace JobSeekingClient.Pages.Levels
             }
             if (role != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("../Home");
             }
             await _levelService.Update(Level, path: StoredURI.Level + "/" + Level.Id.ToString(), token: token);
             return RedirectToPage("./Index");
