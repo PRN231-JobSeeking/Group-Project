@@ -32,11 +32,13 @@ namespace JobSeekingClient.Pages.Applications
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            //token for API
+            var token = HttpContext.Session.GetString("token");
 
             string path = StoredURI.Application + "/Get/Id/" + id;
 
             //getting application
-            var find = await _applicationService.GetModelAsync(path: path);
+            var find = await _applicationService.GetModelAsync(token: token, path: path);
             Debug.WriteLine("Details.OnGet: Getting appilcation");
             if (find == null)
             {
@@ -48,7 +50,7 @@ namespace JobSeekingClient.Pages.Applications
             //getting account
             string path2 = StoredURI.Account + "/" + find.ApplicantId;
             Debug.WriteLine("Details.OnGet: path to account: " + path2);
-            var find2 = await _accountService.GetModelAsync(path: path2);
+            var find2 = await _accountService.GetModelAsync(token: token, path: path2);
             if (find2 == null)
             {
                 Debug.WriteLine("Details.OnGet: Account not found");
@@ -58,7 +60,7 @@ namespace JobSeekingClient.Pages.Applications
 
             //getting interviews
             string path3 = StoredURI.Interviews + "/application/" + find.Id;
-            var find3 = await _interviewService.GetListAsync(path: path3);
+            var find3 = await _interviewService.GetListAsync(token: token, path: path3);
             if (find3 == null)
             {
                 Debug.WriteLine("Details.OnGet: Interview not found");

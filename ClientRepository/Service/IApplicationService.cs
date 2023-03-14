@@ -12,6 +12,6 @@ namespace ClientRepository.Service
     {
         Task<bool> Create(int postId, IFormFile file);
 
-        Task<ApplicationModel> GetModelAsync(int id); 
+        Task<ApplicationModel> GetModelAsync(int id);
     }
 }
