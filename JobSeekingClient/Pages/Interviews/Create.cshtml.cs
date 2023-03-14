@@ -30,7 +30,7 @@ namespace JobSeekingClient.Pages.Interviews
             };
             string? token = HttpContext.Session.GetString("token");
             var interviewers = await _interviewService.GetAvailableInterviewers(slotId, DateOnly.Parse(date), Interview.ApplicationId, token);
-            ViewData["InterviewerId"] = new SelectList(interviewers, "Id", nameof(AccountModel.Email));
+            ViewData["InterviewerId"] = new SelectList(interviewers, nameof(AccountModel.Id), nameof(AccountModel.Email));
             return Page();
         }
 
@@ -47,7 +47,7 @@ namespace JobSeekingClient.Pages.Interviews
             string? token = HttpContext.Session.GetString("token");
             await _interviewService.Add(Interview, path: StoredURI.Interviews, token: token);
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Applications/Details", new { id = Interview.ApplicationId });
         }
     }
 }

@@ -34,7 +34,7 @@ namespace JobSeekingClient.Pages.Interviews
             Date = DateOnly.FromDateTime(DateTime.Today).AddDays(1).ToString("MM/dd/yyyy");
             if (applicationId <= 0)
             {
-                RedirectToPage("/Index");
+                return RedirectToPage("/Index");
             }
             ApplicationId = applicationId;
             return Page();
@@ -59,11 +59,9 @@ namespace JobSeekingClient.Pages.Interviews
                 {
                     ViewData["Message"] = "Already had an meeting for this application at selected time!";
                 }
-                
-                
             } else
             {
-                ViewData["Message"] = "Selected values are not valid!";
+                ViewData["Message"] = "Interview Date must be 1 day after today!";
                 
             }
             return await OnGetAsync(ApplicationId);
