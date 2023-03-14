@@ -22,12 +22,15 @@ namespace JobSeekingClient.Pages.Applications
         private readonly IApplicationService _applicationService;
         private readonly IAccountService _accountService;
         private readonly IInterviewService _interviewService;
+        private readonly IPostService _postService;
 
-        public EditModel(IApplicationService applicationService, IAccountService accountService, IInterviewService interviewService)
+        public EditModel(IApplicationService applicationService, IAccountService accountService, IInterviewService interviewService,
+            IPostService postService)
         {
             _applicationService = applicationService;
             _accountService = accountService;
             _interviewService = interviewService;
+            _postService = postService;
         }
 
         [BindProperty]
@@ -43,10 +46,15 @@ namespace JobSeekingClient.Pages.Applications
         {
             string? token = HttpContext.Session.GetString("token");
 
+            var roleId = HttpContext.Session.GetInt32("Role");
+
+            var userId = HttpContext.Session.GetInt32("UserId");
+
             if (id == null)
             {
                 return NotFound();
             }
+
 
             //getting application
             string path = StoredURI.Application + "/Get/Id/" + id;
@@ -107,6 +115,17 @@ namespace JobSeekingClient.Pages.Applications
 
             string? token = HttpContext.Session.GetString("token");
             await _applicationService.Update(Application, path: StoredURI.Application + "/" + Application.Id.ToString(), token: token);
+
+            PostDTO post = _postService.GetModelAsync(path: StoredURI.Post + "" + Application.PostId, token: token).Result;
+
+            if (post.Amount == 0)
+            {
+                return RedirectToPage("./Index");
+            }
+
+            post.Amount--;
+
+            await _postService.Update(post, path: StoredURI.Post, token: token);
 
             return RedirectToPage("./Index");
         }

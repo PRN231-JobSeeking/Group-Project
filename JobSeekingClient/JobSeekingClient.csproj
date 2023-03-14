@@ -21,8 +21,4 @@
     <ProjectReference Include="..\ClientRepository\ClientRepository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\Home\" />
-  </ItemGroup>
-
 </Project>

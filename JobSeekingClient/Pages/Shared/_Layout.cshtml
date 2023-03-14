@@ -19,11 +19,11 @@
             <div class="container">
                 @if (role == (int)AccountRole.Administrator)
                 {
-                    <a class="navbar-brand" asp-area="" asp-page="../Accounts/IndexAdmin">JobSeekingClient</a>
+                    <a class="navbar-brand" asp-area="" asp-page="/Accounts/IndexAdmin">JobSeekingClient</a>
                 }
                 @if (role == (int)AccountRole.Applicant)
                 {
-                    <a class="navbar-brand" asp-area="" asp-page="../Accounts/Index">JobSeekingClient</a>
+                    <a class="navbar-brand" asp-area="" asp-page="/Accounts/Index">JobSeekingClient</a>
                 }
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -35,22 +35,47 @@
                         @if (role == (int)AccountRole.Administrator)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="../Accounts/IndexAdmin">Home</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Accounts/IndexAdmin">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="../Categories/Index">Category Management</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Categories/Index">Category Management</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="../Levels/Index">Level Management</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Levels/Index">Level Management</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="../Locations/Index">Location Management</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Locations/Index">Location Management</a>
                             </li>
                         }
                         @if (role == (int)AccountRole.Applicant)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="../Accounts/Index">Home</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Applications/Index">My Applications</a>
+                            </li>
+                        }
+
+                        @if (role == (int)AccountRole.HR)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Applications/Index">Applications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Interviews/Index">Interview</a>
+                            </li>
+                        }
+                        @if (role == (int)AccountRole.Interviewer)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Home">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Interviews/Index">My Interviews</a>
                             </li>
                         }
 
@@ -58,13 +83,13 @@
                             if (!string.IsNullOrEmpty(role.ToString()) && role == (int)AccountRole.Applicant)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-route-id="@id" asp-area="" asp-page="../Accounts/Profile">My Profile</a>
+                                    <a class="nav-link text-dark" asp-route-id="@id" asp-area="" asp-page="/Accounts/Profile">My Profile</a>
                                 </li>
                             }
                             if (!string.IsNullOrEmpty(role.ToString()))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="../Auth/Logout">Logout</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Auth/Logout">Logout</a>
                                 </li>
                             }
                         }
