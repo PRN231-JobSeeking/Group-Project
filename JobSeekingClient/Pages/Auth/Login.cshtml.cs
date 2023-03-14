@@ -51,15 +51,15 @@ namespace JobSeekingClient.Pages.Auth
                 }
                 if (user.RoleId == 2)
                 {
-                    return RedirectToPage("/Home/Home");
+                    return RedirectToPage("/Home");
                 }
                 if (user.RoleId == 3)
                 {
-                    return RedirectToPage("/Home/Home");
+                    return RedirectToPage("/Home");
                 }
                 if (user.RoleId == 4)
                 {
-                    return RedirectToPage("/Accounts/Index");
+                    return RedirectToPage("/Home");
                 }
             }
             ViewData["message"] = "Wrong email and password! Please try again!";

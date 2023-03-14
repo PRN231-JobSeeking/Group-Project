@@ -5,6 +5,7 @@ using ClientRepository.Service.Implementation;
 using JobSeekingClient.Pages.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json.Linq;
 using NuGet.Common;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,6 +27,9 @@ namespace JobSeekingClient.Pages.Home
             _interviewService = interviewService;
             _slotService = slotService;
         }
+        //used to show the list of post for default home view
+        [BindProperty]
+        public IList<PostDTO> _post { get; set; }
 
         //used to show the list of application ready to be assigned interviews for HR
         [BindProperty]
@@ -39,13 +43,31 @@ namespace JobSeekingClient.Pages.Home
         [BindProperty]
         public IList<InterviewModel> _interviews { get; set; }
 
+        //used to show the player news
         [BindProperty]
-        public bool isWarning { get; set; }
+        public bool isNews { get; set; }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(string? news, string? search)
         {
+            //used for providing news or not
+            int _isNewsMode;
+
             //user for role checking
             var roleId = HttpContext.Session.GetInt32("Role");
+
+            //token for API
+            var token = HttpContext.Session.GetString("token");
+
+            if (int.TryParse(news, out _isNewsMode))
+            {
+                if (_isNewsMode == 1)
+                {
+                    isNews = true;
+                }
+            }
+
+            _post = _postService.GetListAsync(path: StoredURI.Post + "/GetAll", expression: c => c.IsDeleted == false, param: null, token: token).Result.ToList();
+
 
             //user id for interview/application/post tracking
             var userId = HttpContext.Session.GetInt32("UserId");
@@ -54,6 +76,8 @@ namespace JobSeekingClient.Pages.Home
             {
                 return RedirectToPage("/Auth/Login");
             }
+
+
 
             //redirect appropriately.
             //1.Admin
@@ -73,9 +97,8 @@ namespace JobSeekingClient.Pages.Home
                 //shows warning should there be applicants whose interview are not assigned
                 case 2:
                     {
-                        var token = HttpContext.Session.GetString("token");
                         var _applicationList = _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false, param: null, token: token).Result.ToList();
-                        var _interviewList = _interviewService.GetListAsync(path: StoredURI.Interviews, expression: null, param: null, token: null).Result.ToList();
+                        var _interviewList = _interviewService.GetListAsync(path: StoredURI.Interviews, expression: null, param: null, token: token).Result.ToList();
 
                         Debug.WriteLine("Home.OnGet: _applicationList count: " + _applicationList.Count);
                         Debug.WriteLine("Home.OnGet: _interviewList count: " + _interviewList.Count);
@@ -127,6 +150,8 @@ namespace JobSeekingClient.Pages.Home
                                     Debug.WriteLine("Home.OnGet: application id: " + item.Id + " doesn't have enough interviews");
                                     _applications.Add(item);
                                 }
+
+
                                 //application with 2 completed interviews but no approval will be added to list2
                                 else if (count2 > 1)
                                 {
@@ -142,16 +167,12 @@ namespace JobSeekingClient.Pages.Home
                         Debug.WriteLine("Home.OnGet: applcation that needs interview :" + _applications.Count);
                         Debug.WriteLine("Home.OnGet: applcation that needs review :" + _applications2.Count);
 
-                        //if list has 1 or more than 1 incoming application, show warning and list
-                        if (_applications.Count == 0 && _applications2.Count == 0)
-                        {
-                            return RedirectToPage("/Applications/Index");
-                        }
-
+                        //based on news mode, show the appropriate message
                         if (_applications.Count != 0)
                             ViewData["message1"] = "You have " + _applications.Count + " incoming application that needs interviews!";
                         if (_applications2.Count != 0)
                             ViewData["message2"] = "You have " + _applications2.Count + " incoming application that needs reviews!";
+
                         return Page();
 
                         break;
@@ -163,7 +184,7 @@ namespace JobSeekingClient.Pages.Home
                     {
                         _interviews = new List<InterviewModel>();
 
-                        var _interviewList = _interviewService.GetListAsync(path: StoredURI.Interviews, expression: c => c.InterviewerId == userId && c.IsDeleted == false, param: null, token: null).Result.ToList();
+                        var _interviewList = _interviewService.GetListAsync(path: StoredURI.Interviews, expression: c => c.InterviewerId == userId && c.IsDeleted == false, param: null, token: token).Result.ToList();
 
                         Debug.WriteLine("Home.OnGet: Getting user's interviews :" + _interviewList.Count());
                         //get list to check whether interviewer has incoming interview
@@ -172,7 +193,7 @@ namespace JobSeekingClient.Pages.Home
                             if (item.Feedback == null)
                             {
                                 var slotPath = StoredURI.Slot + "/" + item.SlotId;
-                                item.Slot = _slotService.GetModelAsync(path: slotPath, param: null, token: null).Result;
+                                item.Slot = _slotService.GetModelAsync(path: slotPath, param: null, token: token).Result;
                                 Debug.WriteLine("Home.OnGet: Pending interview found :" + item.ApplicationId);
                                 _interviews.Add(item);
                             }
@@ -197,7 +218,7 @@ namespace JobSeekingClient.Pages.Home
                     {
                         _interviews = new List<InterviewModel>();
 
-                        var _interviewList = _interviewService.GetListAsync(path: StoredURI.Interviews, expression: null, param: null, token: null).Result.ToList();
+                        var _interviewList = _interviewService.GetListAsync(path: StoredURI.Interviews, expression: null, param: null, token: token).Result.ToList();
                         //get list to check whether interviewer has incoming interview
                         foreach (InterviewModel item in _interviewList)
                         {
@@ -206,7 +227,7 @@ namespace JobSeekingClient.Pages.Home
                             if (application.ApplicantId == userId && item.IsDeleted == false && item.Feedback == null)
                             {
                                 var slotPath = StoredURI.Slot + "/" + item.SlotId;
-                                item.Slot = _slotService.GetModelAsync(path: slotPath, param: null, token: null).Result;
+                                item.Slot = _slotService.GetModelAsync(path: slotPath, param: null, token: token).Result;
                                 _interviews.Add(item);
                             }
                         }
@@ -223,7 +244,7 @@ namespace JobSeekingClient.Pages.Home
                         }
 
                         //checking for applications
-                        var _applicationList = _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false && c.ApplicantId == userId, param: null, token: null).Result.ToList();
+                        var _applicationList = _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false && c.ApplicantId == userId, param: null, token: token).Result.ToList();
                         Debug.WriteLine("Home.OnGet: Found applicant application list :" + _applicationList.Count() + " of user id:" + userId);
                         _applications = new List<ApplicationModel>();
                         _applications2 = new List<ApplicationModel>();
