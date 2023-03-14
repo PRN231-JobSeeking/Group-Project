@@ -113,7 +113,7 @@ namespace AppRepository.Repositories.Implement
         {
             var interviews_this_application = (await _unitOfWork.InterviewRepository.Get(c => c.ApplicationId == applicationId)).OrderBy(c => c.Round);
             bool result = false;
-            if(interviews_this_application.Last().Date <= date.ToDateTime(TimeOnly.MinValue))
+            if ((interviews_this_application.Count() == 0) || interviews_this_application.Last().Date <= date.ToDateTime(TimeOnly.MinValue))
             {
                 result = !interviews_this_application.Any(c => c.SlotId == slotId && c.Date == date.ToDateTime(TimeOnly.MinValue));
             }            
