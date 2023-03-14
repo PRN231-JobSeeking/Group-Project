@@ -16,7 +16,7 @@ namespace ClientRepository.Service.Implementation
         {
         }
 
-        public async Task<bool> Create(int postId, IFormFile file)
+        public async Task<bool> Create(int postId, IFormFile file, string? token)
         {
             MultipartFormDataContent content = new MultipartFormDataContent();
             StreamContent fileContent = new StreamContent(file.OpenReadStream());
@@ -31,6 +31,7 @@ namespace ClientRepository.Service.Implementation
             {
                 Name = "postId"
             };
+            AddTokenHeader(token);
             content.Add(nameContent);
             var response = await Client.PostAsync(StoredURI.Application + "/Create", content);
             if (response.IsSuccessStatusCode)
@@ -39,21 +40,6 @@ namespace ClientRepository.Service.Implementation
                 return (bool)nContent.ReadFromJsonAsync(typeof(bool)).Result;
             }
             return false;
-        }
-
-        public async Task<ApplicationModel> GetModelAsync(int id)
-        {
-            var response = await Client.GetAsync(StoredURI.Application + $"/Get/Id/{id}");
-            if(response.IsSuccessStatusCode)
-            {
-                HttpContent content = response.Content;
-                var application = (ApplicationModel)content.ReadFromJsonAsync(typeof(ApplicationModel)).Result;
-                if (application != null)
-                {
-                    return application;
-                }
-            }
-            return null;
         }
     }
 }

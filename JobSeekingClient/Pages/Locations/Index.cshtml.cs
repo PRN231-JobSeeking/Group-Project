@@ -35,7 +35,7 @@ namespace JobSeekingClient.Pages.Locations
             }
             if (role != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("../Home");
             }
             var list = await _locationService.GetListAsync(path: StoredURI.Location, expression: null, param: null, token: token);
             if (list != null)

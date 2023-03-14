@@ -35,7 +35,7 @@ namespace JobSeekingClient.Pages.Levels
             }
             if (role != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("../Home");
             }
             var list = await _levelService.GetListAsync(path: StoredURI.Level, expression: null, param: null, token: token);
             if (list != null)

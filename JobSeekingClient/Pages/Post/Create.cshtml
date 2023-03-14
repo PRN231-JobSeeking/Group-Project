@@ -1,0 +1,80 @@
+﻿@page
+@model JobSeekingClient.Pages.Post.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Post</h4>
+<hr />
+@{
+    if (!string.IsNullOrEmpty(ViewBag.Error))
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+    if (!string.IsNullOrEmpty(ViewBag.Success))
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewBag.Success
+        </div>
+    }
+}
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Post.Title" class="control-label"></label>
+                <input asp-for="Post.Title" class="form-control" />
+                <span asp-validation-for="Post.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Description" class="control-label"></label>
+                <input asp-for="Post.Description" class="form-control" />
+                <span asp-validation-for="Post.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.CategoryId" class="control-label"></label>
+                <select asp-for="Post.CategoryId" class ="form-control" asp-items="ViewBag.CategoryId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.LocationId" class="control-label"></label>
+                <select asp-for="Post.LocationId" class ="form-control" asp-items="ViewBag.LocationId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.LevelId" class="control-label"></label>
+                <select asp-for="Post.LevelId" class ="form-control" asp-items="ViewBag.LevelId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.StartDate" class="control-label"></label>
+                <input asp-for="Post.StartDate" class="form-control" />
+                <span asp-validation-for="Post.StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.EndDate" class="control-label"></label>
+                <input asp-for="Post.EndDate" class="form-control" />
+                <span asp-validation-for="Post.EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Amount" class="control-label"></label>
+                <input asp-for="Post.Amount" class="form-control" />
+                <span asp-validation-for="Post.Amount" class="text-danger"></span>
+            </div>
+            <input type="hidden" class="form-check-input" asp-for="Post.Status" value="false" />
+            <input type="hidden" class="form-check-input" asp-for="Post.CreateDate" value="@DateTime.Now" />
+            <input type="hidden" class="form-check-input" asp-for="Post.Id" value="-1" />
+            <input type="hidden" class="form-check-input" asp-for="Post.IsDeleted" value="false" />
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

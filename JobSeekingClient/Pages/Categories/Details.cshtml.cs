@@ -35,7 +35,7 @@ namespace JobSeekingClient.Pages.Categories
             }
             if (role != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("../Home");
             }
             string path = StoredURI.Category + "/" + id;
             var find = await _categoryService.GetModelAsync(path: path, token: token);

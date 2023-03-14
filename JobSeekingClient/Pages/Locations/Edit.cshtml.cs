@@ -37,7 +37,7 @@ namespace JobSeekingClient.Pages.Locations
             }
             if (role != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("../Home");
             }
             string path = StoredURI.Location + "/" + id;
             var find = await _locationService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);
@@ -61,7 +61,7 @@ namespace JobSeekingClient.Pages.Locations
             }
             if (role != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("../Home");
             }
             await _locationService.Update(Location, path: StoredURI.Location + "/" + Location.Id.ToString(), token: token);
             return RedirectToPage("./Index");

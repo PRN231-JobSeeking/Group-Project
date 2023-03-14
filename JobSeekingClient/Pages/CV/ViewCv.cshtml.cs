@@ -1,6 +1,8 @@
 using AppCore.Models;
+using ClientRepository;
 using ClientRepository.Models;
 using ClientRepository.Service;
+using ClientRepository.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -19,14 +21,25 @@ namespace JobSeekingClient.Pages
 
         public ApplicationModel Application { get; set; }
 
-        public void OnGet(int id)
+        public async Task<IActionResult> OnGet(int id)
         {
-            var application = applicationService.GetModelAsync(id).Result;
+            string? token = HttpContext.Session.GetString("token");
+            int? role = HttpContext.Session.GetInt32("Role");
+            if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToPage("../Auth/Login");
+            }
+            if (role != (int)AccountRole.Applicant)
+            {
+                return RedirectToPage("../Home");
+            }
+            var application = await applicationService.GetModelAsync(path: StoredURI.Application + $"/Get/Id/{id}", token: token);
             if(application == null)
             {
-                return;
+                return RedirectToPage("../Home");
             }
             Application = application;
+            return Page();
         }
     }
 }

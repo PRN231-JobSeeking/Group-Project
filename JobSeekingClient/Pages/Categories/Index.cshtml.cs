@@ -35,7 +35,7 @@ namespace JobSeekingClient.Pages.Categories
             }
             if (role != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("../Home");
             }
             var list = await _categoryService.GetListAsync(path: StoredURI.Category, expression: null, param: null, token: token);
             if (list != null)
