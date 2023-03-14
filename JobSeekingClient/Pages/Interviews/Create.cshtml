@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Interview.InterviewerId" class="control-label"></label>
-                <select asp-for="Interview.InterviewerId" class ="form-control" asp-items="ViewBag.InterviewerId"></select>
+                <select asp-for="Interview.InterviewerId" class="form-control" asp-items="ViewBag.InterviewerId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -32,7 +32,7 @@
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="ChooseTime" asp-route-applicationId="@Model.Interview.ApplicationId">Back to Choose Time</a>
 </div>
 
 @section Scripts {
