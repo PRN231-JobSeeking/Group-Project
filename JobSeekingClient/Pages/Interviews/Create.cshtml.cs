@@ -47,7 +47,7 @@ namespace JobSeekingClient.Pages.Interviews
             string? token = HttpContext.Session.GetString("token");
             await _interviewService.Add(Interview, path: StoredURI.Interviews, token: token);
 
-            return RedirectToPage("./Applications/Details", new { id = Interview.ApplicationId });
+            return RedirectToPage("/Applications/Details", new { id = Interview.ApplicationId });
         }
     }
 }

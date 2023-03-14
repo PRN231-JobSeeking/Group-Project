@@ -2,12 +2,14 @@
 using AppCore.Models;
 using AppRepository.Generic;
 using AppRepository.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +41,13 @@ namespace AppRepository.Repositories.Implement
         }
         public async Task CreateMeeting(Interview interview)
         {
+            var created = new Interview
+            {
+                ApplicationId = interview.ApplicationId,
+                Date = interview.Date,
+                InterviewerId = interview.InterviewerId,
+                SlotId = interview.SlotId,
+            };
             //check condition
             var slot = await _unitOfWork.SlotRepository.GetFirst(c => c.Id == interview.SlotId);
             if (!CheckValidDate(interview))
@@ -54,22 +63,30 @@ namespace AppRepository.Repositories.Implement
             //if no status <-> status == null
             //then that application has not been interviewed yet
             //created with round = 1
-            var interviews_this_application = await _unitOfWork.InterviewRepository.Get(c => c.ApplicationId == interview.ApplicationId);
-            if (interviews_this_application == null || interviews_this_application.Count() == 0)
+            //var interviews_this_application = await _unitOfWork.InterviewRepository.Get(c => c.ApplicationId == interview.ApplicationId);
+            //if (interviews_this_application == null || interviews_this_application.Count() == 0)
+            //{
+            //    interview.Round = 1;
+            //}
+            //else
+            //{
+            //    int round = ++(interviews_this_application.Last().Round);
+            //    interview.Round = round;
+            //    created.Round= round;
+            //}
+            try
             {
-                interview.Round = 1;
-            }
-            else
+                await _unitOfWork.InterviewRepository.Add(interview);
+            } catch (Exception ex)
             {
-                int round = ++(interviews_this_application.Last().Round);
-                interview.Round = round;
+                Console.WriteLine(ex.ToString());
             }
-            await _unitOfWork.InterviewRepository.Add(interview);
+
         }
 
         public async Task<IEnumerable<Account>> GetAvailableInterviewers(int slotId, DateOnly date, int applicationId)
         {
-            if(await CheckTimeInterview(slotId, date, applicationId))
+            if (await CheckTimeInterview(slotId, date, applicationId))
             {
                 var slot = await _unitOfWork.SlotRepository.GetFirst(c => c.Id == slotId);
                 var application = await _unitOfWork.ApplicationRepository.GetFirst(c => c.Id == applicationId);
@@ -90,12 +107,16 @@ namespace AppRepository.Repositories.Implement
             {
                 throw new Exception("AlreadyInterviewingAtTime");
             }
-            
+
         }
         private async Task<bool> CheckTimeInterview(int slotId, DateOnly date, int applicationId)
         {
-            var interviews_this_application = await _unitOfWork.InterviewRepository.Get(c => c.ApplicationId == applicationId);
-            var result = !interviews_this_application.Any(c => c.SlotId== slotId && c.Date == date.ToDateTime(TimeOnly.MinValue));
+            var interviews_this_application = (await _unitOfWork.InterviewRepository.Get(c => c.ApplicationId == applicationId)).OrderBy(c => c.Round);
+            bool result = false;
+            if(interviews_this_application.Last().Date <= date.ToDateTime(TimeOnly.MinValue))
+            {
+                result = !interviews_this_application.Any(c => c.SlotId == slotId && c.Date == date.ToDateTime(TimeOnly.MinValue));
+            }            
             return result;
         }
     }

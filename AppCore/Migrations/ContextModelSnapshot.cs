@@ -233,7 +233,10 @@ namespace AppCore.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Round")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Round"), 1L, 1);
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("date");
@@ -395,13 +398,13 @@ namespace AppCore.Migrations
                             Id = 1,
                             Amount = 1,
                             CategoryId = 1,
-                            CreateDate = new DateTime(2023, 3, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            CreateDate = new DateTime(2023, 3, 14, 0, 0, 0, 0, DateTimeKind.Local),
                             Description = "abcdef",
-                            EndDate = new DateTime(2023, 3, 19, 0, 0, 0, 0, DateTimeKind.Local),
+                            EndDate = new DateTime(2023, 3, 24, 0, 0, 0, 0, DateTimeKind.Local),
                             IsDeleted = false,
                             LevelId = 1,
                             LocationId = 1,
-                            StartDate = new DateTime(2023, 3, 9, 0, 0, 0, 0, DateTimeKind.Local),
+                            StartDate = new DateTime(2023, 3, 14, 0, 0, 0, 0, DateTimeKind.Local),
                             Status = true,
                             Title = "Backend API hiring"
                         });
