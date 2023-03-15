@@ -84,6 +84,29 @@ namespace JobSeekingClient.Pages
                 ViewData["Error"] = "CV file not located!";
                 return Page();
             }
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToPage("../Auth/Login");
+            }
+            var applications = await applicationService.GetListAsync(path: StoredURI.Application + $"/Get/ApplicantId/{userId}/PostId/{id}", token: token);
+            if (applications != null)
+            {
+                if (applications.Count > 0)
+                {
+                    foreach (var application in applications)
+                    {
+                        application.Status = false;
+                        application.IsDeleted = true;
+                        var res = await applicationService.Update(application, path: StoredURI.Application + $"/{application.Id}", token: token);
+                        if (!res)
+                        {
+                            ViewData["Error"] = "Apply CV Error!";
+                            return Page();
+                        }
+                    }
+                }
+            }
             Post = postService.GetModelAsync(id).Result;
             if (Post != null)
             {
@@ -98,7 +121,7 @@ namespace JobSeekingClient.Pages
                 Location = location.Name;
                 Level = level.Name;
             }
-            bool result = await applicationService.Create(id, cvFile, token);
+            bool result = await applicationService.Create(id, userId.Value, cvFile, token);
             if(result)
             {
                 ViewData["Success"] = "Apply CV Successful.";

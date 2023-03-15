@@ -16,7 +16,7 @@ namespace ClientRepository.Service.Implementation
         {
         }
 
-        public async Task<bool> Create(int postId, IFormFile file, string? token)
+        public async Task<bool> Create(int postId, int applicationId, IFormFile file, string? token)
         {
             MultipartFormDataContent content = new MultipartFormDataContent();
             StreamContent fileContent = new StreamContent(file.OpenReadStream());
@@ -31,8 +31,14 @@ namespace ClientRepository.Service.Implementation
             {
                 Name = "postId"
             };
+            StringContent applicationContent = new StringContent($"{applicationId}");
+            applicationContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            {
+                Name = "applicationId"
+            };
             AddTokenHeader(token);
             content.Add(nameContent);
+            content.Add(applicationContent);
             var response = await Client.PostAsync(StoredURI.Application + "/Create", content);
             if (response.IsSuccessStatusCode)
             {

@@ -1,5 +1,6 @@
 ﻿using AppCore.Models;
 using AppRepository.UnitOfWork;
+using ClientRepository.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -39,9 +40,23 @@ namespace JobSeekingApi.Controllers
         }
 
         [Authorize]
+        [HttpGet]
+        [Route("Get/ApplicantId/{aplicantId}/PostId/{postId}")]
+        public async Task<IActionResult> GetApplication([FromRoute] int aplicantId, [FromRoute] int postId)
+        {
+            var aplications = await unitOfWork.ApplicationRepository.Get(a => a.ApplicantId == aplicantId && a.PostId == postId 
+                                                                               && a.IsDeleted == false);
+            if (aplications == null)
+            {
+                return NotFound("Not found aplicationId!");
+            }
+            return Ok(aplications);
+        }
+
+        [Authorize]
         [HttpPost]
         [Route("Create")]
-        public async Task<ActionResult<bool>> Create([FromForm] int postId, IFormFile file)
+        public async Task<ActionResult<bool>> Create([FromForm] int postId,[FromForm] int applicationId, IFormFile file)
         {
             if (postId <= 0 || file == null)
             {
@@ -71,26 +86,37 @@ namespace JobSeekingApi.Controllers
             {
                 await file.CopyToAsync(stream);
             }
-            var aplication = new Application()
+            var application = new Application()
             {
                 PostId = postId,
                 CV = $"{id}{ext}",
-                ApplicantId = 2,
+                ApplicantId = applicationId,
                 Status = true,
             };
-            await unitOfWork.ApplicationRepository.Add(aplication);
+            await unitOfWork.ApplicationRepository.Add(application);
             return Ok(true);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutApplication(int id, Application application)
+        public async Task<IActionResult> PutApplication(int id, ApplicationModel application)
         {
             if (id != application.Id)
             {
                 return BadRequest();
             }
+            var applicationInDb = await unitOfWork.ApplicationRepository.GetFirst(a => a.Id == application.Id);
+            if(applicationInDb == null)
+            {
+                return BadRequest();
+            }
+            applicationInDb.Status = application.Status;
+            applicationInDb.CV = application.CV;
+            applicationInDb.ApplicantId = application.ApplicantId;
+            applicationInDb.IsDeleted = application.IsDeleted;
+            applicationInDb.PostId = application.PostId;
 
-            await unitOfWork.ApplicationRepository.Update(application);
+            await unitOfWork.ApplicationRepository.Update(applicationInDb);
             return StatusCode(StatusCodes.Status200OK);
         }
     }
