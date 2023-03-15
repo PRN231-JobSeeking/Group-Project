@@ -48,6 +48,11 @@ namespace JobSeekingClient.Pages.Applications
 
             var roleId = HttpContext.Session.GetInt32("Role");
 
+            if (roleId == null || roleId == 4)
+            {
+                return RedirectToPage("/home");
+            }
+
             var userId = HttpContext.Session.GetInt32("UserId");
 
             if (id == null)

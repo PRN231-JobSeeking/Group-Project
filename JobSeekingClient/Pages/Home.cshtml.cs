@@ -292,7 +292,7 @@ namespace JobSeekingClient.Pages.Home
                         if (_applications.Count != 0)
                         {
                             Debug.WriteLine("Home.OnGet: Found pending application :" + _applications.Count());
-                            ViewData["message1"] = "You have " + _applications.Count + " pending application!";
+                            ViewData["message2"] = "You have " + _applications.Count + " pending application!";
                         }
                         else
                         {
