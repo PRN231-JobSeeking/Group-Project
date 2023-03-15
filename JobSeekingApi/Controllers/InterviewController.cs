@@ -27,6 +27,7 @@ namespace JobSeekingApi.Controllers
         // GET: api/Interview
        
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<Interview>>> GetInterviews()
         {
             return Ok(await _unitOfWork.InterviewRepository.Get(expression: null, "Application", "Interviewer", "Slot"));
@@ -38,6 +39,7 @@ namespace JobSeekingApi.Controllers
         }
         // GET: api/Interview/5
         [HttpGet("application/{application_id}")]
+        [Authorize("HR")]
         public async Task<ActionResult<Interview>> GetInterviewOnApplication(int application_id)
         {
             var interviews = await _unitOfWork.InterviewRepository.Get(c => c.ApplicationId == application_id);
@@ -47,6 +49,7 @@ namespace JobSeekingApi.Controllers
         // PUT: api/Interview/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize("HR,Interviewer")]
         public async Task<IActionResult> PutInterview(int id, Interview interview)
         {
             if (id != interview.ApplicationId)
@@ -69,6 +72,7 @@ namespace JobSeekingApi.Controllers
         // POST: api/Interview
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize("HR")]
         public async Task<ActionResult<Interview>> PostInterview(Interview interview)
         {            
             try
@@ -84,6 +88,7 @@ namespace JobSeekingApi.Controllers
         }
 
         // DELETE: api/Interview/5
+        [Authorize("HR")]
         [HttpDelete("application/{application_id}/{round_id}")]
         public async Task<IActionResult> DeleteInterview(int application_id, int round_id)
         {
