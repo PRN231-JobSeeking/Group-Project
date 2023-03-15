@@ -68,11 +68,12 @@
                     @Html.DisplayFor(modelItem => item.Point)
                 </td>
                 @{
-                    if(item.Application.Status==null)
+                    if(item.Date<DateTime.Now &&  string.IsNullOrEmpty(item.Feedback) && item.Point==0 )
                     {
                     <td>                   
-                    @Html.ActionLink("Evaluate", "Edit", new { /* id=item.PrimaryKey */ })                  
-                     </td>
+                     <a asp-page="./Feedback" asp-route-interviewId="@item.InterviewerId"
+                       asp-route-applicantId="@item.ApplicationId">Evaluate</a>
+                        </td>
                     }
                 }              
             </tr>

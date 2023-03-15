@@ -23,16 +23,16 @@ namespace JobSeekingClient.Pages.Interviews
             int? role = HttpContext.Session.GetInt32("Role");
             if (string.IsNullOrEmpty(token))
             {
-                return RedirectToPage("../Auth/Login");
+                return RedirectToPage("/Auth/Login");
             }
             if (role != (int)AccountRole.Interviewer)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("/Home");
             }
             var interview = await _interviewService.GetModelAsync(path: StoredURI.Interviews + $"/Nonfeedbacks/InterviewerId/{interviewId}/ApplicantId/{applicantId}", token: token);
             if(interview == null)
             {
-                return RedirectToPage("../Interviews/FeedbackIndex");
+                return RedirectToPage("../Interviews/HomePageInterviewer");
             }
             Interview = new ClientRepository.Models.InterviewFeedbackModel()
             {
@@ -55,11 +55,11 @@ namespace JobSeekingClient.Pages.Interviews
             int? role = HttpContext.Session.GetInt32("Role");
             if (string.IsNullOrEmpty(token))
             {
-                return RedirectToPage("../Auth/Login");
+                return RedirectToPage("/Auth/Login");
             }
             if (role != (int)AccountRole.Interviewer)
             {
-                return RedirectToPage("../HomePage");
+                return RedirectToPage("/Home");
             }
             if (!ModelState.IsValid)
             {
@@ -68,7 +68,7 @@ namespace JobSeekingClient.Pages.Interviews
             bool result = await _feedbackService.Update(Interview, path: StoredURI.Interviews + "/feedback", token: token);
             if(result)
             {
-                return RedirectToPage("../Interviews/FeedbackIndex");
+                return RedirectToPage("../Interviews/HomePageInterviewer");
             }
             return Page();
         }

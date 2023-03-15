@@ -117,7 +117,7 @@ namespace JobSeekingClient.Pages.Accounts
                 await _userskillService.Add(uktmp, path: StoredURI.UserSkill, token: null);
             }
             await _accountService.Update(Account, path: StoredURI.Account + "/" + Account.Id.ToString(), token: token);
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Home");
         }
     }
 }

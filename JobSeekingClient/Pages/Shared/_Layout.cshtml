@@ -19,11 +19,11 @@
             <div class="container">
                 @if (role == (int)AccountRole.Administrator)
                 {
-                    <a class="navbar-brand" asp-area="" asp-page="../Accounts/IndexAdmin">JobSeekingClient</a>
+                    <a class="navbar-brand" asp-area="" asp-page="/Accounts/IndexAdmin">JobSeekingClient</a>
                 }
                 @if (role == (int)AccountRole.Applicant)
                 {
-                    <a class="navbar-brand" asp-area="" asp-page="../Accounts/Index">JobSeekingClient</a>
+                    <a class="navbar-brand" asp-area="" asp-page="/Home">JobSeekingClient</a>
                 }
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -50,7 +50,7 @@
                         @if (role == (int)AccountRole.Applicant)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Accounts/Index">Home</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Home">Home</a>
                             </li>
                         }
 

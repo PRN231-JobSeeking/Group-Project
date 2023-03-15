@@ -41,7 +41,7 @@ namespace JobSeekingClient.Pages.Accounts
                 return Page();
             }
             await _accountService.Add(Account, path: StoredURI.Account, token: null);
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Accounts/IndexAdmin");
         }
     }
 }
