@@ -3,27 +3,29 @@
 
 @{
     ViewData["Title"] = "Details";
+    var roleId = HttpContext.Session.GetInt32("Role");
 }
 <h1>Details</h1>
 @{
-    if (@ViewBag.message1 != null)
+    if (roleId == 2)
     {
-        //TODO: add schedule function and link
-        <text>
-            <span class="text-danger">@ViewBag.message1</span>
-            <a asp-page="/Interviews/ChooseTime" asp-route-applicationId="@Model.Application?.Id">Schedule interview now.</a>
-            <br>
-        </text>
-    }
-}
-@{
-    if (@ViewBag.message2 != null)
-    {
-        <text>
-            <span class="text-danger">@ViewBag.message2</span>
-            <a asp-page="./HrReview" asp-route-id="@Model.Application?.Id">Review now.</a>
-            <br>
-        </text>
+        if (@ViewBag.message1 != null)
+        {
+            //TODO: add schedule function and link
+            <text>
+                <span class="text-danger">@ViewBag.message1</span>
+                <a asp-page="/Interviews/ChooseTime" asp-route-applicationId="@Model.Application?.Id">Schedule interview now.</a>
+                <br>
+            </text>
+        }
+        if (@ViewBag.message2 != null)
+        {
+            <text>
+                <span class="text-danger">@ViewBag.message2</span>
+                <a asp-page="./HrReview" asp-route-id="@Model.Application?.Id">Review now.</a>
+                <br>
+            </text>
+        }
     }
 }
 <div>
@@ -70,15 +72,16 @@
 </div>
 <div>
     @{
-        if (@ViewBag.message1 != null)
+        if (roleId == 2)
         {
-            //TODO: add schedule function and link
-            <text>
-                <a asp-page="./HrReview" asp-route-id="@Model.Application?.Id">Schedule interview</a> |
-            </text>
+            if (@ViewBag.message1 != null)
+            {
+                //TODO: add schedule function and link
+                <text>
+                    <a asp-page="./HrReview" asp-route-id="@Model.Application?.Id">Schedule interview</a> |
+                </text>
+            }
         }
-    }
-    @{
         if (@ViewBag.message2 != null)
         {
             <text>

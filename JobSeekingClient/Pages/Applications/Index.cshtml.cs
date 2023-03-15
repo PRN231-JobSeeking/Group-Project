@@ -22,6 +22,7 @@ namespace JobSeekingClient.Pages.Applications
             _applicationService = applicationService;
         }
 
+        [BindProperty]
         public IList<ApplicationModel> Application { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync()
@@ -29,13 +30,44 @@ namespace JobSeekingClient.Pages.Applications
             //user for role checking
             var roleId = HttpContext.Session.GetInt32("Role");
 
-            if (roleId != 1 || roleId != 2)
+            if (roleId == null)
             {
-                return RedirectToPage("/home");
+                return RedirectToPage("/Auth/Login");
             }
 
+            //user id for interview/application/post tracking
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            var _applicationList = new List<ApplicationModel>();
             var token = HttpContext.Session.GetString("token");
-            var _applicationList = await _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false, param: null, token: token);
+
+            switch (roleId)
+            {
+                case 1:
+                    {
+                        _applicationList = await _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false, param: null, token: token);
+                        break;
+                    }
+                case 2:
+                    {
+                        _applicationList = await _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false, param: null, token: token);
+                        break;
+                    }
+                case 3:
+                    {
+                        _applicationList = await _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false, param: null, token: token);
+                        break;
+                    }
+                case 4:
+                    {
+                        _applicationList = await _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false && c.ApplicantId == userId, param: null, token: token);
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
 
             if (_applicationList != null)
             {

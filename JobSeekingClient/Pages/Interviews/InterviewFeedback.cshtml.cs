@@ -23,7 +23,7 @@ namespace JobSeekingClient.Pages.Interviews
         public InterviewModel _interviews { get; set; }
 
 
-        public IActionResult OnGet(int applicationId, int slotId)
+        public IActionResult OnGet(int applicationId, int round)
         {
             //user for role checking
             var roleId = HttpContext.Session.GetInt32("Role");
@@ -44,7 +44,7 @@ namespace JobSeekingClient.Pages.Interviews
                 return NotFound();
             }
 
-            var interview = find3.FirstOrDefault(p => p.ApplicationId == applicationId && p.IsDeleted == false && p.SlotId == slotId);
+            var interview = find3.FirstOrDefault(p => p.ApplicationId == applicationId && p.IsDeleted == false && p.Round == round);
 
             if (interview == null)
             {

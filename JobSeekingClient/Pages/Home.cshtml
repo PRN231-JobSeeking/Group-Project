@@ -116,13 +116,13 @@
                     //for Interviewerer
                     if (Model._interviews.Count() != 0)
                     {
-                        if (@ViewBag.message3 == null)
+                        if (@ViewBag.message1 == null)
                         {
                             <div>No pending interview was found!</div>
                         }
                         else
                         {
-                            <span class="text-danger">@ViewBag.message3</span>
+                            <span class="text-danger">@ViewBag.message1</span>
                         }
                         <table class="table">
                             <thead>
@@ -159,7 +159,7 @@
                                             @Html.DisplayFor(modelItem => item.ApplicationId)
                                         </td>
                                         <td>
-                                            <a asp-page="/Interviews/InterviewFeedback" asp-route-applicationId="@item.ApplicationId" asp-route-slotId="@item.SlotId">Feedback Interview</a>
+                                            <a asp-page="/Interviews/InterviewFeedback" asp-route-applicationId="@item.ApplicationId" asp-route-round="@item.Round">Feedback Interview</a>
                                         </td>
                                     </tr>
                                 }
@@ -173,13 +173,13 @@
                     //for Applicants
                     if (Model._interviews.Count() != 0)
                     {
-                        if (@ViewBag.message3 == null)
+                        if (@ViewBag.message1 == null)
                         {
                             <div>No pending interview was found!</div>
                         }
                         else
                         {
-                            <span class="text-danger">@ViewBag.message3</span>
+                            <span class="text-danger">@ViewBag.message1</span>
                         }
                         <table class="table">
                             <thead>
@@ -222,13 +222,13 @@
 
                     if (Model._applications.Count != 0)
                     {
-                        if (@ViewBag.message1 == null)
+                        if (@ViewBag.message2 == null)
                         {
                             <div>Approved applications</div>
                         }
                         else
                         {
-                            <span class="text-danger">@ViewBag.message1</span>
+                            <span class="text-danger">@ViewBag.message2</span>
                         }
                         <table class="table">
                             <thead>
@@ -338,30 +338,53 @@
     else
     {
         <h1>Home Page</h1>
-        <span class="text-danger">@ViewBag.message1</span>
+        if (@ViewBag.message1 != null){
+            <span class="text-danger">@ViewBag.message1</span>
         <br>
-        <span class="text-danger">@ViewBag.message2</span>
+        }
+        if (@ViewBag.message2 != null){
+            <span class="text-danger">@ViewBag.message2</span>
         <br>
+        }
         if (@ViewBag.message1 != null || @ViewBag.message2 != null)
         {
             <text>
                 <a asp-route-news="1">Check news now.</a>
             </text>
         }
+        <div class="row">
+            <div class="col-md-4">
+                <form method="post">
+                    <div class="form-group">
+                        Search:<input asp-for="_searchInput" class="form-control"/>
+                        Location:
+                        <select asp-for="_locationFilterInput">
+                            <option value="null">All Locations</option>
+                            @foreach (var item in Model._locations)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                        <br>
+                        Category:
+                        <select asp-for="_categoryFilterInput">
+                            <option value="null">All category</option>
+                            @foreach (var item in Model._category)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                        <input type="submit" value="Search" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr/>
         <table class="table">
             <thead>
                 <tr>
                     <th>
                         @Html.DisplayNameFor(model => model._post[0].Title)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model._post[0].Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model._post[0].Status)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model._post[0].CreateDate)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model._post[0].StartDate)
@@ -373,16 +396,13 @@
                         @Html.DisplayNameFor(model => model._post[0].Amount)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model._post[0].CategoryId)
+                        Category
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model._post[0].LocationId)
+                        Location
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model._post[0].LevelId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model._post[0].IsDeleted)
+                        Level
                     </th>
                     <th></th>
                 </tr>
@@ -395,15 +415,6 @@
                             @Html.DisplayFor(modelItem => item.Title)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CreateDate)
-                        </td>
-                        <td>
                             @Html.DisplayFor(modelItem => item.StartDate)
                         </td>
                         <td>
@@ -413,21 +424,32 @@
                             @Html.DisplayFor(modelItem => item.Amount)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.CategoryId)
+                            @foreach (var item2 in Model._category)
+                            {
+                                if (item2.Id == item.CategoryId)
+                                {
+                                    <text>@item2.Name</text>
+                                }
+                            }
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.LocationId)
+                            @foreach (var item2 in Model._locations)
+                            {
+                                if (item2.Id == item.LocationId)
+                                {
+                                    <text>@item2.Name</text>
+                                }
+                            }
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.LevelId)
+                            @foreach(var item2 in Model._level){
+                                if(item2.Id == item.LevelId){
+                                    <text>@item2.Name</text>
+                                }
+                            }
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.IsDeleted)
-                        </td>
-                        <td>
-                            <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                            <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            <a asp-page="/Post/PostDetail" asp-route-id="@item.Id">Details</a>
                         </td>
                     </tr>
                 }
