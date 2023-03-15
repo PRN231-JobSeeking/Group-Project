@@ -50,7 +50,7 @@
                         @if (role == (int)AccountRole.Applicant)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="../Accounts/Index">Home</a>
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Accounts/Index">Home</a>
                             </li>
                         }
 
@@ -58,13 +58,13 @@
                             if (!string.IsNullOrEmpty(role.ToString()) && role == (int)AccountRole.Applicant)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-route-id="@id" asp-area="" asp-page="../Accounts/Profile">My Profile</a>
+                                    <a class="nav-link text-dark" asp-route-id="@id" asp-area="" asp-page="/Accounts/Profile">My Profile</a>
                                 </li>
                             }
                             if (!string.IsNullOrEmpty(role.ToString()))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-page="../Auth/Logout">Logout</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Auth/Logout">Logout</a>
                                 </li>
                             }
                         }
@@ -79,13 +79,6 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - JobSeekingClient - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

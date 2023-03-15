@@ -25,7 +25,6 @@ namespace JobSeekingApi.Controllers
         }
 
         // GET: api/Account
-        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
@@ -38,7 +37,7 @@ namespace JobSeekingApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
-            var find = await _unitOfWork.AccountRepository.Get(account => account.Id == id,includeProperties:"Role");
+            var find = await _unitOfWork.AccountRepository.Get(account => account.Id == id,"Role","UserSkill");
             var account = find.FirstOrDefault();
             if (account == null)
             {
@@ -66,7 +65,6 @@ namespace JobSeekingApi.Controllers
 
         // POST: api/Account
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Account>> PostAccount(Account account)
         {
