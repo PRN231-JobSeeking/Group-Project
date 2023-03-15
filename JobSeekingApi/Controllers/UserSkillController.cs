@@ -15,7 +15,12 @@ namespace JobSeekingApi.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<UserSkill>>> GetAccounts()
+        {
+            var result = await _unitOfWork.UserSkillRepository.Get();
+            return Ok(result);
+        }
 
         // POST: api/Role
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754

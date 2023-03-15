@@ -16,11 +16,13 @@ namespace JobSeekingClient.Pages.Accounts
     {
         private readonly IRoleService _roleService;
         private readonly IAccountService _accountService;
+        private readonly ISkillService _skillService;
 
-        public EditModel(IAccountService accountService, IRoleService roleService)
+        public EditModel(IAccountService accountService, IRoleService roleService, ISkillService skillService)
         {
             _accountService = accountService;
             _roleService = roleService;
+            _skillService = skillService;
         }
         
         [BindProperty]

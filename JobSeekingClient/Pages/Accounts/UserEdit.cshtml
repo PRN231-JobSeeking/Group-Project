@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Account.Password" class="control-label"></label>
-                <input asp-for="Account.Password" class="form-control" />
+                <input type="password" asp-for="Account.Password" class="form-control" />
                 <span asp-validation-for="Account.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -55,6 +55,13 @@
                     <input type="hidden" class="form-check-input" asp-for="Account.RoleId" />
                 </label>
             </div>
+           @if (ViewData["SkillId"] != null)
+                {
+                 <div class="form-group">
+                  <label asp-for="skillid" class="control-label">Skill</label>
+                    <select asp-for="skillid" class="form-control" asp-items="ViewBag.SkillId"></select>
+                </div>
+                }           
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
