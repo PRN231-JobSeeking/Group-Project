@@ -1,0 +1,75 @@
+﻿@page
+@model JobSeekingClient.Pages.Applications.IndexOnPost
+
+@{
+    var userRole = HttpContext.Session.GetInt32("Role");
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Application[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application[0].CV)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application[0].ApplicantId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application[0].PostId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Application[0].Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Application)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CV)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApplicantId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostId)
+                </td>
+                <td>
+                    @{
+                        if (item.Status == null)
+                        {
+                            <text>
+                                Pending
+                            </text>
+                        }
+                        else if ((bool)item.Status)
+                        {
+                            <text>
+                                Approved
+                            </text>
+                        }
+                        else
+                        {
+                            <text>
+                                Denied
+                            </text>
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Details" asp-route-id="@item.Id"> Details </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
