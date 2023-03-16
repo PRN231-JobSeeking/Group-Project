@@ -161,7 +161,9 @@
                                             @Html.DisplayFor(modelItem => item.ApplicationId)
                                         </td>
                                         <td>
-                                            <a asp-page="/Interviews/InterviewFeedback" asp-route-applicationId="@item.ApplicationId" asp-route-round="@item.Round">Feedback Interview</a>
+                                            <a asp-page="/Interviews/Feedback" asp-route-interviewId="@item.InterviewerId"
+                                                                                asp-route-applicationId="@item.ApplicationId"
+                                                                                asp-route-round="@item.Round">Feedback Interview</a>
                                         </td>
                                     </tr>
                                 }
@@ -340,13 +342,15 @@
     else
     {
         <h1>Home Page</h1>
-        if (@ViewBag.message1 != null){
+        if (@ViewBag.message1 != null)
+        {
             <span class="text-danger">@ViewBag.message1</span>
-        <br>
+            <br>
         }
-        if (@ViewBag.message2 != null){
+        if (@ViewBag.message2 != null)
+        {
             <span class="text-danger">@ViewBag.message2</span>
-        <br>
+            <br>
         }
         if (@ViewBag.message1 != null || @ViewBag.message2 != null)
         {
@@ -358,7 +362,7 @@
             <div class="col-md-4">
                 <form method="post">
                     <div class="form-group">
-                        Search:<input asp-for="_searchInput" class="form-control"/>
+                        Search:<input asp-for="_searchInput" class="form-control" />
                         Location:
                         <select asp-for="_locationFilterInput">
                             <option value="null">All Locations</option>
@@ -381,7 +385,7 @@
                 </form>
             </div>
         </div>
-        <hr/>
+        <hr />
         <table class="table">
             <thead>
                 <tr>
@@ -444,17 +448,19 @@
                             }
                         </td>
                         <td>
-                            @foreach(var item2 in Model._level){
-                                if(item2.Id == item.LevelId){
+                            @foreach (var item2 in Model._level)
+                            {
+                                if (item2.Id == item.LevelId)
+                                {
                                     <text>@item2.Name</text>
                                 }
                             }
                         </td>
                         <td>
                             <a asp-page="/Post/PostDetail" asp-route-id="@item.Id">Details</a>
-                            @if(userRole == 2)
+                            @if (userRole == 2)
                             {
-                                 <a class="ps-4" asp-page="/Applications/IndexOnPost" asp-route-postId="@item.Id">View Applications</a>
+                                <a class="ps-4" asp-page="/Applications/IndexOnPost" asp-route-postId="@item.Id">View Applications</a>
                             }
                         </td>
                     </tr>

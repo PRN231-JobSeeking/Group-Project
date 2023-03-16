@@ -4,12 +4,6 @@
 @model JobSeekingClient.Pages.PostDetailModel
 @{
     ViewData["Title"] = "Post Detail";
-    string? token = HttpContext.Session.GetString("token");
-    int? role = HttpContext.Session.GetInt32("Role");
-    if (string.IsNullOrEmpty(token))
-    {
-        Response.Redirect("../Auth/Login");
-    }
 }
 @{
     if (!string.IsNullOrEmpty(ViewBag.Error))
@@ -25,6 +19,21 @@
         </div>
     }
 }
+<style>
+    .skill-item {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+        .skill-item span {
+            display: inline-block;
+            margin: 5px;
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+</style>
 <h4>Post Detail</h4>
 <hr />
 <dl class="row">
@@ -39,6 +48,20 @@
     </dt>
     <dd class="col-sm-10">
         @Html.DisplayFor(model => model.Category)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.PostSkills)
+    </dt>
+    <dd class="col-sm-10 skill-item">
+        @{
+            if (Model.PostSkills != null && Model.PostSkills.Count() > 0)
+            {
+                foreach (var postSkill in Model.PostSkills)
+                {
+                    <span>@postSkill.SkillName</span>
+                }
+            }
+        }
     </dd>
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.Location)
@@ -72,12 +95,12 @@
     </dd>
 </dl>
 @{
-    if (role == (int)AccountRole.Applicant)
+    if (Model.CanApply)
     {
         <form method="post" , enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="formFile" class="form-label">CV File</label>
-                <input class="form-control" type="file" name="cvFile" id="formFile">
+                <input class="form-control" type="file" accept=".pdf" name="cvFile" id="formFile">
             </div>
             <input class="btn btn-primary" asp-page-handler="Apply" type="submit" value="Apply">
         </form>

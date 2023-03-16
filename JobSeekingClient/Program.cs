@@ -25,6 +25,7 @@ builder.Services.AddTransient<ISkillService, SkillService>();
 builder.Services.AddTransient<IAuthenService, AuthenService>();
 builder.Services.AddTransient<IUserSkillService, UserSkillService>();
 builder.Services.AddTransient<IPostService, PostService>();
+builder.Services.AddTransient<IPostSkillService, PostSkillService>();
 builder.Services.AddTransient<IApplicationService, ApplicationService>();
 builder.Services.AddTransient<ISlotService, SlotService>();
 builder.Services.AddTransient<IInterviewService, InterviewService>();

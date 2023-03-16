@@ -1,4 +1,4 @@
-﻿@page "/Feedback/{applicantId:int}"
+﻿@page
 @model JobSeekingClient.Pages.Interviews.FeedbackModel
 
 @{
@@ -11,16 +11,15 @@
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Interview.InterviewerId" />
             <div class="form-group">
-                <label asp-for="Interview.ApplicationId" class="control-label"></label>
-                <input asp-for="Interview.ApplicationId" class="form-control" readonly />
-                <span asp-validation-for="Interview.ApplicationId" class="text-danger"></span>
+                <label asp-for="Interview.ApplicantName" class="control-label"></label>
+                <input asp-for="Interview.ApplicantName" class="form-control" readonly />
+                <span asp-validation-for="Interview.ApplicantName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Interview.SlotId" class="control-label"></label>
-                <input asp-for="Interview.SlotId" class="form-control" readonly />
-                <span asp-validation-for="Interview.SlotId" class="text-danger"></span>
+                <label asp-for="Interview.SlotName" class="control-label"></label>
+                <input asp-for="Interview.SlotName" class="form-control" readonly />
+                <span asp-validation-for="Interview.SlotName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Interview.Feedback" class="control-label"></label>
@@ -37,6 +36,7 @@
                 <input asp-for="Interview.Round" class="form-control" readonly/>
                 <span asp-validation-for="Interview.Round" class="text-danger"></span>
             </div>
+            <input type="hidden" asp-for="Interview.ApplicationId" class="form-control"/>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

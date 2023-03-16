@@ -55,7 +55,10 @@
                     @Html.DisplayFor(modelItem => item.Round)
                 </td>
                 <td>
-                    <a asp-page="/CV/ViewCv" asp-route-id="@item.Application.ApplicantId">View</a>
+                    @{
+                        string url = $"../CV/{item.ApplicationId}";
+                    }
+                    <a href="@url"> View</a>
                 </td>
                 <td>
                    From @Html.DisplayFor(modelItem => item.Slot.StartTime) to 
@@ -72,7 +75,8 @@
                     {
                     <td>                   
                      <a asp-page="./Feedback" asp-route-interviewId="@item.InterviewerId"
-                       asp-route-applicantId="@item.ApplicationId">Evaluate</a>
+                       asp-route-applicationId="@item.ApplicationId"
+                       asp-route-round="@item.Round">Evaluate</a>
                         </td>
                     }
                 }              
