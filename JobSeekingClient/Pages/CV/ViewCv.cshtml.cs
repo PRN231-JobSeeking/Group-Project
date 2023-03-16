@@ -29,7 +29,7 @@ namespace JobSeekingClient.Pages
             {
                 return RedirectToPage("../Auth/Login");
             }
-            if (role != (int)AccountRole.Applicant)
+            if (role == (int)AccountRole.Administrator)
             {
                 return RedirectToPage("../Home");
             }
