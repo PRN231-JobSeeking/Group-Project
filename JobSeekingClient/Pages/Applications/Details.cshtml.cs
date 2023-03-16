@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ClientRepository;
 using ClientRepository.Models;
 using ClientRepository.Service;
+using ClientRepository.Service.Implementation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,14 @@ namespace JobSeekingClient.Pages.Applications
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            //user for role checking
+            var roleId = HttpContext.Session.GetInt32("Role");
+
+            if (roleId == null)
+            {
+                return RedirectToPage("/Auth/Login");
+            }
+
             //token for API
             var token = HttpContext.Session.GetString("token");
 
@@ -66,6 +75,7 @@ namespace JobSeekingClient.Pages.Applications
                 Debug.WriteLine("Details.OnGet: Interview not found");
                 return NotFound();
             }
+            Debug.WriteLine("Details.OnGet: Got " + find3.Count() + " related interview.");
             Interview = find3;
 
             //if there's less than 2 interview, warning message to add more interview

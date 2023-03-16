@@ -53,7 +53,26 @@
                                             <a asp-page="/Post/Details" asp-route-id="@item.PostId">@item.PostId</a>
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Status)
+                                            @{
+                                                switch (item.Status)
+                                                {
+                                                    case null:
+                                                        {
+                                                            <text>Pending</text>
+                                                            break;
+                                                        }
+                                                    case true:
+                                                        {
+                                                            <text>Passed</text>
+                                                            break;
+                                                        }
+                                                    case false:
+                                                        {
+                                                            <text>Failed</text>
+                                                            break;
+                                                        }
+                                                }
+                                            }
                                         </td>
                                         <td>
                                             <a asp-page="/Applications/Details" asp-route-id="@item.Id">Details</a> |
@@ -172,7 +191,8 @@
                 }
             case 4:
                 {
-                    //for Applicants
+                    if(Model._isNewsMode!=2){
+                        //for Applicants
                     if (Model._interviews.Count() != 0)
                     {
                         if (@ViewBag.message1 == null)
@@ -214,17 +234,27 @@
                                             @Html.DisplayFor(modelItem => item.Slot.EndTime)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.ApplicationId)
+                                            @{
+                                                foreach (var items2 in Model._post)
+                                                {
+                                                    if (items2.Id == item.ApplicationId)
+                                                    {
+                                                        <text>Application for Post: @items2.Title</text>
+                                                    }
+                                                }
+                                            }
                                         </td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
                     }
+                    }
+
 
                     if (Model._applications.Count != 0)
                     {
-                        if (@ViewBag.message2 == null)
+                        if (@ViewBag.message3 != null && Model._isNewsMode == 2)
                         {
                             <div>Approved applications</div>
                         }
@@ -236,18 +266,13 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        @Html.DisplayNameFor(model => Model._applications[0].Id)
+                                        CV
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => Model._applications[0].CV)
+                                        Application
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => Model._applications[0].ApplicantId)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => Model._applications[0].PostId)
-                                    </th>
-                                    <th>
+                                        Status
                                     </th>
                                 </tr>
                             </thead>
@@ -256,19 +281,44 @@
                                 {
                                     <tr>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Id)
+                                            TODO: Link CV
+
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.CV)
+                                            @{
+                                                foreach (var items2 in Model._post)
+                                                {
+                                                    if (items2.Id == item.PostId)
+                                                    {
+                                                        <text>Application for Post: @items2.Title</text>
+                                                    }
+                                                }
+                                            }
+
                                         </td>
+
+
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.ApplicantId)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.PostId)
-                                        </td>
-                                        <td>
-                                            <a asp-page="/Applications/Details" asp-route-id="@item.Id">Details</a>
+                                            @{
+                                                switch (item.Status)
+                                                {
+                                                    case null:
+                                                        {
+                                                            <text>Pending</text>
+                                                            break;
+                                                        }
+                                                    case true:
+                                                        {
+                                                            <text>Passed</text>
+                                                            break;
+                                                        }
+                                                    case false:
+                                                        {
+                                                            <text>Failed</text>
+                                                            break;
+                                                        }
+                                                }
+                                            }
                                         </td>
                                     </tr>
                                 }
@@ -276,29 +326,20 @@
                         </table>
                     }
                     //for showing the failed applications
-                    if (Model._applications2.Count != 0)
+                    if (Model._applications2.Count != 0 && Model._isNewsMode == 2)
                     {
                         <div>Denied applications</div>
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>
-                                        @Html.DisplayNameFor(model => Model._applications2[0].Id)
+                                        CV
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => Model._applications2[0].CV)
+                                        Application
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => Model._applications2[0].ApplicantId)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => Model._applications2[0].PostId)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => Model._applications2[0].Status)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => Model._applications2[0].IsDeleted)
+                                        Status
                                     </th>
                                 </tr>
                             </thead>
@@ -307,25 +348,44 @@
                                 {
                                     <tr>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.Id)
+                                            TODO: Link CV
+
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.CV)
+                                            @{
+                                                foreach (var items2 in Model._post)
+                                                {
+                                                    if (items2.Id == item.PostId)
+                                                    {
+                                                        <text>Application for Post: @items2.Title</text>
+                                                    }
+                                                }
+                                            }
+
                                         </td>
+
+
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.ApplicantId)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.PostId)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Status)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.IsDeleted)
-                                        </td>
-                                        <td>
-                                            <a asp-page="/Applications/Details" asp-route-id="@item.Id">Details</a>
+                                            @{
+                                                switch (item.Status)
+                                                {
+                                                    case null:
+                                                        {
+                                                            <text>Pending</text>
+                                                            break;
+                                                        }
+                                                    case true:
+                                                        {
+                                                            <text>Passed</text>
+                                                            break;
+                                                        }
+                                                    case false:
+                                                        {
+                                                            <text>Failed</text>
+                                                            break;
+                                                        }
+                                                }
+                                            }
                                         </td>
                                     </tr>
                                 }
@@ -340,25 +400,40 @@
     else
     {
         <h1>Home Page</h1>
-        if (@ViewBag.message1 != null){
+        if (@ViewBag.message1 != null)
+        {
             <span class="text-danger">@ViewBag.message1</span>
-        <br>
+            <br>
         }
-        if (@ViewBag.message2 != null){
+        if (@ViewBag.message2 != null)
+        {
             <span class="text-danger">@ViewBag.message2</span>
-        <br>
+            <br>
         }
         if (@ViewBag.message1 != null || @ViewBag.message2 != null)
         {
             <text>
                 <a asp-route-news="1">Check news now.</a>
+                <br>
+            </text>
+        }
+        if (@ViewBag.message3 != null)
+        {
+            <span class="text-danger">@ViewBag.message3</span>
+            <br>
+        }
+        if (@ViewBag.message3 != null)
+        {
+            <text>
+                <a asp-route-news="2">Check your applications.</a>
+                <br>
             </text>
         }
         <div class="row">
             <div class="col-md-4">
                 <form method="post">
                     <div class="form-group">
-                        Search:<input asp-for="_searchInput" class="form-control"/>
+                        Search:<input asp-for="_searchInput" class="form-control" />
                         Location:
                         <select asp-for="_locationFilterInput">
                             <option value="null">All Locations</option>
@@ -381,7 +456,7 @@
                 </form>
             </div>
         </div>
-        <hr/>
+        <hr />
         <table class="table">
             <thead>
                 <tr>
@@ -444,17 +519,19 @@
                             }
                         </td>
                         <td>
-                            @foreach(var item2 in Model._level){
-                                if(item2.Id == item.LevelId){
+                            @foreach (var item2 in Model._level)
+                            {
+                                if (item2.Id == item.LevelId)
+                                {
                                     <text>@item2.Name</text>
                                 }
                             }
                         </td>
                         <td>
                             <a asp-page="/Post/PostDetail" asp-route-id="@item.Id">Details</a>
-                            @if(userRole == 2)
+                            @if (userRole == 2)
                             {
-                                 <a class="ps-4" asp-page="/Applications/IndexOnPost" asp-route-postId="@item.Id">View Applications</a>
+                                <a class="ps-4" asp-page="/Applications/IndexOnPost" asp-route-postId="@item.Id">View Applications</a>
                             }
                         </td>
                     </tr>

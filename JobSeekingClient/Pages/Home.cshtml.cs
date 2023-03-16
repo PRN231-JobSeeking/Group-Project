@@ -72,14 +72,15 @@ namespace JobSeekingClient.Pages.Home
         [BindProperty]
         public IList<LocationModel> _locations { get; set; }
 
+        public int _isNewsMode;
+
         //used to show the player news
         [BindProperty]
         public bool isNews { get; set; }
 
         public IActionResult OnGet(string? news, string? search)
         {
-            //used for providing news or not
-            int _isNewsMode;
+            _isNewsMode = 0;
 
             //user for role checking
             var roleId = HttpContext.Session.GetInt32("Role");
@@ -89,7 +90,7 @@ namespace JobSeekingClient.Pages.Home
 
             if (int.TryParse(news, out _isNewsMode))
             {
-                if (_isNewsMode == 1)
+                if (_isNewsMode == 1 || _isNewsMode == 2)
                 {
                     isNews = true;
                 }
@@ -281,6 +282,7 @@ namespace JobSeekingClient.Pages.Home
                         Debug.WriteLine("Home.OnGet: Found applicant application list :" + _applicationList.Count() + " of user id:" + userId);
                         _applications = new List<ApplicationModel>();
                         _applications2 = new List<ApplicationModel>();
+                        var _applications3 = new List<ApplicationModel>();
                         //warn user should they have pending application
                         foreach (var item in _applicationList)
                         {
@@ -289,30 +291,54 @@ namespace JobSeekingClient.Pages.Home
                                 _applications.Add(item);
                             }
                         }
-                        if (_applications.Count != 0)
-                        {
-                            Debug.WriteLine("Home.OnGet: Found pending application :" + _applications.Count());
-                            ViewData["message2"] = "You have " + _applications.Count + " pending application!";
-                        }
-                        else
-                        {
-                            // if there's no pending, show the user their failed and passed applications
-                            foreach (var item in _applicationList)
-                            {
-                                if ((bool)item.Status)
-                                {
-                                    _applications.Add(item);
-                                }
-                            }
 
-                            foreach (var item in _applicationList)
+                        Debug.WriteLine("Home.OnGet: Found pending application :" + _applications.Count());
+                        ViewData["message2"] = "You have " + _applications.Count + " pending application!";
+
+                        // if there's no pending, show the user their failed and passed applications
+                        foreach (var item in _applicationList)
+                        {
+                            if (item.Status != null)
                             {
-                                if ((bool)item.Status)
+                                if (item.Status == true)
                                 {
                                     _applications2.Add(item);
                                 }
                             }
+                            
                         }
+
+                        if (_applications2.Count != 0)
+                        {
+                            Debug.WriteLine("Home.OnGet: Found passed application :" + _applications2.Count);
+                            ViewData["message3"] = "You have reviewed applications!";
+                            ViewData["message4"] = "You have " + _applications2.Count + " passed applications!";
+                        }
+
+                        foreach (var item in _applicationList)
+                        {
+                            if (item.Status != null)
+                            {
+                                if ((bool)item.Status == false)
+                                {
+                                    _applications3.Add(item);
+                                }
+                            }                            
+                        }
+
+                        if (_applications3.Count != 0)
+                        {
+                            Debug.WriteLine("Home.OnGet: Found failed application :" + _applications3.Count);
+                            ViewData["message3"] = "You have reviewed applications!";   
+                            ViewData["message5"] = "You have " + _applications2.Count + " failed applications!";
+                        }
+
+                        if (_isNewsMode == 2)
+                        {
+                            _applications = _applications2;
+                            _applications2 = _applications3;
+                        }
+
                         return Page();
                         break;
                     }
@@ -534,6 +560,7 @@ namespace JobSeekingClient.Pages.Home
                         Debug.WriteLine("Home.OnGet: Found applicant application list :" + _applicationList.Count() + " of user id:" + userId);
                         _applications = new List<ApplicationModel>();
                         _applications2 = new List<ApplicationModel>();
+                        var _applications3 = new List<ApplicationModel>();
                         //warn user should they have pending application
                         foreach (var item in _applicationList)
                         {
@@ -542,30 +569,54 @@ namespace JobSeekingClient.Pages.Home
                                 _applications.Add(item);
                             }
                         }
-                        if (_applications.Count != 0)
-                        {
-                            Debug.WriteLine("Home.OnGet: Found pending application :" + _applications.Count());
-                            ViewData["message2"] = "You have " + _applications.Count + " pending application!";
-                        }
-                        else
-                        {
-                            // if there's no pending, show the user their failed and passed applications
-                            foreach (var item in _applicationList)
-                            {
-                                if ((bool)item.Status)
-                                {
-                                    _applications.Add(item);
-                                }
-                            }
 
-                            foreach (var item in _applicationList)
+                        Debug.WriteLine("Home.OnGet: Found pending application :" + _applications.Count());
+                        ViewData["message2"] = "You have " + _applications.Count + " pending application!";
+
+                        // if there's no pending, show the user their failed and passed applications
+                        foreach (var item in _applicationList)
+                        {
+                            if (item.Status != null)
                             {
-                                if ((bool)item.Status)
+                                if (item.Status == true)
                                 {
                                     _applications2.Add(item);
                                 }
                             }
+
                         }
+
+                        if (_applications2.Count != 0)
+                        {
+                            Debug.WriteLine("Home.OnGet: Found passed application :" + _applications2.Count);
+                            ViewData["message3"] = "You have reviewed applications!";
+                            ViewData["message4"] = "You have " + _applications2.Count + " passed applications!";
+                        }
+
+                        foreach (var item in _applicationList)
+                        {
+                            if (item.Status != null)
+                            {
+                                if ((bool)item.Status == false)
+                                {
+                                    _applications3.Add(item);
+                                }
+                            }
+                        }
+
+                        if (_applications3.Count != 0)
+                        {
+                            Debug.WriteLine("Home.OnGet: Found failed application :" + _applications3.Count);
+                            ViewData["message3"] = "You have reviewed applications!";
+                            ViewData["message5"] = "You have " + _applications2.Count + " failed applications!";
+                        }
+
+                        if (_isNewsMode == 2)
+                        {
+                            _applications = _applications2;
+                            _applications2 = _applications3;
+                        }
+
                         return Page();
                         break;
                     }

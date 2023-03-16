@@ -60,13 +60,26 @@
             @Html.DisplayNameFor(model => model.Application.Status)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Application.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Application.IsDeleted)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Application.IsDeleted)
+            @{
+                switch (Model.Application.Status)
+                {
+                    case null:
+                        {
+                            <text>Pending</text>
+                            break;
+                        }
+                    case true:
+                        {
+                            <text>Passed</text>
+                            break;
+                        }
+                    case false:
+                        {
+                            <text>Failed</text>
+                            break;
+                        }
+                }
+            }
         </dd>
     </dl>
 </div>

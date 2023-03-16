@@ -31,13 +31,16 @@ namespace JobSeekingClient.Pages.Interviews
             //user id for interview/application/post tracking
             var userId = HttpContext.Session.GetInt32("UserId");
 
+            //token for API
+            var token = HttpContext.Session.GetString("token");
+
             if (roleId != 3)
             {
                 return RedirectToPage("/Auth/Login");
             }
 
             string path3 = StoredURI.Interviews;
-            var find3 = _interviewService.GetListAsync(path: path3).Result;
+            var find3 = _interviewService.GetListAsync(token: token, path: path3).Result;
             if (find3 == null)
             {
                 Debug.WriteLine("InterviewFeedbackModel.OnGet: Interview list not found");
