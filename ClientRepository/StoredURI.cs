@@ -14,6 +14,7 @@ namespace ClientRepository
         public static readonly string Skill = "Skill";
         public static readonly string UserSkill = "UserSkill";
         public static readonly string Post = "Post";
+        public static readonly string PostSkill = "PostSkill";
         public static readonly string Application = "Application";
         public static readonly string Slot = "slots";
         public static readonly string Interviews = "interviews";

@@ -108,7 +108,7 @@ namespace JobSeekingApi.Controllers
         public async Task<IActionResult> PutInterviewFeedback(InterviewFeedbackModel interviewFeedback)
         {
             var interviews = await _unitOfWork.InterviewRepository.Get(i => i.InterviewerId == interviewFeedback.InterviewerId && i.Round == interviewFeedback.Round 
-                                                    && i.ApplicationId == interviewFeedback.ApplicationId);
+                                                    && i.ApplicationId == interviewFeedback.ApplicationId && i.IsDeleted == false);
             if(interviews == null || interviews.Count() == 0)
             {
                 return NotFound("Not Exist Interview!");
@@ -166,13 +166,14 @@ namespace JobSeekingApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("Nonfeedbacks/InterviewerId/{interviewerId}/ApplicantId/{applicantId}")]
-        public async Task<IActionResult> GetInterviewNonFeedback(int interviewerId, int applicantId)
+        [HttpGet("Nonfeedbacks/InterviewerId/{interviewerId}/ApplicationId/{applicationId}/Round/{round}")]
+        public async Task<IActionResult> GetInterviewNonFeedback(int interviewerId, int applicationId, int round)
         {
             var interview = await _unitOfWork.InterviewRepository.GetFirst(i => i.IsDeleted == false && i.Point == 0
                                                                         && string.IsNullOrEmpty(i.Feedback)
                                                                         && i.InterviewerId == interviewerId
-                                                                        && i.ApplicationId == applicantId);
+                                                                        && i.ApplicationId == applicationId
+                                                                        && i.Round == round);
             if (interview == null)
             {
                 return BadRequest();

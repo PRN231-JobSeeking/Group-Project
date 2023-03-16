@@ -31,7 +31,21 @@ namespace JobSeekingApi.Controllers
         [Route("Get/Id/{aplicationId}")]
         public async Task<IActionResult> GetApplication([FromRoute] int aplicationId)
         {
-            var aplication = unitOfWork.ApplicationRepository.Get(a => a.Id == aplicationId).Result.FirstOrDefault();
+            var aplication = unitOfWork.ApplicationRepository.Get(a => a.Id == aplicationId && a.IsDeleted == false).Result.FirstOrDefault();
+            if (aplication == null)
+            {
+                return NotFound("Not found aplicationId!");
+            }
+            return Ok(aplication);
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("ApplicationNonInterview/ApplicantId/{aplicantId}")]
+        public async Task<IActionResult> GetApplicationByApplicant([FromRoute] int aplicantId)
+        {
+            var aplication = await unitOfWork.ApplicationRepository.Get(a => a.ApplicantId == aplicantId && a.IsDeleted == false
+                                                                                && a.Status == null);
             if (aplication == null)
             {
                 return NotFound("Not found aplicationId!");
@@ -77,11 +91,11 @@ namespace JobSeekingApi.Controllers
             {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot");
             }
-            if (!Directory.Exists(Directory.GetCurrentDirectory() + "/wwwroot/images"))
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + "/wwwroot/CV"))
             {
-                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/images");
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/CV");
             }
-            string filePath = Directory.GetCurrentDirectory() + $"/wwwroot/images/{id}{ext}";
+            string filePath = Directory.GetCurrentDirectory() + $"/wwwroot/CV/{id}{ext}";
             using (var stream = System.IO.File.Create(filePath))
             {
                 await file.CopyToAsync(stream);
@@ -91,7 +105,7 @@ namespace JobSeekingApi.Controllers
                 PostId = postId,
                 CV = $"{id}{ext}",
                 ApplicantId = applicationId,
-                Status = true,
+                Status = null,
             };
             await unitOfWork.ApplicationRepository.Add(application);
             return Ok(true);

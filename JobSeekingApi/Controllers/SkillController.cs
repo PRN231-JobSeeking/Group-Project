@@ -1,5 +1,6 @@
 ﻿using AppCore.Models;
 using AppRepository.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobSeekingApi.Controllers
@@ -24,6 +25,7 @@ namespace JobSeekingApi.Controllers
         }
 
         // GET: api/Role/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Skill>> GetSkills(int id)
         {

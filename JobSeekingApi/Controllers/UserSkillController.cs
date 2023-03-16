@@ -1,5 +1,6 @@
 ﻿using AppCore.Models;
 using AppRepository.UnitOfWork;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobSeekingApi.Controllers
@@ -19,6 +20,18 @@ namespace JobSeekingApi.Controllers
         public async Task<ActionResult<IEnumerable<UserSkill>>> GetAccounts()
         {
             var result = await _unitOfWork.UserSkillRepository.Get();
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("{accountId}")]
+        public async Task<ActionResult<IEnumerable<UserSkill>>> GetUserSkill(int accountId)
+        {
+            var result = await _unitOfWork.UserSkillRepository.Get(us => us.AccountId == accountId);
+            if(result == null)
+            {
+                return NotFound();
+            }
             return Ok(result);
         }
 

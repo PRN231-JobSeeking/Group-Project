@@ -9,9 +9,11 @@ namespace ClientRepository.Models
     public class InterviewFeedbackModel
     {
         public int ApplicationId { get; set; }
-        public int InterviewerId { get; set; }
 
-        public int SlotId { get; set; }
+        public int InterviewerId { get; set; }
+        public string ApplicantName { get; set; }
+
+        public string SlotName { get; set; }
         public int Round { get; set; }
         public string? Feedback { get; set; }
         public double Point { get; set; } = 0;

@@ -53,7 +53,7 @@ namespace JobSeekingClient.Pages.Interviews
             { 
                 if(SelectedCategory.Equals("1"))
                 {
-                    var list = await _interviewService.GetListAsync(path: StoredURI.Interviews, expression: c => c.InterviewerId == id & c.IsDeleted == false & c.Point==0 & c.Date.CompareTo(DateTime.Now)<0, token: token);
+                    var list = await _interviewService.GetListAsync(path: StoredURI.Interviews, expression: c => c.InterviewerId == id & c.IsDeleted == false & c.Point==0 & string.IsNullOrEmpty(c.Feedback) & c.Date.CompareTo(DateTime.Now)<0, token: token);
                     if (list != null)
                     {
                         Interview = list;

@@ -7,116 +7,53 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AppCore;
 using AppCore.Models;
+using AppRepository.Repositories;
+using ClientRepository.Models;
+using Microsoft.AspNetCore.Authorization;
+using AppRepository.UnitOfWork;
 
 namespace JobSeekingApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/PostSkill")]
     [ApiController]
     public class PostSkillRequiredController : ControllerBase
     {
-        private readonly Context _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public PostSkillRequiredController(Context context)
+        public PostSkillRequiredController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
-        // GET: api/PostSkillRequired
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PostSkillRequired>>> GetPostSkills()
+        [Authorize]
+        [HttpGet("{postId}")]
+        public async Task<IActionResult> GetPostSkill(int postId)
         {
-            return await _context.PostSkills.ToListAsync();
-        }
+            var postSkills = await _unitOfWork.PostSkillRepository.Get(ps => ps.PostId == postId);
 
-        // GET: api/PostSkillRequired/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PostSkillRequired>> GetPostSkillRequired(int id)
-        {
-            var postSkillRequired = await _context.PostSkills.FindAsync(id);
-
-            if (postSkillRequired == null)
+            if (postSkills == null || postSkills.Count() == 0)
             {
                 return NotFound();
             }
-
-            return postSkillRequired;
-        }
-
-        // PUT: api/PostSkillRequired/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPostSkillRequired(int id, PostSkillRequired postSkillRequired)
-        {
-            if (id != postSkillRequired.SkillId)
+            var postSkillModels = new List<PostSkillModel>();
+            foreach(var postSkill in postSkills)
+            {
+                var skill = await _unitOfWork.SkillRepository.GetFirst(s => s.Id == postSkill.SkillId);
+                if(skill != null)
+                {
+                    postSkillModels.Add(new PostSkillModel()
+                    {
+                        SkillId = postSkill.SkillId,
+                        SkillName = skill.Name,
+                        PostId = postId,
+                    });
+                }
+            }
+            if(postSkillModels.Count == 0)
             {
                 return BadRequest();
             }
-
-            _context.Entry(postSkillRequired).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PostSkillRequiredExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/PostSkillRequired
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<PostSkillRequired>> PostPostSkillRequired(PostSkillRequired postSkillRequired)
-        {
-            _context.PostSkills.Add(postSkillRequired);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (PostSkillRequiredExists(postSkillRequired.SkillId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetPostSkillRequired", new { id = postSkillRequired.SkillId }, postSkillRequired);
-        }
-
-        // DELETE: api/PostSkillRequired/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePostSkillRequired(int id)
-        {
-            var postSkillRequired = await _context.PostSkills.FindAsync(id);
-            if (postSkillRequired == null)
-            {
-                return NotFound();
-            }
-
-            _context.PostSkills.Remove(postSkillRequired);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool PostSkillRequiredExists(int id)
-        {
-            return _context.PostSkills.Any(e => e.SkillId == id);
+            return Ok(postSkillModels);
         }
     }
 }

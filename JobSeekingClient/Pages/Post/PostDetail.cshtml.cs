@@ -25,15 +25,21 @@ namespace JobSeekingClient.Pages
         private readonly ICategoryService _categoryService;
         private readonly ILevelService _levelService;
         private readonly ILocationService _locationService;
-
+        private readonly IPostSkillService _postSkillService;
+        private readonly IUserSkillService _userSkillService;
         public string Category { get; set; }
 
         public string Location { get; set; }
 
         public string Level { get; set; }
 
+        public bool CanApply { get; set; } = true;
+
+        public IEnumerable<PostSkillModel> PostSkills { get; set; } 
+
         public PostDetailModel(IConfiguration config, IPostService postService, IApplicationService applicationService, 
-            ICategoryService categoryService, ILevelService levelService, ILocationService locationService)
+            ICategoryService categoryService, ILevelService levelService, ILocationService locationService, IPostSkillService postSkillService,
+            IUserSkillService userSkillService)
         {
             this.config = config;
             this.postService = postService;
@@ -41,11 +47,19 @@ namespace JobSeekingClient.Pages
             this._categoryService = categoryService;
             _levelService = levelService;
             _locationService = locationService;
+            _postSkillService = postSkillService;
+            _userSkillService = userSkillService;
         }
         public async Task<IActionResult> OnGet(int id)
         {
             string? token = HttpContext.Session.GetString("token");
             if (string.IsNullOrEmpty(token))
+            {
+                return RedirectToPage("../Auth/Login");
+            }
+            int? role = HttpContext.Session.GetInt32("Role");
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
             {
                 return RedirectToPage("../Auth/Login");
             }
@@ -62,6 +76,21 @@ namespace JobSeekingClient.Pages
                 Category = category.Name;
                 Location = location.Name;
                 Level = level.Name;
+                PostSkills = await _postSkillService.GetListAsync(path: StoredURI.PostSkill + $"/{id}", token: token);
+                if (PostSkills == null || PostSkills.Count() == 0)
+                {
+                    ViewData["Error"] = "Post has no skills to apply!";
+                    return Page();
+                }
+            }
+            var applications = await applicationService.GetListAsync(path: StoredURI.Application + $"/ApplicationNonInterview/ApplicantId/{userId}", token: token);
+            if(applications != null && applications.Count() == 2)
+            {
+                CanApply = false;
+            }
+            if (role != (int)AccountRole.Applicant)
+            {
+                CanApply = false;
             }
             return Page();
         }
@@ -74,20 +103,60 @@ namespace JobSeekingClient.Pages
             {
                 return RedirectToPage("../Auth/Login");
             }
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToPage("../Auth/Login");
+            }
             if (role != (int)AccountRole.Applicant)
             {
                 ViewData["Error"] = "Need to be applicant account to apply cv!";
+                await OnGet(id);
                 return Page();
             }
             if (cvFile == null)
             {
                 ViewData["Error"] = "CV file not located!";
+                await OnGet(id);
                 return Page();
             }
-            int? userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null)
+            if(!cvFile.FileName.ToLower().Contains(".pdf"))
             {
-                return RedirectToPage("../Auth/Login");
+                ViewData["Error"] = "CV file must be pdf extension!";
+                await OnGet(id);
+                return Page();
+            }
+            var postSkillModels = await _postSkillService.GetListAsync(path: StoredURI.PostSkill + $"/{id}", token: token);
+            if(postSkillModels == null || postSkillModels.Count() == 0)
+            {
+                ViewData["Error"] = "Post has no skills to apply!";
+                await OnGet(id);
+                return Page();
+            }
+            var userSkills = await _userSkillService.GetListAsync(path: StoredURI.UserSkill + $"/{userId}", token: token);
+            if (userSkills == null || userSkills.Count == 0)
+            {
+                ViewData["Error"] = "You have no skills required!";
+                await OnGet(id);
+                return Page();
+            }
+            bool userContainSkill = false;
+            foreach(var postSkill in postSkillModels)
+            {
+                foreach (var userSkill in userSkills)
+                {
+                    if (postSkill.SkillId == userSkill.SkillId)
+                    {
+                        userContainSkill = true;
+                        break;
+                    }
+                }
+            }
+            if(!userContainSkill)
+            {
+                ViewData["Error"] = "You don't have post skills required!";
+                await OnGet(id);
+                return Page();
             }
             var applications = await applicationService.GetListAsync(path: StoredURI.Application + $"/Get/ApplicantId/{userId}/PostId/{id}", token: token);
             if (applications != null)
@@ -96,38 +165,27 @@ namespace JobSeekingClient.Pages
                 {
                     foreach (var application in applications)
                     {
-                        application.Status = false;
+                        application.Status = null;
                         application.IsDeleted = true;
                         var res = await applicationService.Update(application, path: StoredURI.Application + $"/{application.Id}", token: token);
                         if (!res)
                         {
                             ViewData["Error"] = "Apply CV Error!";
+                            await OnGet(id);
                             return Page();
                         }
                     }
                 }
             }
-            Post = postService.GetModelAsync(id).Result;
-            if (Post != null)
-            {
-                var category = await _categoryService.GetModelAsync(path: StoredURI.Category + $"/{Post.CategoryId}", token: token);
-                var level = await _levelService.GetModelAsync(path: StoredURI.Level + $"/{Post.LevelId}", token: token);
-                var location = await _locationService.GetModelAsync(path: StoredURI.Location + $"/{Post.LocationId}", token: token);
-                if (category == null || level == null || location == null)
-                {
-                    return RedirectToPage("../Home");
-                }
-                Category = category.Name;
-                Location = location.Name;
-                Level = level.Name;
-            }
             bool result = await applicationService.Create(id, userId.Value, cvFile, token);
             if(result)
             {
                 ViewData["Success"] = "Apply CV Successful.";
+                await OnGet(id);
                 return Page();
             }
             ViewData["Error"] = "Apply CV Error!";
+            await OnGet(id);
             return Page();
         }
     }

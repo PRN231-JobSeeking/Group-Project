@@ -180,7 +180,9 @@
                                             @Html.DisplayFor(modelItem => item.ApplicationId)
                                         </td>
                                         <td>
-                                            <a asp-page="/Interviews/InterviewFeedback" asp-route-applicationId="@item.ApplicationId" asp-route-round="@item.Round">Feedback Interview</a>
+                                            <a asp-page="/Interviews/Feedback" asp-route-interviewId="@item.InterviewerId"
+                                                                                asp-route-applicationId="@item.ApplicationId"
+                                                                                asp-route-round="@item.Round">Feedback Interview</a>
                                         </td>
                                     </tr>
                                 }
