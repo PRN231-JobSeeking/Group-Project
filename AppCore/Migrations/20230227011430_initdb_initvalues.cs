@@ -246,8 +246,7 @@ namespace AppCore.Migrations
                 columns: table => new
                 {
                     ApplicationId = table.Column<int>(type: "int", nullable: false),
-                    Round = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Round = table.Column<int>(type: "int", nullable: false),
                     InterviewerId = table.Column<int>(type: "int", nullable: false),
                     SlotId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "date", nullable: false),
@@ -257,7 +256,7 @@ namespace AppCore.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Interviews", x => new { x.ApplicationId, x.Round });
+                    table.PrimaryKey("PK_Interviews", x => new { x.ApplicationId, x.SlotId, x.Date });
                     table.ForeignKey(
                         name: "FK_Interviews_Accounts_InterviewerId",
                         column: x => x.InterviewerId,

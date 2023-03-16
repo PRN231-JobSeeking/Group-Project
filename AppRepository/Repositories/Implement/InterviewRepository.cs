@@ -63,17 +63,17 @@ namespace AppRepository.Repositories.Implement
             //if no status <-> status == null
             //then that application has not been interviewed yet
             //created with round = 1
-            //var interviews_this_application = await _unitOfWork.InterviewRepository.Get(c => c.ApplicationId == interview.ApplicationId);
-            //if (interviews_this_application == null || interviews_this_application.Count() == 0)
-            //{
-            //    interview.Round = 1;
-            //}
-            //else
-            //{
-            //    int round = ++(interviews_this_application.Last().Round);
-            //    interview.Round = round;
-            //    created.Round= round;
-            //}
+            var interviews_this_application = await _unitOfWork.InterviewRepository.Get(c => c.ApplicationId == interview.ApplicationId);
+            if (interviews_this_application == null || interviews_this_application.Count() == 0)
+            {
+                interview.Round = 1;
+            }
+            else
+            {
+                int round = interviews_this_application.Last().Round + 1;
+                interview.Round = round;
+                //created.Round = round;
+            }
             try
             {
                 await _unitOfWork.InterviewRepository.Add(interview);
@@ -115,7 +115,7 @@ namespace AppRepository.Repositories.Implement
             bool result = false;
             if ((interviews_this_application.Count() == 0) || interviews_this_application.Last().Date <= date.ToDateTime(TimeOnly.MinValue))
             {
-                result = !interviews_this_application.Any(c => c.SlotId == slotId && c.Date == date.ToDateTime(TimeOnly.MinValue));
+                result = !interviews_this_application.Any(c => c.SlotId >= slotId && c.Date == date.ToDateTime(TimeOnly.MinValue));
             }            
             return result;
         }
