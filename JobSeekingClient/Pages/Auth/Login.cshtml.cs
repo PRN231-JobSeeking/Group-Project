@@ -55,7 +55,7 @@ namespace JobSeekingClient.Pages.Auth
                 }
                 if (user.RoleId == 3)
                 {
-                    return RedirectToPage("/Home");
+                    return RedirectToPage("/Interviews/HomePageInterviewer");
                 }
                 if (user.RoleId == 4)
                 {

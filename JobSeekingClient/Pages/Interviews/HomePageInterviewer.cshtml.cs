@@ -47,7 +47,7 @@ namespace JobSeekingClient.Pages.Interviews
             }
             if (test != 3)
             {
-                return RedirectToPage("./HomePage");
+                return RedirectToPage("/Home");
             }         
             if(SelectedCategory != null)
             { 

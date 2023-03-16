@@ -3,6 +3,7 @@ using ClientRepository.Service;
 using ClientRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ClientRepository.Utils;
 
 namespace JobSeekingClient.Pages.Accounts
 {
@@ -25,9 +26,9 @@ namespace JobSeekingClient.Pages.Accounts
             {
                 return RedirectToPage("/Auth/Login");
             }
-            if (test != 1)
+            if (test != (int)AccountRole.Administrator)
             {
-                return RedirectToPage("./HomePage");
+                return RedirectToPage("/Home");
             }
             var list = await _accountService.GetListAsync(path: StoredURI.Account, expression: c => c.IsDeleted == false & c.RoleId!=1, param: null, token: token);
             if (list != null)
