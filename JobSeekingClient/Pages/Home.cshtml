@@ -6,6 +6,7 @@
     if (Model.isNews)
     {
         <h1>News Page</h1>
+
         switch (userRole)
         {
             case 1:
@@ -103,6 +104,7 @@
                                         </td>
                                         <td>
                                             <a asp-page="/Applications/Details" asp-route-id="@item.Id">Details</a> |
+                                            <a asp-page="/Applications/IndexOnPost" asp-route-postId="@item.PostId">View Applications</a> |
                                         </td>
                                     </tr>
                                 }
@@ -450,6 +452,10 @@
                         </td>
                         <td>
                             <a asp-page="/Post/PostDetail" asp-route-id="@item.Id">Details</a>
+                            @if(userRole == 2)
+                            {
+                                 <a class="ps-4" asp-page="/Applications/IndexOnPost" asp-route-postId="@item.Id">View Applications</a>
+                            }
                         </td>
                     </tr>
                 }
