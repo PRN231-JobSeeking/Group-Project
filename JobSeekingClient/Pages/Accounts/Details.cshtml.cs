@@ -30,7 +30,8 @@ namespace JobSeekingClient.Pages.Accounts
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             string path = StoredURI.Account + "/" + id;
-            var find = await _accountService.GetModelAsync(path: path);
+            var token = HttpContext.Session.GetString("token");
+            var find = await _accountService.GetModelAsync(path: path,token: token);
             if (find == null)
             {
                 return NotFound();

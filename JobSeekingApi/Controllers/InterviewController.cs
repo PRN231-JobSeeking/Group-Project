@@ -79,12 +79,12 @@ namespace JobSeekingApi.Controllers
             {
                 await _unitOfWork.InterviewRepository.CreateMeeting(interview);
             }
-            catch (DbUpdateException)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(ex.Message);
             }
 
-            return CreatedAtAction("GetInterview", new { id = interview.ApplicationId }, interview);
+            return Ok(interview);
         }
 
         // DELETE: api/Interview/5

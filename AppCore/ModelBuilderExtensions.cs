@@ -132,7 +132,20 @@ namespace AppCore
                     Password = "123",
                     Phone = "0908123456",
                     RoleId = 4,
-                }
+                },
+                 new Account()
+                 {
+                     Id = 7,
+                     Address = "abc",
+                     Email = "applicant02@email",
+                     FirstName = "abc",
+                     LastName = "abc",
+                     IsDeleted = false,
+                     IsLockout = false,
+                     Password = "123",
+                     Phone = "0908123456",
+                     RoleId = 4,
+                 }
                 );
             modelBuilder.Entity<Skill>().HasData(
                 new Skill()
@@ -272,6 +285,21 @@ namespace AppCore
                     StartDate= DateTime.Today,
                     Status = true,
                     Title = "Backend API hiring"
+                },
+                new Post()
+                {
+                    Id = 2,
+                    Amount = 1,
+                    CategoryId = 2,
+                    CreateDate = DateTime.Today,
+                    IsDeleted = false,
+                    Description = "abcdef",
+                    EndDate = DateTime.Today.AddDays(10),
+                    LevelId = 1,
+                    LocationId = 1,
+                    StartDate = DateTime.Today,
+                    Status = true,
+                    Title = "Frontend hiring"
                 }
                 );
             modelBuilder.Entity<PostSkillRequired>().HasData(
