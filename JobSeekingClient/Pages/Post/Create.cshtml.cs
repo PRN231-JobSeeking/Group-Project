@@ -83,13 +83,12 @@ namespace JobSeekingClient.Pages.Post
             {
                 return Page();
             }
-
             bool result = await _postService.Add(Post, path: StoredURI.Post, token: token);
             if(result)
             {
                 return RedirectToPage("../Home");
             }
-            ViewData["Error"] = "Already exist post title!";
+            ViewData["Error"] = "Post Add Error!";
             return Page();
         }
     }

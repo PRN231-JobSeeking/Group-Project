@@ -49,11 +49,6 @@ namespace JobSeekingApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Post>> Post(PostDTO postModel)
         {
-            var postInDb = await unitOfWork.PostRepository.GetFirst(p => p.Title.ToLower().Equals(postModel.Title.ToLower()));
-            if(postInDb != null)
-            {
-                return BadRequest("Already exist post title!");
-            }
             var task = unitOfWork.PostRepository.Add(new Post()
             {
                 Title = postModel.Title,
