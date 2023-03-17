@@ -80,7 +80,10 @@ namespace JobSeekingClient.Pages.Applications
                 return NotFound();
             }
             Debug.WriteLine("Application.Edit.OnGetAsync: Got " + find2.Count + " relevant interviews.");
-            Interview = find2;
+
+            var find3 = find2.Where(e => e.Feedback != null).ToList();
+
+            Interview = find3;
 
 
             return Page();
