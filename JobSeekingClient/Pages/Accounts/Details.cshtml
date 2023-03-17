@@ -1,6 +1,7 @@
 ﻿@page
 @model JobSeekingClient.Pages.Accounts.DetailsModel
-
+@using System.Net.Http;
+@using ClientRepository.Utils;
 @{
     ViewData["Title"] = "Details";
 }
@@ -61,7 +62,14 @@
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Account?.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
-</div>
+@{
+    if (HttpContext.Session.GetInt32("Role") == (int)AccountRole.Applicant)
+    {
+        <div>
+            <a asp-page="./Edit" asp-route-id="@Model.Account?.Id">Edit</a> |
+            <a asp-page="./Index">Back to List</a>
+        </div>
+    }
+   
+}
+
