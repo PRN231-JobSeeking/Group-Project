@@ -12,10 +12,12 @@ namespace JobSeekingApi.Controllers
     public class ApplicationController : ControllerBase
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IConfiguration _config;
 
-        public ApplicationController(IUnitOfWork unitOfWork)
+        public ApplicationController(IConfiguration config, IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
+            _config = config;
         }
 
         [Authorize]
@@ -31,7 +33,7 @@ namespace JobSeekingApi.Controllers
         [Route("Get/Id/{aplicationId}")]
         public async Task<IActionResult> GetApplication([FromRoute] int aplicationId)
         {
-            var aplication = unitOfWork.ApplicationRepository.Get(a => a.Id == aplicationId && a.IsDeleted == false).Result.FirstOrDefault();
+            var aplication = unitOfWork.ApplicationRepository.Get(a => a.Id == aplicationId).Result.FirstOrDefault();
             if (aplication == null)
             {
                 return NotFound("Not found aplicationId!");
@@ -87,15 +89,21 @@ namespace JobSeekingApi.Controllers
                 return NotFound("File must have extension .pdf");
             }
             string id = Guid.NewGuid().ToString();
-            if (!Directory.Exists(Directory.GetCurrentDirectory() + "/wwwroot"))
+            string directory = _config["ApplicationRoot:Directory"];
+            string folder = _config["ApplicationRoot:Folder"];
+            if(string.IsNullOrEmpty(directory) || string.IsNullOrEmpty(folder))
             {
-                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot");
+                return NotFound("Appsettings need to config Application Root!");
             }
-            if (!Directory.Exists(Directory.GetCurrentDirectory() + "/wwwroot/CV"))
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + $"/{directory}"))
             {
-                Directory.CreateDirectory(Directory.GetCurrentDirectory() + "/wwwroot/CV");
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + $"/{directory}");
             }
-            string filePath = Directory.GetCurrentDirectory() + $"/wwwroot/CV/{id}{ext}";
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + $"/{directory}/{folder}"))
+            {
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + $"/{directory}/{folder}");
+            }
+            string filePath = Directory.GetCurrentDirectory() + $"/{directory}/{folder}/{id}{ext}";
             using (var stream = System.IO.File.Create(filePath))
             {
                 await file.CopyToAsync(stream);
