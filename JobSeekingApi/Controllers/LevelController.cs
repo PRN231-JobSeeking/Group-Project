@@ -52,7 +52,12 @@ namespace JobSeekingApi.Controllers
             {
                 return BadRequest();
             }
-            var levelInDb = list.FirstOrDefault();
+            var levelInDb = await _unitOfWork.LevelRepository.GetFirst(c => c.Name.ToLower().Equals(level.Name.ToLower()));
+            if (levelInDb != null)
+            {
+                return BadRequest("Already exist level name!");
+            }
+            levelInDb = list.FirstOrDefault();
             if (levelInDb != null)
             {
                 levelInDb.Name = level.Name;

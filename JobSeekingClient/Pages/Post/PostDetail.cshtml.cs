@@ -35,6 +35,8 @@ namespace JobSeekingClient.Pages
 
         public bool CanApply { get; set; } = true;
 
+        public ApplicationModel OldApplication { get; set; }
+
         public IEnumerable<PostSkillModel> PostSkills { get; set; } 
 
         public PostDetailModel(IConfiguration config, IPostService postService, IApplicationService applicationService, 
@@ -86,11 +88,41 @@ namespace JobSeekingClient.Pages
             var applications = await applicationService.GetListAsync(path: StoredURI.Application + $"/ApplicationNonInterview/ApplicantId/{userId}", token: token);
             if(applications != null && applications.Count() == 2)
             {
-                CanApply = false;
+                bool alreadyApplyPost = false;
+                foreach(var application in applications)
+                {
+                    if(application.PostId == id)
+                    {
+                        alreadyApplyPost = true;
+                    }
+                }
+                if (!alreadyApplyPost)
+                {
+                    CanApply = false;
+                }
             }
             if (role != (int)AccountRole.Applicant)
             {
                 CanApply = false;
+            }
+            applications = await applicationService.GetListAsync(path: StoredURI.Application + $"/Get/ApplicantId/{userId}/PostId/{id}", token: token);
+            if (applications != null)
+            {
+                if (applications.Count > 0)
+                {
+                    foreach (var application in applications)
+                    {
+                        if (OldApplication == null)
+                        {
+                            OldApplication = application;
+                        }
+                        if (application.Status != null)
+                        {
+                            CanApply = false;
+                            return Page();
+                        }
+                    }
+                }
             }
             return Page();
         }
@@ -165,7 +197,12 @@ namespace JobSeekingClient.Pages
                 {
                     foreach (var application in applications)
                     {
-                        application.Status = null;
+                        if(application.Status != null)
+                        {
+                            ViewData["Error"] = "You already interviewed this post!";
+                            await OnGet(id);
+                            return Page();
+                        }
                         application.IsDeleted = true;
                         var res = await applicationService.Update(application, path: StoredURI.Application + $"/{application.Id}", token: token);
                         if (!res)

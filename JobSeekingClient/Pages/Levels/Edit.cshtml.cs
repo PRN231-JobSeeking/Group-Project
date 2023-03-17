@@ -63,6 +63,14 @@ namespace JobSeekingClient.Pages.Levels
             {
                 return RedirectToPage("../Home");
             }
+            var level = await _levelService.GetModelAsync(expression: c => c.Name.ToLower().Equals(Level.Name.ToLower())
+                                                               , path: StoredURI.Level + "/" + Level.Id.ToString(), token: token);
+            if (level != null)
+            {
+                ViewData["Error"] = "Already exist level name!";
+                await OnGetAsync(Level.Id);
+                return Page();
+            }
             await _levelService.Update(Level, path: StoredURI.Level + "/" + Level.Id.ToString(), token: token);
             return RedirectToPage("./Index");
         }

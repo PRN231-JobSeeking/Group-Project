@@ -95,6 +95,11 @@
     </dd>
 </dl>
 @{
+    if (Model.OldApplication != null)
+    {
+        string url = $"../CV/{Model.OldApplication.Id}";
+        <a href="@url"> View Applied CV</a>
+    }
     if (Model.CanApply)
     {
         <form method="post" , enctype="multipart/form-data">
