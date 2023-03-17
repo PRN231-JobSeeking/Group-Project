@@ -252,7 +252,25 @@ namespace JobSeekingClient.Pages.Home
                     {
                         _interviews = new List<InterviewModel>();
 
-                        var _interviewList = _interviewService.GetListAsync(path: StoredURI.Interviews, expression: null, param: null, token: token).Result.ToList();
+                        //checking for applications
+                        var _applicationList = _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false && c.ApplicantId == userId, param: null, token: token).Result.ToList();
+                        Debug.WriteLine("Home.OnGet: Found applicant application list :" + _applicationList.Count() + " of user id:" + userId);
+
+
+                        var _tempInterviewList = _interviewService.GetListAsync(path: StoredURI.Interviews, expression: e => e.IsDeleted == false, param: null, token: token).Result.ToList();
+
+                        var _interviewList = new List<InterviewModel>();
+                        foreach (var item in _tempInterviewList)
+                        {
+                            foreach (var item2 in _applicationList)
+                            {
+                                if (item.ApplicationId == item2.Id)
+                                {
+                                    _interviewList.Add(item);
+                                }
+                            }
+                        }
+
                         //get list to check whether interviewer has incoming interview
                         foreach (InterviewModel item in _interviewList)
                         {
@@ -277,8 +295,6 @@ namespace JobSeekingClient.Pages.Home
                             _interviews = _interviewList;
                         }
 
-                        //checking for applications
-                        var _applicationList = _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false && c.ApplicantId == userId, param: null, token: token).Result.ToList();
                         Debug.WriteLine("Home.OnGet: Found applicant application list :" + _applicationList.Count() + " of user id:" + userId);
                         _applications = new List<ApplicationModel>();
                         _applications2 = new List<ApplicationModel>();
@@ -305,7 +321,7 @@ namespace JobSeekingClient.Pages.Home
                                     _applications2.Add(item);
                                 }
                             }
-                            
+
                         }
 
                         if (_applications2.Count != 0)
@@ -323,13 +339,13 @@ namespace JobSeekingClient.Pages.Home
                                 {
                                     _applications3.Add(item);
                                 }
-                            }                            
+                            }
                         }
 
                         if (_applications3.Count != 0)
                         {
                             Debug.WriteLine("Home.OnGet: Found failed application :" + _applications3.Count);
-                            ViewData["message3"] = "You have reviewed applications!";   
+                            ViewData["message3"] = "You have reviewed applications!";
                             ViewData["message5"] = "You have " + _applications2.Count + " failed applications!";
                         }
 
@@ -530,7 +546,25 @@ namespace JobSeekingClient.Pages.Home
                     {
                         _interviews = new List<InterviewModel>();
 
-                        var _interviewList = _interviewService.GetListAsync(path: StoredURI.Interviews, expression: null, param: null, token: token).Result.ToList();
+                        //checking for applications
+                        var _applicationList = _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false && c.ApplicantId == userId, param: null, token: token).Result.ToList();
+                        Debug.WriteLine("Home.OnGet: Found applicant application list :" + _applicationList.Count() + " of user id:" + userId);
+
+
+                        var _tempInterviewList = _interviewService.GetListAsync(path: StoredURI.Interviews, expression: e => e.IsDeleted == false, param: null, token: token).Result.ToList();
+
+                        var _interviewList = new List<InterviewModel>();
+                        foreach (var item in _tempInterviewList)
+                        {
+                            foreach (var item2 in _applicationList)
+                            {
+                                if (item.ApplicationId == item2.Id)
+                                {
+                                    _interviewList.Add(item);
+                                }
+                            }
+                        }
+
                         //get list to check whether interviewer has incoming interview
                         foreach (InterviewModel item in _interviewList)
                         {
@@ -555,9 +589,7 @@ namespace JobSeekingClient.Pages.Home
                             _interviews = _interviewList;
                         }
 
-                        //checking for applications
-                        var _applicationList = _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false && c.ApplicantId == userId, param: null, token: token).Result.ToList();
-                        Debug.WriteLine("Home.OnGet: Found applicant application list :" + _applicationList.Count() + " of user id:" + userId);
+
                         _applications = new List<ApplicationModel>();
                         _applications2 = new List<ApplicationModel>();
                         var _applications3 = new List<ApplicationModel>();

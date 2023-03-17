@@ -181,8 +181,8 @@
                                         </td>
                                         <td>
                                             <a asp-page="/Interviews/Feedback" asp-route-interviewId="@item.InterviewerId"
-                                                                                asp-route-applicationId="@item.ApplicationId"
-                                                                                asp-route-round="@item.Round">Feedback Interview</a>
+                   asp-route-applicationId="@item.ApplicationId"
+                   asp-route-round="@item.Round">Feedback Interview</a>
                                         </td>
                                     </tr>
                                 }
@@ -193,64 +193,70 @@
                 }
             case 4:
                 {
-                    if(Model._isNewsMode!=2){
-                        //for Applicants
-                    if (Model._interviews.Count() != 0)
+                    if (Model._isNewsMode != 2)
                     {
-                        if (@ViewBag.message1 == null)
+                        //for Applicants
+                        if (Model._interviews.Count() != 0)
+                        {
+                            if (@ViewBag.message1 == null)
+                            {
+                                <div>No pending interview was found!</div>
+                            }
+                            else
+                            {
+                                <span class="text-danger">@ViewBag.message1</span>
+                            }
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model._interviews[0].Date)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model._interviews[0].Slot.StartTime)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model._interviews[0].Slot.EndTime)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model._interviews[0].ApplicationId)
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model._interviews)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Date)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Slot.StartTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Slot.EndTime)
+                                            </td>
+                                            <td>
+                                                @{
+                                                    foreach (var items2 in Model._post)
+                                                    {
+                                                        if (items2.Id == item.ApplicationId)
+                                                        {
+                                                            <text>Application for Post: @items2.Title</text>
+                                                        }
+                                                    }
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
+                        else
                         {
                             <div>No pending interview was found!</div>
                         }
-                        else
-                        {
-                            <span class="text-danger">@ViewBag.message1</span>
-                        }
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model._interviews[0].Date)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model._interviews[0].Slot.StartTime)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model._interviews[0].Slot.EndTime)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model._interviews[0].ApplicationId)
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model._interviews)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Date)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Slot.StartTime)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Slot.EndTime)
-                                        </td>
-                                        <td>
-                                            @{
-                                                foreach (var items2 in Model._post)
-                                                {
-                                                    if (items2.Id == item.ApplicationId)
-                                                    {
-                                                        <text>Application for Post: @items2.Title</text>
-                                                    }
-                                                }
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
                     }
 
 
