@@ -96,7 +96,7 @@ namespace JobSeekingClient.Pages.Home
                 }
             }
 
-            _post = _postService.GetListAsync(path: StoredURI.Post + "/GetAll", expression: c => c.IsDeleted == false, param: null, token: token).Result.ToList();
+            _post = _postService.GetListAsync(path: StoredURI.Post + "/GetAll", expression: c => c.IsDeleted == false && c.Amount >= 1 && c.Status == true, param: null, token: token).Result.ToList();
 
 
             //user id for interview/application/post tracking
@@ -309,7 +309,10 @@ namespace JobSeekingClient.Pages.Home
                         }
 
                         Debug.WriteLine("Home.OnGet: Found pending application :" + _applications.Count());
-                        ViewData["message2"] = "You have " + _applications.Count + " pending application!";
+                        if (_applications.Count() >= 1)
+                        {
+                            ViewData["message2"] = "You have " + _applications.Count + " pending application!";
+                        }
 
                         // if there's no pending, show the user their failed and passed applications
                         foreach (var item in _applicationList)
@@ -589,7 +592,7 @@ namespace JobSeekingClient.Pages.Home
                             _interviews = _interviewList;
                         }
 
-
+                        Debug.WriteLine("Home.OnGet: Found applicant application list :" + _applicationList.Count() + " of user id:" + userId);
                         _applications = new List<ApplicationModel>();
                         _applications2 = new List<ApplicationModel>();
                         var _applications3 = new List<ApplicationModel>();
@@ -603,7 +606,10 @@ namespace JobSeekingClient.Pages.Home
                         }
 
                         Debug.WriteLine("Home.OnGet: Found pending application :" + _applications.Count());
-                        ViewData["message2"] = "You have " + _applications.Count + " pending application!";
+                        if (_applications.Count() >= 1)
+                        {
+                            ViewData["message2"] = "You have " + _applications.Count + " pending application!";
+                        }
 
                         // if there's no pending, show the user their failed and passed applications
                         foreach (var item in _applicationList)
@@ -657,7 +663,6 @@ namespace JobSeekingClient.Pages.Home
                         break;
                     }
             }
-
             return Page();
         }
     }
