@@ -124,14 +124,46 @@ namespace JobSeekingClient.Pages.Applications
             string? token = HttpContext.Session.GetString("token");
             await _applicationService.Update(Application, path: StoredURI.Application + "/" + Application.Id.ToString(), token: token);
 
-            PostDTO post = _postService.GetModelAsync(path: StoredURI.Post + "" + Application.PostId, token: token).Result;
+            PostDTO post = _postService.GetModelAsync(path: StoredURI.Post + "/" + Application.PostId, token: token).Result;
 
-            if (post.Amount == 0)
+            //check if post is no longer available
+            if (post.Amount <= 0)
             {
                 return RedirectToPage("./Index");
             }
 
-            post.Amount--;
+            //if application's status is passed, remove 1 amount from post
+            if (Application.Status != null)
+            {
+                if (Application.Status == true)
+                {
+                    post.Amount--;
+                }
+            }
+
+
+            //if post if now lower or equal to 0, fail all other applications of the same post
+            if (post.Amount <= 0)
+            {
+                Debug.WriteLine("HrReview.Onpost(): Post is no longer available. Failing all pending post.");
+
+                var _applicationList = await _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false && c.PostId == post.Id, param: null, token: token);
+
+                var count = 1;
+                foreach (var item in _applicationList)
+                {
+                    if (item.Status == null)
+                    {
+                        item.Status = false;
+                        Debug.WriteLine("HrReview.Onpost(): failed " + count + " application");
+                        count++;
+
+                        await _applicationService.Update(item, path: StoredURI.Application + "/" + item.Id.ToString(), token: token);
+                    }
+                }
+
+                return RedirectToPage("./Index");
+            }
 
             await _postService.Update(post, path: StoredURI.Post, token: token);
 
