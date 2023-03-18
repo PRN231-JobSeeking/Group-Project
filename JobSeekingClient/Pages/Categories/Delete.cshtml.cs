@@ -17,10 +17,12 @@ namespace JobSeekingClient.Pages.Categories
     public class DeleteModel : PageModel
     {
         private readonly ICategoryService _categoryService;
+        private readonly IPostService _postService;
 
-        public DeleteModel(ICategoryService categoryService)
+        public DeleteModel(ICategoryService categoryService, IPostService postService)
         {
             _categoryService = categoryService;
+            _postService = postService;
         }
 
         [BindProperty]
@@ -61,7 +63,14 @@ namespace JobSeekingClient.Pages.Categories
             {
                 return RedirectToPage("../Home");
             }
+            var post = await _postService.GetListAsync(path:StoredURI.Post,expression: c=>c.IsDeleted==false && c.CategoryId==id,token:token);
             var find = await _categoryService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);
+            if(post.Count > 0) 
+            {
+                ViewData["message"] = "Some post have this category";
+                Category = find;
+                return Page();
+            }
             if(find == null)
             {
                 return NotFound("Category Id Not Found!");
@@ -75,7 +84,7 @@ namespace JobSeekingClient.Pages.Categories
             {
                 return BadRequest();
             }
-            await _categoryService.Update(find, path: StoredURI.Category + "/" + Category.Id.ToString(), token: token);
+             await _categoryService.Update(find, path: StoredURI.Category + "/" + Category.Id.ToString(), token: token);         
             return RedirectToPage("./Index");
         }
     }

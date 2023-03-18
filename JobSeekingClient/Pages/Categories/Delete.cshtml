@@ -4,7 +4,12 @@
 @{
     ViewData["Title"] = "Delete";
 }
-
+@if (!string.IsNullOrEmpty(ViewBag.message))
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.message
+    </div>
+}
 <!DOCTYPE html>
 
 <html>

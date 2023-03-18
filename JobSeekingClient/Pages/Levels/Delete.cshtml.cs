@@ -17,10 +17,12 @@ namespace JobSeekingClient.Pages.Levels
     public class DeleteModel : PageModel
     {
         private readonly ILevelService _levelService;
+        private readonly IPostService _postService;
 
-        public DeleteModel(ILevelService levelService)
+        public DeleteModel(ILevelService levelService, IPostService postService)
         {
             _levelService = levelService;
+            _postService = postService;
         }
 
         [BindProperty]
@@ -40,6 +42,7 @@ namespace JobSeekingClient.Pages.Levels
             }
             string path = StoredURI.Level + "/" + id;
             var find = await _levelService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);
+
             if (find == null)
             {
                 return NotFound();
@@ -74,6 +77,13 @@ namespace JobSeekingClient.Pages.Levels
             if (id != Level.Id)
             {
                 return BadRequest();
+            }
+            var post = await _postService.GetListAsync(path: StoredURI.Post, expression: c => c.IsDeleted == false && c.LevelId == id, token: token);
+            if (post.Count > 0)
+            {
+                ViewData["message"] = "Some post have this level";
+                Level = find;
+                return Page();
             }
             await _levelService.Update(find, path: StoredURI.Level + "/" + Level.Id.ToString(), token: token);
             return RedirectToPage("./Index");
