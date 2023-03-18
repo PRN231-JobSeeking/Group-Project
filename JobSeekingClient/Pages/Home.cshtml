@@ -2,11 +2,15 @@
 @model JobSeekingClient.Pages.Home.HomeModel
 @{
     var userRole = HttpContext.Session.GetInt32("Role");
+    @if(userRole==2)
+    {
+        <a asp-page="/Post/Create">New Post</a>    
+    }
     //if news mode is on
     if (Model.isNews)
     {
         <h1>News Page</h1>
-
+       
         switch (userRole)
         {
             case 1:
@@ -19,6 +23,7 @@
                     //for HR to assign interviews
                     if (Model._applications.Count != 0)
                     {
+                        
                         <span class="text-danger">@ViewBag.message1</span>
                         <table class="table">
                             <thead>
@@ -44,13 +49,13 @@
                                 {
                                     <tr>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.CV)
+                                            <a asp-page="/CV/ViewCv" asp-route-id="@item.Id">View</a>
                                         </td>
                                         <td>
-                                            <a asp-page="/Accounts/Details" asp-route-id="@item.ApplicantId">@item.ApplicantId</a>
+                                            <a asp-page="/Accounts/Details" asp-route-id="@item.ApplicantId">View Applicant</a>
                                         </td>
                                         <td>
-                                            <a asp-page="/Post/Details" asp-route-id="@item.PostId">@item.PostId</a>
+                                            <a asp-page="/Post/PostDetail" asp-route-id="@item.PostId">View post</a>
                                         </td>
                                         <td>
                                             @{
@@ -110,13 +115,13 @@
                                 {
                                     <tr>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.CV)
+                                            <a asp-page="/CV/ViewCv" asp-route-id="@item.Id">View</a>
                                         </td>
                                         <td>
-                                            <a asp-page="/Accounts/Details" asp-route-id="@item.ApplicantId">@item.ApplicantId</a>
+                                            <a asp-page="/Accounts/Details" asp-route-id="@item.ApplicantId">View applicant</a>
                                         </td>
                                         <td>
-                                            <a asp-page="/Post/Details" asp-route-id="@item.PostId">@item.PostId</a>
+                                            <a asp-page="/Post/Details" asp-route-id="@item.PostId">View post</a>
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Status)
@@ -158,7 +163,10 @@
                                         @Html.DisplayNameFor(model => model._interviews[0].Slot.EndTime)
                                     </th>
                                     <th>
-                                        @Html.DisplayNameFor(model => model._interviews[0].ApplicationId)
+                                        @Html.DisplayNameFor(model => model._interviews[0].Interviewer.FirstName)
+                                    </th>
+                                    <th>
+                                       Post
                                     </th>
                                     <th></th>
                                 </tr>
@@ -177,12 +185,10 @@
                                             @Html.DisplayFor(modelItem => item.Slot.EndTime)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.ApplicationId)
+                                            @Html.DisplayFor(modelItem => item.Interviewer.FirstName)
                                         </td>
                                         <td>
-                                            <a asp-page="/Interviews/Feedback" asp-route-interviewId="@item.InterviewerId"
-                   asp-route-applicationId="@item.ApplicationId"
-                   asp-route-round="@item.Round">Feedback Interview</a>
+                                            <a asp-page="/Post/Details" asp-route-id="@item.Application.PostId">View post</a>
                                         </td>
                                     </tr>
                                 }
@@ -219,7 +225,13 @@
                                             @Html.DisplayNameFor(model => model._interviews[0].Slot.EndTime)
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model._interviews[0].ApplicationId)
+                                            Post
+                                        </th>
+                                        <th>
+                                            Inteviewer
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model._interviews[0].Round)
                                         </th>
                                     </tr>
                                 </thead>
@@ -240,12 +252,19 @@
                                                 @{
                                                     foreach (var items2 in Model._post)
                                                     {
-                                                        if (items2.Id == item.ApplicationId)
+                                                        if (items2.Id == item.Application.PostId)
                                                         {
-                                                            <text>Application for Post: @items2.Title</text>
+                                                            <a asp-page="/Post/PostDetail" asp-route-id="@items2.Id">Application for Post: @items2.Title</a>
+
                                                         }
                                                     }
                                                 }
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Interviewer.FirstName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Round)
                                             </td>
                                         </tr>
                                     }
@@ -289,8 +308,7 @@
                                 {
                                     <tr>
                                         <td>
-                                            TODO: Link CV
-
+                                            <a asp-page="/CV/ViewCv" asp-route-id="@item.Id">View</a>
                                         </td>
                                         <td>
                                             @{
@@ -298,7 +316,8 @@
                                                 {
                                                     if (items2.Id == item.PostId)
                                                     {
-                                                        <text>Application for Post: @items2.Title</text>
+                                                        <a asp-page="/Post/PostDetail" asp-route-id="@items2.Id">Application for Post: @items2.Title</a>
+                                                        
                                                     }
                                                 }
                                             }
@@ -356,8 +375,7 @@
                                 {
                                     <tr>
                                         <td>
-                                            TODO: Link CV
-
+                                            <a asp-page="/CV/ViewCv" asp-route-id="@item.Id">View</a>
                                         </td>
                                         <td>
                                             @{
@@ -365,7 +383,7 @@
                                                 {
                                                     if (items2.Id == item.PostId)
                                                     {
-                                                        <text>Application for Post: @items2.Title</text>
+                                                       <a asp-page="/Post/Details" asp-route-id="@item.PostId">Application for Post: @items2.Title</a>
                                                     }
                                                 }
                                             }

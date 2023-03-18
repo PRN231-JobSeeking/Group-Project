@@ -36,13 +36,13 @@
             Applicant
         </dt>
         <dd class="col-sm-10">
-            <a asp-page="/Accounts/Details" asp-route-id="@Model.Application.ApplicantId">@Model.Applicant.FirstName @Model.Applicant.LastName</a>
+            <a asp-page="/Accounts/Details" asp-route-id="@Model.Application.ApplicantId">@Model.Applicant.FirstName @Model.Applicant.FirstName</a>
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Application.PostId)
+            Post
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Application.PostId)
+             <a asp-page="/Post/PostDetail" asp-route-id="@Model.Application.PostId">View post</a>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Applicant.Phone)
@@ -54,7 +54,7 @@
             @Html.DisplayNameFor(model => model.Application.CV)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Application.CV)
+            <a asp-page="/CV/ViewCv" asp-route-id="@Model.Application.Id">View</a>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Application.Status)
@@ -102,7 +102,7 @@
             </text>
         }
     }
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="/Home">Back to List</a>
 </div>
 
 <table class="table">

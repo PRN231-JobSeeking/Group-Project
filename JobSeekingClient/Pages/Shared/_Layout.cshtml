@@ -16,16 +16,7 @@
             var role = Context.Session.GetInt32("Role");
         }
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                @if (role == (int)AccountRole.Administrator)
-                {
-                    <a class="navbar-brand" asp-area="" asp-page="/Accounts/IndexAdmin">JobSeekingClient</a>
-                }
-                @if (role == (int)AccountRole.Applicant)
-                {
-                    <a class="navbar-brand" asp-area="" asp-page="/Home">JobSeekingClient</a>
-                }
-
+            <div class="container">     
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -34,6 +25,7 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (role == (int)AccountRole.Administrator)
                         {
+                            <a class="navbar-brand" asp-area="" asp-page="/Accounts/IndexAdmin">JobSeekingClient</a>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="../Accounts/IndexAdmin">Home</a>
                             </li>
@@ -47,16 +39,27 @@
                                 <a class="nav-link text-dark" asp-area="" asp-page="../Locations/Index">Location Management</a>
                             </li>
                         }
-                        @if (role == (int)AccountRole.Applicant)
+                         @if (role == (int)AccountRole.HR)
                         {
-                            <li class="nav-item">
+                             <a class="navbar-brand" asp-area="" asp-page="/Home">JobSeekingClient</a>
+                                <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-page="/Home">Home</a>
-                            </li>
+                                </li>
                         }
-
+                        @if (role == (int)AccountRole.Interviewer)
+                        {
+                             <a class="navbar-brand" asp-area="" asp-page="/Interviews/HomePageInterviewer">JobSeekingClient</a>
+                                <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Interviews/HomePageInterviewer">Home</a>
+                                </li>
+                        }
                         @{
                             if (!string.IsNullOrEmpty(role.ToString()) && role == (int)AccountRole.Applicant)
                             {
+                                <a class="navbar-brand" asp-area="" asp-page="/Home">JobSeekingClient</a>
+                                <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Home">Home</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-route-id="@id" asp-area="" asp-page="/Accounts/Profile">My Profile</a>
                                 </li>
