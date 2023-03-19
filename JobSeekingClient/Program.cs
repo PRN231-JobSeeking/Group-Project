@@ -33,6 +33,7 @@ builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddTransient<ILevelService, LevelService>();
 builder.Services.AddTransient<IFeedbackService, FeedbackService>();
+builder.Services.AddTransient<IPostModelService, PostModelService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

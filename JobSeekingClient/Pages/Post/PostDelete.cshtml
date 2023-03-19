@@ -1,0 +1,77 @@
+﻿@page
+@model JobSeekingClient.Pages.Post.PostDeleteModel
+
+@{
+    ViewData["Title"] = "PostDelete";
+}
+
+<h1>PostDelete</h1>
+<h3>Are you sure you want to delete this?</h3>
+<p class="text-danger">@ViewData["Message"]</p>
+<h4>Post Detail</h4>
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Post.Title)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Post.Title)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Post.Category)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Post.Category)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Post.SkillRequired)
+    </dt>
+    <dd class="col-sm-10 skill-item">
+        @{
+            if (Model.Post.SkillRequired != null && Model.Post.SkillRequired.Count() > 0)
+            {
+                foreach (var postSkill in Model.Post.SkillRequired)
+                {
+                    <span>@postSkill.SkillName</span>
+                }
+            }
+        }
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Post.Location)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Post.Location.Name)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Post.Level)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Post.Level.Name)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Post.CreateDate)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Post.CreateDate, "MM/dd/yyyy")
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Post.Description)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Post.Description)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Post.Amount)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Post.Amount)
+    </dd>
+</dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Post.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="/Home">Back to List</a>
+    </form>
+</div>
