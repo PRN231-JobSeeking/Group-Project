@@ -78,14 +78,14 @@ namespace JobSeekingClient.Pages.Locations
             {
                 return BadRequest();
             }
-            var post = await _postService.GetListAsync(path: StoredURI.Post, expression: c => c.IsDeleted == false && c.LocationId == id, token: token);
+            var post = await _postService.GetListAsync(path: StoredURI.Post + "/GetAll", expression: c => c.IsDeleted == false && c.LocationId == id, token: token);
             if (post.Count > 0)
             {
                 ViewData["message"] = "Some post have this location";
                 Location = find;
                 return Page();
             }
-            await _locationService.Update(find, path: StoredURI.Location + "/" + Location.Id.ToString(), token: token);
+            await _locationService.Delete(find, path: StoredURI.Location + "/" + Location.Id.ToString(), token: token);
             return RedirectToPage("./Index");
         }
     }

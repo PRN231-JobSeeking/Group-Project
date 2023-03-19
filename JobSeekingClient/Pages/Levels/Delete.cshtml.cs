@@ -78,14 +78,14 @@ namespace JobSeekingClient.Pages.Levels
             {
                 return BadRequest();
             }
-            var post = await _postService.GetListAsync(path: StoredURI.Post, expression: c => c.IsDeleted == false && c.LevelId == id, token: token);
+            var post = await _postService.GetListAsync(path: StoredURI.Post + "/GetAll", expression: c => c.IsDeleted == false && c.LevelId == id, token: token);
             if (post.Count > 0)
             {
                 ViewData["message"] = "Some post have this level";
                 Level = find;
                 return Page();
             }
-            await _levelService.Update(find, path: StoredURI.Level + "/" + Level.Id.ToString(), token: token);
+            await _levelService.Delete(find, path: StoredURI.Level + "/" + Level.Id.ToString(), token: token);
             return RedirectToPage("./Index");
         }
     }

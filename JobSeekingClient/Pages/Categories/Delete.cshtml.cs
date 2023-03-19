@@ -63,7 +63,7 @@ namespace JobSeekingClient.Pages.Categories
             {
                 return RedirectToPage("../Home");
             }
-            var post = await _postService.GetListAsync(path:StoredURI.Post,expression: c=>c.IsDeleted==false && c.CategoryId==id,token:token);
+            var post = await _postService.GetListAsync(path:StoredURI.Post+"/GetAll",expression: c=>c.IsDeleted==false && c.CategoryId==id,token:token);
             var find = await _categoryService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);
             if(post.Count > 0) 
             {
@@ -84,7 +84,7 @@ namespace JobSeekingClient.Pages.Categories
             {
                 return BadRequest();
             }
-             await _categoryService.Update(find, path: StoredURI.Category + "/" + Category.Id.ToString(), token: token);         
+             await _categoryService.Delete(find, path: StoredURI.Category + "/" + Category.Id.ToString(), token: token);         
             return RedirectToPage("./Index");
         }
     }
