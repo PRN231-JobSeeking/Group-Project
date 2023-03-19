@@ -120,6 +120,7 @@ namespace JobSeekingClient.Pages
                         {
                             OldApplication = application;
                         }
+                       
                         if (application.Status != null)
                         {
                             CanApply = false;
