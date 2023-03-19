@@ -11,6 +11,7 @@ using AppRepository.Repositories;
 using ClientRepository.Models;
 using Microsoft.AspNetCore.Authorization;
 using AppRepository.UnitOfWork;
+using System.Diagnostics;
 
 namespace JobSeekingApi.Controllers
 {
@@ -54,6 +55,24 @@ namespace JobSeekingApi.Controllers
                 return BadRequest();
             }
             return Ok(postSkillModels);
+        }
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> PostSkill(PostSkillModel postSkillModel)
+        {
+            var postSkillInDb = await _unitOfWork.PostSkillRepository.GetFirst(ps => ps.SkillId == postSkillModel.SkillId && ps.PostId == postSkillModel.PostId
+                                                                && ps.IsDeleted == false);
+            if(postSkillInDb == null)
+            {
+                await _unitOfWork.PostSkillRepository.Add(new PostSkillRequired()
+                {
+                    PostId = postSkillModel.PostId,
+                    SkillId = postSkillModel.SkillId,
+                    IsDeleted = false,
+                });
+                return Ok();
+            }
+            return BadRequest("Already exist post skill!");
         }
     }
 }

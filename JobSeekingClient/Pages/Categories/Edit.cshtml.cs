@@ -63,14 +63,6 @@ namespace JobSeekingClient.Pages.Categories
             {
                 return RedirectToPage("../Home");
             }
-            var category = await _categoryService.GetModelAsync(expression: c => c.Name.ToLower().Equals(Category.Name.ToLower())
-                                                               , path: StoredURI.Category + "/" + Category.Id.ToString(), token: token);
-            if(category != null)
-            {
-                ViewData["Error"] = "Already exist category name!";
-                await OnGetAsync(Category.Id);
-                return Page();
-            }
             await _categoryService.Update(Category, path: StoredURI.Category + "/" + Category.Id.ToString(), token: token);
             return RedirectToPage("./Index");
         }

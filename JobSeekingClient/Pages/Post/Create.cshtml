@@ -61,10 +61,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="Post.Amount" class="control-label"></label>
-                <input asp-for="Post.Amount" class="form-control" />
+                <input asp-for="Post.Amount" class="form-control"/>
                 <span asp-validation-for="Post.Amount" class="text-danger"></span>
             </div>
-            <input type="hidden" class="form-check-input" asp-for="Post.Status" value="false" />
+            <div class="form-group">
+                Skills:
+                <br /><br/>
+                <select name="SkillIds" asp-items="Model.Skills" multiple="multiple" class="listbox"></select>
+                <br /><br/>               
+            </div>
+            <input type="hidden" class="form-check-input" asp-for="Post.Status" value="true" />
             <input type="hidden" class="form-check-input" asp-for="Post.CreateDate" value="@DateTime.Now" />
             <input type="hidden" class="form-check-input" asp-for="Post.Id" value="-1" />
             <input type="hidden" class="form-check-input" asp-for="Post.IsDeleted" value="false" />
@@ -76,5 +82,19 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <link href=" https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.listbox').multiselect({
+                includeSelectAllOption: true
+            });
+        });
+    </script>
 }
