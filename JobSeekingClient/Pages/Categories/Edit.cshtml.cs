@@ -63,6 +63,19 @@ namespace JobSeekingClient.Pages.Categories
             {
                 return RedirectToPage("../Home");
             }
+            var categories = await _categoryService.GetListAsync(expression: c => c.Name.ToLower().Equals(Category.Name.ToLower()), path: StoredURI.Category, token: token);
+            if (categories != null && categories.Count > 0)
+            {
+                foreach(var category in categories)
+                {
+                    if(category.Id != Category.Id && category.IsDeleted == false)
+                    {
+                        ViewData["Error"] = "Already exist category name!";
+                        await OnGetAsync(Category.Id);
+                        return Page();
+                    }
+                }
+            }
             await _categoryService.Update(Category, path: StoredURI.Category + "/" + Category.Id.ToString(), token: token);
             return RedirectToPage("./Index");
         }

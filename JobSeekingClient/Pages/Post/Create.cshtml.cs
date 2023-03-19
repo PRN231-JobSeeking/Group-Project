@@ -103,9 +103,33 @@ namespace JobSeekingClient.Pages.Post
                 await OnGet();
                 return Page();
             }
+            if(Post.StartDate.Date.CompareTo(DateTime.Now.Date) < 0)
+            {
+                ViewData["Error"] = "Start Date must more or equal current day!";
+                await OnGet();
+                return Page();
+            }
             if(Post.StartDate.CompareTo(Post.EndDate) > 0)
             {
                 ViewData["Error"] = "Start Date must less than End Date!";
+                await OnGet();
+                return Page();
+            }
+            if (Post.StartDate.Date.CompareTo(DateTime.Now.AddDays(10).Date) > 0)
+            {
+                ViewData["Error"] = "Start Date must less than 10 day from current day!";
+                await OnGet();
+                return Page();
+            }
+            if (Post.EndDate.Date.CompareTo(Post.StartDate.AddDays(3).Date) < 0)
+            {
+                ViewData["Error"] = "End Date must more than 3 day from start date!";
+                await OnGet();
+                return Page();
+            }
+            if (Post.EndDate.Date.CompareTo(Post.StartDate.AddMonths(2).Date) > 0)
+            {
+                ViewData["Error"] = "End Date must less than 2 month from start date!";
                 await OnGet();
                 return Page();
             }

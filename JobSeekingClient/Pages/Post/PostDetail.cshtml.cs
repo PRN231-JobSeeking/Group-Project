@@ -84,7 +84,7 @@ namespace JobSeekingClient.Pages
                     ViewData["Error"] = "Post has no skills to apply!";
                     return Page();
                 }
-                if(DateTime.Now.Date.CompareTo(Post.EndDate.Date) > 0)
+                if(DateTime.Now.Date.CompareTo(Post.StartDate.Date) < 0 || DateTime.Now.Date.CompareTo(Post.EndDate.Date) > 0)
                 {
                     CanApply = false;
                 }

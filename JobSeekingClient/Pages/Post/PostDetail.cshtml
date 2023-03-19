@@ -82,6 +82,18 @@
         @Html.DisplayFor(model => model.Post.CreateDate, "MM/dd/yyyy")
     </dd>
     <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Post.StartDate)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Post.StartDate, "MM/dd/yyyy")
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Post.EndDate)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Post.EndDate, "MM/dd/yyyy")
+    </dd>
+    <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.Post.Description)
     </dt>
     <dd class="col-sm-10">
@@ -100,7 +112,7 @@
         string url = $"../CV/{Model.OldApplication.Id}";
         <a href="@url"> View Applied CV</a>
     }
-    if (Model.CanApply )
+    if (Model.CanApply)
     {
         <form method="post" , enctype="multipart/form-data">
             <div class="mb-3">
