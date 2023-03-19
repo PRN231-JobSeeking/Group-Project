@@ -52,11 +52,6 @@ namespace JobSeekingApi.Controllers
             {
                 return BadRequest();
             }
-            var categoryInDb = await _unitOfWork.CategoryRepository.GetFirst(c => c.Name.ToLower().Equals(category.Name.ToLower()));
-            if (categoryInDb != null)
-            {
-                return BadRequest("Already exist category name!");
-            }
             var locationInDb = list.FirstOrDefault();
             if (locationInDb != null)
             {

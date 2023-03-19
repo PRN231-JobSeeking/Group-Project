@@ -29,12 +29,21 @@ namespace JobSeekingClient.Pages
             {
                 return RedirectToPage("../Auth/Login");
             }
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId == null)
+            {
+                return RedirectToPage("../Auth/Login");
+            }
             if (role == (int)AccountRole.Administrator)
             {
                 return RedirectToPage("../Home");
             }
             var application = await applicationService.GetModelAsync(path: StoredURI.Application + $"/Get/Id/{id}", token: token);
             if(application == null)
+            {
+                return RedirectToPage("../Home");
+            }
+            if(application.ApplicantId != userId && role == (int)AccountRole.Applicant)
             {
                 return RedirectToPage("../Home");
             }

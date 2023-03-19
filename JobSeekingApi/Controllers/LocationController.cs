@@ -52,12 +52,7 @@ namespace JobSeekingApi.Controllers
             {
                 return BadRequest();
             }
-            var locationInDb = await _unitOfWork.LocationRepository.GetFirst(c => c.Name.ToLower().Equals(location.Name.ToLower()));
-            if (locationInDb != null)
-            {
-                return BadRequest("Already exist location name!");
-            }
-            locationInDb = list.FirstOrDefault();
+            var locationInDb = list.FirstOrDefault();
             if (locationInDb != null)
             {
                 locationInDb.Name = location.Name;

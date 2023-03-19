@@ -63,6 +63,19 @@ namespace JobSeekingClient.Pages.Locations
             {
                 return RedirectToPage("../Home");
             }
+            var locations = await _locationService.GetListAsync(expression: c => c.Name.ToLower().Equals(Location.Name.ToLower()), path: StoredURI.Location, token: token);
+            if (locations != null && locations.Count > 0)
+            {
+                foreach (var location in locations)
+                {
+                    if (location.Id != Location.Id && location.IsDeleted == false)
+                    {
+                        ViewData["Error"] = "Already exist location name!";
+                        await OnGetAsync(Location.Id);
+                        return Page();
+                    }
+                }
+            }
             await _locationService.Update(Location, path: StoredURI.Location + "/" + Location.Id.ToString(), token: token);
             return RedirectToPage("./Index");
         }

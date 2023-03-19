@@ -11,12 +11,15 @@ namespace ClientRepository.Models
         public int LocationId { get; set; }
         public int LevelId { get; set; }
         public bool Status { get; set; }
+        [Display(Name = "Created Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime CreateDate { get; set; }
+        [Display(Name = "Start Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime StartDate { get; set; }
+        [Display(Name = "End Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime EndDate { get; set; }
