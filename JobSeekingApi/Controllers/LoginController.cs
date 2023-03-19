@@ -60,7 +60,7 @@ namespace JobSeekingApi.Controllers
         }
         private UserModel Authenticate(UserLogin userLogin)
         {
-            var currentUser = _unitOfWork.AccountRepository.Get().Result.FirstOrDefault(x => x.Email == userLogin.Email & x.Password==userLogin.Password);
+            var currentUser = _unitOfWork.AccountRepository.Get().Result.FirstOrDefault(x => x.Email == userLogin.Email & x.Password==userLogin.Password & x.IsDeleted==false);
 
             if (currentUser != null)
             {
