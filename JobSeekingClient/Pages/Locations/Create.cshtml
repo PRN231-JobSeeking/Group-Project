@@ -41,7 +41,7 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Location.IsDeleted" /> @Html.DisplayNameFor(model => model.Location.IsDeleted)
+                    <input type="hidden" class="form-check-input" asp-for="Location.IsDeleted" value="false" />
                 </label>
             </div>
             <div class="form-group">
