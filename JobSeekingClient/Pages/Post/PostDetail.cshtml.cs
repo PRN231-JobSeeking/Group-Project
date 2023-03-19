@@ -84,6 +84,10 @@ namespace JobSeekingClient.Pages
                     ViewData["Error"] = "Post has no skills to apply!";
                     return Page();
                 }
+                if(DateTime.Now.Date.CompareTo(Post.EndDate.Date) > 0)
+                {
+                    CanApply = false;
+                }
             }
             var applications = await applicationService.GetListAsync(path: StoredURI.Application + $"/ApplicationNonInterview/ApplicantId/{userId}", token: token);
             if(applications != null && applications.Count() == 2)

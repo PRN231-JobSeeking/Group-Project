@@ -49,6 +49,15 @@ namespace JobSeekingClient.Pages.Locations
             {
                 return RedirectToPage("../Home");
             }
+
+            var location = await _locationService.GetModelAsync(expression: c => c.Name.ToLower().Equals(Location.Name.ToLower())
+                                                               , path: StoredURI.Location + "/" + Location.Id.ToString(), token: token);
+            if (location != null)
+            {
+                ViewData["Error"] = "Already exist location name!";
+                return Page();
+            }
+
             await _locationService.Add(Location, path: StoredURI.Location, token: token);
             return RedirectToPage("./Index");
         }

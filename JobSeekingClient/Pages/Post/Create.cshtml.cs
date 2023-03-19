@@ -20,13 +20,18 @@ namespace JobSeekingClient.Pages.Post
         private readonly ICategoryService _categoryService;
         private readonly ILevelService _levelService;
         private readonly ILocationService _locationService;
+        private readonly ISkillService _skillService;
+        private readonly IPostSkillService _postSkillService;
 
-        public CreateModel(IPostService postService, ICategoryService categoryService, ILevelService levelService, ILocationService locationService)
+        public CreateModel(IPostService postService, ICategoryService categoryService, ILevelService levelService, 
+            ILocationService locationService, ISkillService skillService, IPostSkillService postSkillService)
         {
             _postService = postService;
             _categoryService = categoryService;
             _levelService = levelService;
             _locationService = locationService;
+            _skillService = skillService;
+            _postSkillService = postSkillService;
         }
 
         public async Task<IActionResult> OnGet()
@@ -59,15 +64,18 @@ namespace JobSeekingClient.Pages.Post
             ViewData["CategoryId"] = new SelectList(categories, "Id", "Name");
             ViewData["LevelId"] = new SelectList(levels, "Id", "Name");
             ViewData["LocationId"] = new SelectList(locations, "Id", "Name");
+            Skills = PopulateSkills();
             return Page();
         }
 
         [BindProperty]
         public PostDTO Post { get; set; }
 
+        public List<SelectListItem> Skills { get; set; }
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string[] SkillIds)
         {
             string? token = HttpContext.Session.GetString("token");
             int? role = HttpContext.Session.GetInt32("Role");
@@ -79,17 +87,79 @@ namespace JobSeekingClient.Pages.Post
             {
                 return RedirectToPage("../Home");
             }
+            if(SkillIds == null || SkillIds.Length == 0)
+            {
+                ViewData["Error"] = "Choose at least one skill for post!";
+                await OnGet();
+                return Page();
+            }
             if (!ModelState.IsValid)
             {
+                return Page();
+            }
+            if(Post.Amount <= 0)
+            {
+                ViewData["Error"] = "Post Amount must more than 0!";
+                await OnGet();
+                return Page();
+            }
+            if(Post.StartDate.CompareTo(Post.EndDate) > 0)
+            {
+                ViewData["Error"] = "Start Date must less than End Date!";
+                await OnGet();
                 return Page();
             }
             bool result = await _postService.Add(Post, path: StoredURI.Post, token: token);
             if(result)
             {
+                var posts = await _postService.GetListAsync(expression: p => p.Status == Post.Status && p.StartDate.CompareTo(Post.StartDate) == 0
+                                                                            && p.IsDeleted == false && p.Amount == Post.Amount
+                                                                            && p.CategoryId == Post.CategoryId && p.CreateDate.CompareTo(Post.CreateDate) == 0
+                                                                            && p.EndDate.CompareTo(Post.EndDate) == 0 && p.Description.Equals(Post.Description)
+                                                                            && p.LevelId == Post.LevelId && p.LocationId == Post.LocationId
+                                                                            && p.Title.Equals(Post.Title),path: StoredURI.Post + "/GetAll", token: token);
+                PostDTO post = null;
+                if(posts != null && posts.Count > 0)
+                {
+                    post = posts.FirstOrDefault();
+                }
+                if (post != null)
+                {
+                    foreach (string Id in SkillIds)
+                    {
+                        PostSkillModel postSkillRequired = new PostSkillModel()
+                        {
+                            PostId = post.Id,
+                            SkillId = int.Parse(Id),
+                            SkillName = "",
+                        };
+                        result = await _postSkillService.Add(postSkillRequired, path: StoredURI.PostSkill, token: token);
+                        if(!result)
+                        {
+                            ViewData["Error"] = "Post Skill Add Error!";
+                            await OnGet();
+                            return Page();
+                        }
+                    }
+                }
                 return RedirectToPage("../Home");
             }
             ViewData["Error"] = "Post Add Error!";
+            await OnGet();
             return Page();
+        }
+
+        private List<SelectListItem> PopulateSkills()
+        {
+            List<ClientRepository.Models.Skill> skills = _skillService.GetListAsync(path: StoredURI.Skill, expression: c => c.IsDeleted == false, param: null, token: null).Result;
+            List<SelectListItem> SkillList = (from p in skills
+                                              select new SelectListItem
+                                              {
+                                                  Text = p.Name,
+                                                  Value = p.Id.ToString()
+                                              }).ToList();
+
+            return SkillList;
         }
     }
 }
