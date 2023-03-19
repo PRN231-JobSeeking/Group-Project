@@ -250,7 +250,11 @@ namespace JobSeekingClient.Pages.Home
                                         && item2.ApplicationId == item.Id
                                         && item2.Feedback == null)
                                     {
-                                        Debug.WriteLine("Home.OnGet: application id: " + item.Id + " has interview id " + item2.InterviewerId);
+                                        var _applcationInterview = _applicationList.FirstOrDefault(x => x.Id == item2.ApplicationId);
+                                        if (_applcationInterview.Status == null)
+                                        {
+                                            Debug.WriteLine("Home.OnGet: application id: " + item.Id + " has interview id " + item2.InterviewerId);
+                                        }
                                         count++;
                                     }
 
@@ -279,7 +283,7 @@ namespace JobSeekingClient.Pages.Home
                                 {
                                     if (item.Status == null)
                                     {
-                                        Debug.WriteLine("Home.OnGet: application id: " + item.Id + " has enough interviews, but not enough feedback");
+                                        Debug.WriteLine("Home.OnGet: application id: " + item.Id + " has enough interviews, but no feedback");
                                         _applications2.Add(item);
                                     }
                                 }
@@ -307,6 +311,7 @@ namespace JobSeekingClient.Pages.Home
                         _interviews = new List<InterviewModel>();
 
                         var _interviewList = _interviewService.GetListAsync(path: StoredURI.Interviews, expression: c => c.InterviewerId == userId && c.IsDeleted == false, param: null, token: token).Result.ToList();
+                        var _applicationList = _applicationService.GetListAsync(path: StoredURI.Application, expression: c => c.IsDeleted == false, param: null, token: token).Result.ToList();
 
                         Debug.WriteLine("Home.OnGet: Getting user's interviews :" + _interviewList.Count());
                         //get list to check whether interviewer has incoming interview
@@ -316,8 +321,14 @@ namespace JobSeekingClient.Pages.Home
                             {
                                 var slotPath = StoredURI.Slot + "/" + item.SlotId;
                                 item.Slot = _slotService.GetModelAsync(path: slotPath, param: null, token: token).Result;
-                                Debug.WriteLine("Home.OnGet: Pending interview found :" + item.ApplicationId);
-                                _interviews.Add(item);
+                                {
+                                    var _applcationInterview = _applicationList.FirstOrDefault(x => x.Id == item.ApplicationId);
+                                    if (_applcationInterview.Status == null)
+                                    {
+                                        Debug.WriteLine("Home.OnGet: Pending interview found :" + item.ApplicationId);
+                                        _interviews.Add(item);
+                                    }
+                                }
                             }
                         }
 
@@ -368,8 +379,14 @@ namespace JobSeekingClient.Pages.Home
                             {
                                 var slotPath = StoredURI.Slot + "/" + item.SlotId;
                                 item.Slot = _slotService.GetModelAsync(path: slotPath, param: null, token: token).Result;
-                                _interviews.Add(item);
+                                var _applcationInterview = _applicationList.FirstOrDefault(x => x.Id == item.ApplicationId);
+                                if (_applcationInterview.Status == null)
+                                {
+                                    Debug.WriteLine("Home.OnGet: Pending interview found :" + item.ApplicationId);
+                                    _interviews.Add(item);
+                                }
                             }
+
                         }
 
                         //if list has 1 or more than 1 incoming interview, show warning and list
