@@ -558,6 +558,7 @@
                             @if (userRole == 2)
                             {
                                 <a class="ps-4" asp-page="/Applications/IndexOnPost" asp-route-postId="@item.Id">View Applications</a>
+                                <a class="ps-4" asp-page="/Post/PostDelete" asp-route-id="@item.Id">Delete Post</a>
                             }
                         </td>
                     </tr>
