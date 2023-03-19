@@ -2,15 +2,15 @@
 @model JobSeekingClient.Pages.Home.HomeModel
 @{
     var userRole = HttpContext.Session.GetInt32("Role");
-    @if(userRole==2)
+    @if (userRole == 2)
     {
-        <a asp-page="/Post/Create">New Post</a>    
+        <a asp-page="/Post/Create">New Post</a>
     }
     //if news mode is on
     if (Model.isNews)
     {
         <h1>News Page</h1>
-       
+
         switch (userRole)
         {
             case 1:
@@ -23,7 +23,7 @@
                     //for HR to assign interviews
                     if (Model._applications.Count != 0)
                     {
-                        
+
                         <span class="text-danger">@ViewBag.message1</span>
                         <table class="table">
                             <thead>
@@ -166,7 +166,7 @@
                                         @Html.DisplayNameFor(model => model._interviews[0].Interviewer.FirstName)
                                     </th>
                                     <th>
-                                       Post
+                                        Post
                                     </th>
                                     <th></th>
                                 </tr>
@@ -317,7 +317,7 @@
                                                     if (items2.Id == item.PostId)
                                                     {
                                                         <a asp-page="/Post/PostDetail" asp-route-id="@items2.Id">Application for Post: @items2.Title</a>
-                                                        
+
                                                     }
                                                 }
                                             }
@@ -383,7 +383,7 @@
                                                 {
                                                     if (items2.Id == item.PostId)
                                                     {
-                                                       <a asp-page="/Post/Details" asp-route-id="@item.PostId">Application for Post: @items2.Title</a>
+                                                        <a asp-page="/Post/Details" asp-route-id="@item.PostId">Application for Post: @items2.Title</a>
                                                     }
                                                 }
                                             }
@@ -439,7 +439,7 @@
         if (@ViewBag.message1 != null || @ViewBag.message2 != null)
         {
             <text>
-                <a asp-route-news="1">Check news now.</a>
+                <a asp-route-newMode="1">Check news now.</a>
                 <br>
             </text>
         }
@@ -451,33 +451,80 @@
         if (@ViewBag.message3 != null)
         {
             <text>
-                <a asp-route-news="2">Check your applications.</a>
+                <a asp-route-newMode="2">Check your applications.</a>
                 <br>
             </text>
         }
         <div class="row">
             <div class="col-md-4">
-                <form method="post">
+                <form method="get">
                     <div class="form-group">
-                        Search:<input asp-for="_searchInput" class="form-control" />
-                        Location:
-                        <select asp-for="_locationFilterInput">
-                            <option value="null">All Locations</option>
-                            @foreach (var item in Model._locations)
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
-                        </select>
-                        <br>
-                        Category:
-                        <select asp-for="_categoryFilterInput">
-                            <option value="null">All category</option>
-                            @foreach (var item in Model._category)
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
-                        </select>
-                        <input type="submit" value="Search" class="btn btn-primary" />
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Location:
+                                    </td>
+                                    <td>
+                                        <select asp-for="_locationFilterInput">
+                                            <option value="null">All Locations</option>
+                                            @foreach (var item in Model._locations)
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        Category:
+                                    </td>
+                                    <td>
+                                        <select asp-for="_categoryFilterInput">
+                                            <option value="null">All category</option>
+                                            @foreach (var item in Model._category)
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        Skill:
+                                    </td>
+                                    <td>
+                                        <select asp-for="_skillFilterInput">
+                                            <option value="null">All skills</option>
+                                            @foreach (var item in Model._skill)
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        Level:
+                                    </td>
+                                    <td>
+                                        <select asp-for="_levelFilterInput">
+                                            <option value="null">All levels</option>
+                                            @foreach (var item in Model._level)
+                                            {
+                                                <option value="@item.Id">@item.Name</option>
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Search:
+                                    </td>
+                                    <td colspan="6">
+                                        <input asp-for="_searchInput" class="form-control" />
+                                        <input hidden asp-for="newMode" value="0" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input type="submit" value="Search" class="btn btn-primary" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </form>
             </div>
