@@ -22,10 +22,12 @@ namespace JobSeekingClient.Pages.Home
         private readonly ILevelService _levelService;
         private readonly ICategoryService _categoryService;
         private readonly ISkillService _skillService;
+        private readonly IPostSkillService _postSkillService;
 
         public HomeModel(IPostService postService, IApplicationService applicationService,
             IInterviewService interviewService, ISlotService slotService, ILocationService locationService,
-            ILevelService levelService, ICategoryService categoryService, ISkillService skillService)
+            ILevelService levelService, ICategoryService categoryService, ISkillService skillService
+            , IPostSkillService postSkillService)
         {
             _postService = postService;
             _applicationService = applicationService;
@@ -35,6 +37,7 @@ namespace JobSeekingClient.Pages.Home
             _levelService = levelService;
             _categoryService = categoryService;
             _skillService = skillService;
+            _postSkillService = postSkillService;
         }
         //used to show level
         [BindProperty]
@@ -68,6 +71,8 @@ namespace JobSeekingClient.Pages.Home
         [BindProperty]
         public string _searchInput { get; set; }
 
+
+
         //used for location filtering
         [BindProperty]
         public string _locationFilterInput { get; set; }
@@ -81,9 +86,8 @@ namespace JobSeekingClient.Pages.Home
         public IList<LocationModel> _locations { get; set; }
         [BindProperty]
         public string newMode { get; set; }
-
-
-        public int _isNewsMode;
+        [BindProperty]
+        public int _isNewsMode { get; set; }
 
         //used to show the player news
         [BindProperty]
@@ -92,7 +96,7 @@ namespace JobSeekingClient.Pages.Home
         public IActionResult OnGet(string? _locationFilterInput, string? _categoryFilterInput,
             string? _skillFilterInput, string? newMode, string? _searchInput, string? _levelFilterInput)
         {
-            int _isNewsMode = 0;
+            _isNewsMode = 0;
 
             //user for role checking
             var roleId = HttpContext.Session.GetInt32("Role");
@@ -106,8 +110,13 @@ namespace JobSeekingClient.Pages.Home
                 return RedirectToPage("/Auth/Login");
             }
 
-            if (int.TryParse(newMode, out _isNewsMode))
+            int _newsMode = 0;
+
+            if (int.TryParse(newMode, out _newsMode))
             {
+                Debug.WriteLine("Home.OnGet: News mode is now set to " + _isNewsMode);
+
+                _isNewsMode = _newsMode;
                 if (_isNewsMode == 1 || _isNewsMode == 2)
                 {
                     Debug.WriteLine("Home.OnGet: News mode is on");
@@ -138,14 +147,10 @@ namespace JobSeekingClient.Pages.Home
 
 
 
-            if (isNews)
+            if (!isNews)
             {
                 _post = _postService.GetListAsync(path: StoredURI.Post + "/GetAll", expression: c => c.IsDeleted == false && c.Amount >= 1 && c.Status == true, param: null, token: token).Result.ToList();
-            }
-            else
-            {
-                //list post with search elements
-                _post = _postService.GetListAsync(path: StoredURI.Post + "/GetAll", expression: c => c.IsDeleted == false && c.Amount >= 1 && c.Status == true, param: null, token: token).Result.ToList();
+
                 Debug.WriteLine("Home.OnGet: Getting post list. Count: " + _post.Count);
 
                 //if search field is not empty, start searching
@@ -154,7 +159,7 @@ namespace JobSeekingClient.Pages.Home
                     if (!_searchInput.Equals(""))
                     {
                         _post = _post.Where(x => x.Title.IndexOf(_searchInput, StringComparison.OrdinalIgnoreCase) >= 0 || x.Description.Contains(_searchInput)).ToList();
-                        Debug.WriteLine("Home.OnGet: search input dectected. Remaining _post: " + _post.Count);
+                        Debug.WriteLine("Home.OnGet: search input detected. Remaining _post: " + _post.Count);
                     }
                 }
 
@@ -164,7 +169,7 @@ namespace JobSeekingClient.Pages.Home
                     if (!_locationFilterInput.Equals("null"))
                     {
                         _post = _post.Where(x => x.LocationId == int.Parse(_locationFilterInput)).ToList();
-                        Debug.WriteLine("Home.OnGet: location search input dectected. Remaining _post: " + _post.Count);
+                        Debug.WriteLine("Home.OnGet: location search input detected. Remaining _post: " + _post.Count);
                     }
                 }
 
@@ -175,15 +180,45 @@ namespace JobSeekingClient.Pages.Home
                     if (!_categoryFilterInput.Equals("null"))
                     {
                         _post = _post.Where(x => x.CategoryId == int.Parse(_categoryFilterInput)).ToList();
-                        Debug.WriteLine("Home.OnGet: location category input dectected. Remaining _post: " + _post.Count);
+                        Debug.WriteLine("Home.OnGet: category input detected. Remaining _post: " + _post.Count);
                     }
                 }
                 //if skill is not set to all, start searching
+                int _skillInput = 0;
+
                 if (_skillFilterInput != null)
                 {
                     if (!_skillFilterInput.Equals("null"))
                     {
-                        Debug.WriteLine("Home.OnGet: location search input dectected. Remaining _post: " + _post.Count);
+                        Debug.WriteLine("Home.OnGet: skill search input detected. Remaining _post: " + _post.Count);
+
+                        if (int.TryParse(_skillFilterInput, out _skillInput))
+                        {
+                            var _newPost = new List<PostDTO>();
+
+                            foreach (var item in _post)
+                            {
+                                var PostSkills = _postSkillService.GetListAsync(path: StoredURI.PostSkill + "/" + item.Id, token: token).Result.ToList();
+
+                                Debug.WriteLine("Home.OnGet: Finding skill for " + item.Id + " with skill " + _skillInput);
+                                Debug.WriteLine("Home.OnGet: Found " + PostSkills.Count() + " skills related to " + item.Id);
+
+                                var skill = PostSkills.FirstOrDefault(x => x.PostId == item.Id && x.SkillId == _skillInput);
+
+                                if (skill != null)
+                                {
+                                    _newPost.Add(item);
+                                }
+
+                            }
+
+                            _post = _newPost;
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Home.OnGet: Skill validation failed for input: " + _skillFilterInput);
+                        }
+
                     }
                 }
                 //if skill is not set to all, start searching
@@ -192,9 +227,13 @@ namespace JobSeekingClient.Pages.Home
                     if (!_levelFilterInput.Equals("null"))
                     {
                         _post = _post.Where(x => x.LevelId == int.Parse(_levelFilterInput)).ToList();
-                        Debug.WriteLine("Home.OnGet: location search input dectected. Remaining _post: " + _post.Count);
+                        Debug.WriteLine("Home.OnGet: level search input dectected. Remaining _post: " + _post.Count);
                     }
                 }
+            }
+            else
+            {
+                _post = _postService.GetListAsync(path: StoredURI.Post + "/GetAll", expression: c => c.IsDeleted == false, param: null, token: token).Result.ToList();
             }
 
 
@@ -375,7 +414,7 @@ namespace JobSeekingClient.Pages.Home
                         {
                             var application = _applicationService.GetModelAsync(path: StoredURI.Application + "/Get/Id/" + item.ApplicationId, token: token).Result;
                             Debug.WriteLine("Home.OnGet: Found applicant application :" + application.Id);
-                            if (application.ApplicantId == userId && item.IsDeleted == false && item.Feedback == null)
+                            if (application.ApplicantId == userId && item.IsDeleted == false && item.Feedback == null && DateTime.Compare(DateTime.Now, item.Date) < 0)
                             {
                                 var slotPath = StoredURI.Slot + "/" + item.SlotId;
                                 item.Slot = _slotService.GetModelAsync(path: slotPath, param: null, token: token).Result;
@@ -462,6 +501,8 @@ namespace JobSeekingClient.Pages.Home
                             _applications = _applications2;
                             _applications2 = _applications3;
                         }
+
+                        Debug.WriteLine("Home.OnGet: Showing applicant's posts:" + _applications3.Count);
 
                         return Page();
                         break;

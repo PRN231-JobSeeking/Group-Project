@@ -121,7 +121,7 @@
                                             <a asp-page="/Accounts/Details" asp-route-id="@item.ApplicantId">View applicant</a>
                                         </td>
                                         <td>
-                                            <a asp-page="/Post/Details" asp-route-id="@item.PostId">View post</a>
+                                            <a asp-page="/Post/PostDetail" asp-route-id="@item.PostId">View post</a>
                                         </td>
                                         <td>
                                             @Html.DisplayFor(modelItem => item.Status)
@@ -149,51 +149,52 @@
                         else
                         {
                             <span class="text-danger">@ViewBag.message1</span>
-                        }
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model._interviews[0].Date)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model._interviews[0].Slot.StartTime)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model._interviews[0].Slot.EndTime)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model._interviews[0].Interviewer.FirstName)
-                                    </th>
-                                    <th>
-                                        Post
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model._interviews)
-                                {
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Date)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Slot.StartTime)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Slot.EndTime)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Interviewer.FirstName)
-                                        </td>
-                                        <td>
-                                            <a asp-page="/Post/Details" asp-route-id="@item.Application.PostId">View post</a>
-                                        </td>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model._interviews[0].Date)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model._interviews[0].Slot.StartTime)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model._interviews[0].Slot.EndTime)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model._interviews[0].Interviewer.FirstName)
+                                        </th>
+                                        <th>
+                                            Post
+                                        </th>
+                                        <th></th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model._interviews)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Date)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Slot.StartTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Slot.EndTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Interviewer.FirstName)
+                                            </td>
+                                            <td>
+                                                <a asp-page="/Post/PostDetail" asp-route-id="@item.Application.PostId">View post</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
                     }
                     break;
                 }
@@ -211,65 +212,65 @@
                             else
                             {
                                 <span class="text-danger">@ViewBag.message1</span>
-                            }
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model._interviews[0].Date)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model._interviews[0].Slot.StartTime)
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model._interviews[0].Slot.EndTime)
-                                        </th>
-                                        <th>
-                                            Post
-                                        </th>
-                                        <th>
-                                            Inteviewer
-                                        </th>
-                                        <th>
-                                            @Html.DisplayNameFor(model => model._interviews[0].Round)
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model._interviews)
-                                    {
+                                <table class="table">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Date)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Slot.StartTime)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Slot.EndTime)
-                                            </td>
-                                            <td>
-                                                @{
-                                                    foreach (var items2 in Model._post)
-                                                    {
-                                                        if (items2.Id == item.Application.PostId)
+                                            <th>
+                                                @Html.DisplayNameFor(model => model._interviews[0].Date)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model._interviews[0].Slot.StartTime)
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model._interviews[0].Slot.EndTime)
+                                            </th>
+                                            <th>
+                                                Post
+                                            </th>
+                                            <th>
+                                                Inteviewer
+                                            </th>
+                                            <th>
+                                                @Html.DisplayNameFor(model => model._interviews[0].Round)
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model._interviews)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Date)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Slot.StartTime)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Slot.EndTime)
+                                                </td>
+                                                <td>
+                                                    @{
+                                                        foreach (var items2 in Model._post)
                                                         {
-                                                            <a asp-page="/Post/PostDetail" asp-route-id="@items2.Id">Application for Post: @items2.Title</a>
+                                                            if (items2.Id == item.Application.PostId)
+                                                            {
+                                                                <a asp-page="/Post/PostDetail" asp-route-id="@items2.Id">Application for Post: @items2.Title</a>
 
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Interviewer.FirstName)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Round)
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Interviewer.FirstName)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Round)
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
                         }
 
                         else
@@ -281,142 +282,158 @@
 
                     if (Model._applications.Count != 0)
                     {
-                        if (@ViewBag.message3 != null && Model._isNewsMode == 2)
+                        if (Model._isNewsMode == 2)
                         {
-                            <div>Approved applications</div>
+                            if(@ViewBag.message4 != null){
+                                <span class="text-danger">@ViewBag.message4</span>
+                            }    
                         }
                         else
                         {
                             <span class="text-danger">@ViewBag.message2</span>
                         }
                         <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        CV
-                                    </th>
-                                    <th>
-                                        Application
-                                    </th>
-                                    <th>
-                                        Status
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model._applications)
-                                {
+                                <thead>
                                     <tr>
-                                        <td>
-                                            <a asp-page="/CV/ViewCv" asp-route-id="@item.Id">View</a>
-                                        </td>
-                                        <td>
-                                            @{
-                                                foreach (var items2 in Model._post)
-                                                {
-                                                    if (items2.Id == item.PostId)
+                                        <th>
+                                            CV
+                                        </th>
+                                        <th>
+                                            Application
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model._applications)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a asp-page="/CV/ViewCv" asp-route-id="@item.Id">View</a>
+                                            </td>
+                                            <td>
+                                                @{
+                                                    foreach (var items2 in Model._post)
                                                     {
-                                                        <a asp-page="/Post/PostDetail" asp-route-id="@items2.Id">Application for Post: @items2.Title</a>
+                                                        if (items2.Id == item.PostId)
+                                                        {
+                                                            <a asp-page="/Post/PostDetail" asp-route-id="@items2.Id">Application for Post: @items2.Title</a>
 
+                                                        }
                                                     }
                                                 }
-                                            }
 
-                                        </td>
+                                            </td>
 
 
-                                        <td>
-                                            @{
-                                                switch (item.Status)
-                                                {
-                                                    case null:
-                                                        {
-                                                            <text>Pending</text>
-                                                            break;
-                                                        }
-                                                    case true:
-                                                        {
-                                                            <text>Passed</text>
-                                                            break;
-                                                        }
-                                                    case false:
-                                                        {
-                                                            <text>Failed</text>
-                                                            break;
-                                                        }
+                                            <td>
+                                                @{
+                                                    switch (item.Status)
+                                                    {
+                                                        case null:
+                                                            {
+                                                                <text>Pending</text>
+                                                                break;
+                                                            }
+                                                        case true:
+                                                            {
+                                                                <text>Passed</text>
+                                                                break;
+                                                            }
+                                                        case false:
+                                                            {
+                                                                <text>Failed</text>
+                                                                break;
+                                                            }
+                                                    }
                                                 }
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
                         </table>
                     }
                     //for showing the failed applications
-                    if (Model._applications2.Count != 0 && Model._isNewsMode == 2)
+                    if (Model._isNewsMode == 2)
                     {
-                        <div>Denied applications</div>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        CV
-                                    </th>
-                                    <th>
-                                        Application
-                                    </th>
-                                    <th>
-                                        Status
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model._applications2)
+                        if (Model._applications2.Count != 0)
+                        {
+                            if (Model._isNewsMode == 2)
+                            {
+                                if (@ViewBag.message5 != null)
                                 {
+                                    <span class="text-danger">@ViewBag.message5</span>
+                                }
+
+                            }
+                            else
+                            {
+                                <span class="text-danger">@ViewBag.message3</span>
+                            }
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            <a asp-page="/CV/ViewCv" asp-route-id="@item.Id">View</a>
-                                        </td>
-                                        <td>
-                                            @{
-                                                foreach (var items2 in Model._post)
-                                                {
-                                                    if (items2.Id == item.PostId)
+                                        <th>
+                                            CV
+                                        </th>
+                                        <th>
+                                            Application
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model._applications2)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a asp-page="/CV/ViewCv" asp-route-id="@item.Id">View</a>
+                                            </td>
+                                            <td>
+                                                @{
+                                                    foreach (var items2 in Model._post)
                                                     {
-                                                        <a asp-page="/Post/Details" asp-route-id="@item.PostId">Application for Post: @items2.Title</a>
+                                                        if (items2.Id == item.PostId)
+                                                        {
+                                                            <a asp-page="/Post/PostDetail" asp-route-id="@items2.Id">Application for Post: @items2.Title</a>
+                                                        }
                                                     }
                                                 }
-                                            }
 
-                                        </td>
+                                            </td>
 
 
-                                        <td>
-                                            @{
-                                                switch (item.Status)
-                                                {
-                                                    case null:
-                                                        {
-                                                            <text>Pending</text>
-                                                            break;
-                                                        }
-                                                    case true:
-                                                        {
-                                                            <text>Passed</text>
-                                                            break;
-                                                        }
-                                                    case false:
-                                                        {
-                                                            <text>Failed</text>
-                                                            break;
-                                                        }
+                                            <td>
+                                                @{
+                                                    switch (item.Status)
+                                                    {
+                                                        case null:
+                                                            {
+                                                                <text>Pending</text>
+                                                                break;
+                                                            }
+                                                        case true:
+                                                            {
+                                                                <text>Passed</text>
+                                                                break;
+                                                            }
+                                                        case false:
+                                                            {
+                                                                <text>Failed</text>
+                                                                break;
+                                                            }
+                                                    }
                                                 }
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
                     }
                     break;
                 }
