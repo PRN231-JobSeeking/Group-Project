@@ -11,16 +11,19 @@ using ClientRepository.Service;
 using ClientRepository.Models;
 using ClientRepository;
 using ClientRepository.Utils;
+using ClientRepository.Service.Implementation;
 
 namespace JobSeekingClient.Pages.Locations
 {
     public class DeleteModel : PageModel
     {
         private readonly ILocationService _locationService;
+        private readonly IPostService _postService;
 
-        public DeleteModel(ILocationService locationService)
+        public DeleteModel(ILocationService locationService, IPostService postService)
         {
             _locationService = locationService;
+            _postService=postService;
         }
 
         [BindProperty]
@@ -74,6 +77,13 @@ namespace JobSeekingClient.Pages.Locations
             if (id != Location.Id)
             {
                 return BadRequest();
+            }
+            var post = await _postService.GetListAsync(path: StoredURI.Post, expression: c => c.IsDeleted == false && c.LocationId == id, token: token);
+            if (post.Count > 0)
+            {
+                ViewData["message"] = "Some post have this location";
+                Location = find;
+                return Page();
             }
             await _locationService.Update(find, path: StoredURI.Location + "/" + Location.Id.ToString(), token: token);
             return RedirectToPage("./Index");
