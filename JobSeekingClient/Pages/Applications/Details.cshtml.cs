@@ -93,7 +93,10 @@ namespace JobSeekingClient.Pages.Applications
 
             if (count < 2)
             {
-                ViewData["message1"] = "The application needs " + (2 - count) + " more interviews";
+                if (find == null)
+                {
+                    ViewData["message1"] = "The application needs " + (2 - count) + " more interviews";
+                }
             }
 
             //if there's enough rated interviews, and application has not yet been reviewed
