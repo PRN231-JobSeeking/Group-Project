@@ -36,7 +36,7 @@ namespace JobSeekingClient.Pages
             }
             if (role == (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../IndexAdmin");
+                return RedirectToPage("/Home");
             }
             
             var application = await applicationService.GetModelAsync(path: StoredURI.Application + $"/Get/Id/{id}", token: token);

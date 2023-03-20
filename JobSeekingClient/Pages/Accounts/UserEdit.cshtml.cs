@@ -52,11 +52,7 @@ namespace JobSeekingClient.Pages.Accounts
                 return RedirectToPage("/Auth/Login");
             }
             if (test == (int)AccountRole.Administrator || test == (int)AccountRole.HR)
-            {
-                if(test == (int)AccountRole.Administrator)
-                {
-                    return RedirectToPage("/IndexAdmin");
-                }
+            {              
                 return RedirectToPage("/Home");
             }
             string path = StoredURI.Account + "/" + id;
