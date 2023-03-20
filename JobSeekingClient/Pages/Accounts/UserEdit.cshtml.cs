@@ -27,6 +27,10 @@ namespace JobSeekingClient.Pages.Accounts
         {
             List<Skill> skill = await _skillService.GetListAsync(path: StoredURI.Skill, token: HttpContext.Session.GetString("token"));
             List<UserSkill> userSkills= await _userskillService.GetListAsync(path: StoredURI.UserSkill, expression: c=>c.AccountId==Account.Id,token: HttpContext.Session.GetString("token"));
+            if(userSkills==null)
+            {
+                return skill;
+            }
             foreach(var item in userSkills)
             {
                    var skillSkill = skill.FirstOrDefault(c => c.Id == item.SkillId);
@@ -41,10 +45,11 @@ namespace JobSeekingClient.Pages.Accounts
         [BindProperty]
         public AccountModel Account { get; set; } = default!;
         [BindProperty]
-        public string skillid { get; set; }
+        public string? skillid { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            string? notselect = null;
             string? token = HttpContext.Session.GetString("token");
             int? test = HttpContext.Session.GetInt32("Role");
             if (string.IsNullOrEmpty(token))
@@ -64,7 +69,7 @@ namespace JobSeekingClient.Pages.Accounts
             Account = find;
             if(listskillAsync().Result!=null)
             {
-                ViewData["SkillId"] = new SelectList(await listskillAsync(), "Id", "Name");
+                ViewData["SkillId"] = new SelectList(await listskillAsync(), "Id", "Name",null);
             }
                return Page();
         }
@@ -76,15 +81,7 @@ namespace JobSeekingClient.Pages.Accounts
             string? token = HttpContext.Session.GetString("token");
             string path = StoredURI.Account + "/" + Account.Id;
             var find = await _accountService.GetModelAsync(path: path, token: token);
-            int? role = HttpContext.Session.GetInt32("Role");
-            if (!ModelState.IsValid)
-            {
-                if (listskillAsync().Result != null)
-                {
-                    ViewData["SkillId"] = new SelectList(await listskillAsync(), "Id", "Name");
-                }
-                return Page();
-            }
+            int? role = HttpContext.Session.GetInt32("Role");           
             if (!Account.Email.Equals(find.Email))
             {
                 var list = await _accountService.GetListAsync(path: StoredURI.Account, expression: c => c.Email.Equals(Account.Email), param: null, token: token);
@@ -116,7 +113,16 @@ namespace JobSeekingClient.Pages.Accounts
                 ClientRepository.Models.UserSkill uktmp = new ClientRepository.Models.UserSkill();
                 uktmp.AccountId = Account.Id;
                 uktmp.SkillId = int.Parse(skillid);
-                await _userskillService.Add(uktmp, path: StoredURI.UserSkill, token: null);
+                await _userskillService.Add(uktmp, path: StoredURI.UserSkill, token: token);
+            }
+           
+            if (!ModelState.IsValid)
+            {
+                if (listskillAsync().Result != null)
+                {
+                    ViewData["SkillId"] = new SelectList(await listskillAsync(), "Id", "Name");
+                }
+                return Page();
             }
             await _accountService.Update(Account, path: StoredURI.Account + "/" + Account.Id.ToString(), token: token);
             if(role==(int)AccountRole.Interviewer) { return RedirectToPage("/Interviews/HomePageInterviewer"); }
