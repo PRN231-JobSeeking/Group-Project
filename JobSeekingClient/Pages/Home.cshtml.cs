@@ -497,7 +497,7 @@ namespace JobSeekingClient.Pages.Home
                         {
                             Debug.WriteLine("Home.OnGet: Found failed application :" + _applications3.Count);
                             ViewData["message3"] = "You have reviewed applications!";
-                            ViewData["message5"] = "You have " + _applications2.Count + " failed applications!";
+                            ViewData["message5"] = "You have " + _applications3.Count + " failed applications!";
                         }
 
                         if (_isNewsMode == 2)
