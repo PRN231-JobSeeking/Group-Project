@@ -65,6 +65,10 @@ namespace JobSeekingClient.Pages
             {
                 return RedirectToPage("../Auth/Login");
             }
+            if(role == (int)AccountRole.Administrator)
+            {
+                return RedirectToPage("/Home");
+            }
             Post = postService.GetModelAsync(id).Result;
             if(Post != null)
             {
@@ -82,7 +86,7 @@ namespace JobSeekingClient.Pages
                 if (PostSkills == null || PostSkills.Count() == 0)
                 {
                     ViewData["Error"] = "Post has no skills to apply!";
-                    return Page();
+                    //return Page();
                 }
                 if(DateTime.Now.Date.CompareTo(Post.StartDate.Date) < 0 || DateTime.Now.Date.CompareTo(Post.EndDate.Date) > 0)
                 {
