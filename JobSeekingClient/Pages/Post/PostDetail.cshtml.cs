@@ -27,6 +27,7 @@ namespace JobSeekingClient.Pages
         private readonly ILocationService _locationService;
         private readonly IPostSkillService _postSkillService;
         private readonly IUserSkillService _userSkillService;
+        private readonly IInterviewService _interviewService;
         public string Category { get; set; }
 
         public string Location { get; set; }
@@ -41,7 +42,7 @@ namespace JobSeekingClient.Pages
 
         public PostDetailModel(IConfiguration config, IPostService postService, IApplicationService applicationService, 
             ICategoryService categoryService, ILevelService levelService, ILocationService locationService, IPostSkillService postSkillService,
-            IUserSkillService userSkillService)
+            IUserSkillService userSkillService, IInterviewService interviewService)
         {
             this.config = config;
             this.postService = postService;
@@ -51,6 +52,7 @@ namespace JobSeekingClient.Pages
             _locationService = locationService;
             _postSkillService = postSkillService;
             _userSkillService = userSkillService;
+            _interviewService = interviewService;
         }
         public async Task<IActionResult> OnGet(int id)
         {
@@ -64,6 +66,10 @@ namespace JobSeekingClient.Pages
             if (userId == null)
             {
                 return RedirectToPage("../Auth/Login");
+            }
+            if(role == (int)AccountRole.Administrator)
+            {
+                return RedirectToPage("/Home");
             }
             Post = postService.GetModelAsync(id).Result;
             if(Post != null)
@@ -116,6 +122,13 @@ namespace JobSeekingClient.Pages
                 {
                     foreach (var application in applications)
                     {
+                        var interviews = await _interviewService.GetListAsync(expression: i => i.ApplicationId == application.Id && i.IsDeleted == false, path: StoredURI.Interviews, token: token);
+                        if(interviews != null && interviews.Count() > 0)
+                        {
+                            ViewData["Error"] = "You have interview for this post!";
+                            CanApply = false;
+                            break;
+                        }
                         if (OldApplication == null)
                         {
                             OldApplication = application;
@@ -124,7 +137,7 @@ namespace JobSeekingClient.Pages
                         if (application.Status != null)
                         {
                             CanApply = false;
-                            return Page();
+                            break;
                         }
                     }
                 }
@@ -196,13 +209,21 @@ namespace JobSeekingClient.Pages
                 return Page();
             }
             var applications = await applicationService.GetListAsync(path: StoredURI.Application + $"/Get/ApplicantId/{userId}/PostId/{id}", token: token);
+            bool isResubmit = false;
             if (applications != null)
             {
                 if (applications.Count > 0)
                 {
                     foreach (var application in applications)
                     {
-                        if(application.Status != null)
+                        var interviews = await _interviewService.GetListAsync(expression: i => i.ApplicationId == application.Id && i.IsDeleted == false, path: StoredURI.Interviews, token: token);
+                        if (interviews != null && interviews.Count() > 0)
+                        {
+                            ViewData["Error"] = "You have interview for this post!";
+                            await OnGet(id);
+                            return Page();
+                        }
+                        if (application.Status != null)
                         {
                             ViewData["Error"] = "You already interviewed this post!";
                             await OnGet(id);
@@ -210,6 +231,7 @@ namespace JobSeekingClient.Pages
                         }
                         application.IsDeleted = true;
                         var res = await applicationService.Update(application, path: StoredURI.Application + $"/{application.Id}", token: token);
+                        isResubmit = true;
                         if (!res)
                         {
                             ViewData["Error"] = "Apply CV Error!";
@@ -222,9 +244,18 @@ namespace JobSeekingClient.Pages
             bool result = await applicationService.Create(id, userId.Value, cvFile, token);
             if(result)
             {
-                ViewData["Success"] = "Apply CV Successful.";
-                await OnGet(id);
-                return Page();
+                if (isResubmit)
+                {
+                    ViewData["Success"] = "Re-apply CV Successful.";
+                    await OnGet(id);
+                    return Page();
+                } else
+                {
+                    ViewData["Success"] = "Apply CV Successful.";
+                    await OnGet(id);
+                    return Page();
+                }
+                
             }
             ViewData["Error"] = "Apply CV Error!";
             await OnGet(id);
