@@ -138,6 +138,7 @@ namespace JobSeekingClient.Pages.Applications
                 if (Application.Status == true)
                 {
                     post.Amount--;
+                    await _postService.Update(post, path: StoredURI.Post + "/" + post.Id.ToString(), token: token);
                 }
             }
 
@@ -164,8 +165,6 @@ namespace JobSeekingClient.Pages.Applications
 
                 return RedirectToPage("./Index");
             }
-
-            await _postService.Update(post, path: StoredURI.Post, token: token);
 
             return RedirectToPage("./Index");
         }

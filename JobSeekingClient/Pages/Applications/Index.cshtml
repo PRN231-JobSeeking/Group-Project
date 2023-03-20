@@ -36,13 +36,13 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CV)
+                    <a asp-page="/CV/ViewCv" asp-route-id="@item.Id">View CV</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ApplicantId)
+                    <a asp-page="/Accounts/Details" asp-route-id="@item.ApplicantId">View applicant</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PostId)
+                    <a asp-page="/Post/PostDetail" asp-route-id="@item.PostId">View post</a>
                 </td>
                 <td>
                     @{

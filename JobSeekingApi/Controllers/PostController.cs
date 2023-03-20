@@ -22,11 +22,11 @@ namespace JobSeekingApi.Controllers
         public async Task<ActionResult<IEnumerable<Post>>> GetAll()
         {
             var list = unitOfWork.PostRepository.GetAll().Result;
-            if(list == null)
+            if (list == null)
             {
                 return BadRequest();
             }
-            if(list.Count() == 0)
+            if (list.Count() == 0)
             {
                 return NotFound();
             }
@@ -38,7 +38,7 @@ namespace JobSeekingApi.Controllers
         public async Task<ActionResult<Post>> Get(int id)
         {
             var post = unitOfWork.PostRepository.Get(id).Result;
-            if(post == null)
+            if (post == null)
             {
                 return BadRequest();
             }
@@ -69,6 +69,36 @@ namespace JobSeekingApi.Controllers
                 return Ok();
             }
             return BadRequest();
+        }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Putpost(int id, PostDTO post)
+        {
+            if (id != post.Id)
+            {
+                return BadRequest();
+            }
+            var postInDb = await unitOfWork.PostRepository.GetFirst(a => a.Id == post.Id);
+
+            if (postInDb == null)
+            {
+                return BadRequest();
+            }
+            postInDb.Status = post.Status;
+            postInDb.StartDate = post.StartDate;
+            postInDb.Amount = post.Amount;
+            postInDb.Title = post.Title;
+            postInDb.CategoryId = post.CategoryId;
+            postInDb.CreateDate = post.CreateDate;
+            postInDb.Description = post.Description;
+            postInDb.EndDate = post.EndDate;
+            postInDb.IsDeleted = post.IsDeleted;
+            postInDb.LevelId = post.LevelId;
+            postInDb.LocationId = post.LocationId;
+
+            await unitOfWork.PostRepository.Update(postInDb);
+            return StatusCode(StatusCodes.Status200OK);
         }
     }
 }

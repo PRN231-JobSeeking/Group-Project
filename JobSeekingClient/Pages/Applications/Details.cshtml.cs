@@ -93,7 +93,7 @@ namespace JobSeekingClient.Pages.Applications
 
             if (count < 2)
             {
-                if (find == null)
+                if (find.Status == null)
                 {
                     ViewData["message1"] = "The application needs " + (2 - count) + " more interviews";
                 }
