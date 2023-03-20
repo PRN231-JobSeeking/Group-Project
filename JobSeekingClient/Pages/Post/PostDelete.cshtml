@@ -18,26 +18,6 @@
         @Html.DisplayFor(model => model.Post.Title)
     </dd>
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Post.Category)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Post.Category)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Post.SkillRequired)
-    </dt>
-    <dd class="col-sm-10 skill-item">
-        @{
-            if (Model.Post.SkillRequired != null && Model.Post.SkillRequired.Count() > 0)
-            {
-                foreach (var postSkill in Model.Post.SkillRequired)
-                {
-                    <span>@postSkill.SkillName</span>
-                }
-            }
-        }
-    </dd>
-    <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.Post.Location)
     </dt>
     <dd class="col-sm-10">
@@ -53,7 +33,7 @@
         @Html.DisplayNameFor(model => model.Post.CreateDate)
     </dt>
     <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Post.CreateDate, "MM/dd/yyyy")
+        @Convert.ToDateTime(Model.Post.CreateDate).ToString("dd/MM/yyyy")
     </dd>
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.Post.Description)
