@@ -86,7 +86,7 @@ namespace JobSeekingClient.Pages
                 if (PostSkills == null || PostSkills.Count() == 0)
                 {
                     ViewData["Error"] = "Post has no skills to apply!";
-                    //return Page();
+                    return Page();
                 }
                 if(DateTime.Now.Date.CompareTo(Post.StartDate.Date) < 0 || DateTime.Now.Date.CompareTo(Post.EndDate.Date) > 0)
                 {
@@ -200,6 +200,7 @@ namespace JobSeekingClient.Pages
                 return Page();
             }
             var applications = await applicationService.GetListAsync(path: StoredURI.Application + $"/Get/ApplicantId/{userId}/PostId/{id}", token: token);
+            bool isResubmit = false;
             if (applications != null)
             {
                 if (applications.Count > 0)
@@ -214,6 +215,7 @@ namespace JobSeekingClient.Pages
                         }
                         application.IsDeleted = true;
                         var res = await applicationService.Update(application, path: StoredURI.Application + $"/{application.Id}", token: token);
+                        isResubmit = true;
                         if (!res)
                         {
                             ViewData["Error"] = "Apply CV Error!";
@@ -226,9 +228,18 @@ namespace JobSeekingClient.Pages
             bool result = await applicationService.Create(id, userId.Value, cvFile, token);
             if(result)
             {
-                ViewData["Success"] = "Apply CV Successful.";
-                await OnGet(id);
-                return Page();
+                if (isResubmit)
+                {
+                    ViewData["Success"] = "Re-apply CV Successful.";
+                    await OnGet(id);
+                    return Page();
+                } else
+                {
+                    ViewData["Success"] = "Apply CV Successful.";
+                    await OnGet(id);
+                    return Page();
+                }
+                
             }
             ViewData["Error"] = "Apply CV Error!";
             await OnGet(id);
