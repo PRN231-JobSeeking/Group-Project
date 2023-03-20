@@ -20,15 +20,14 @@
                 <span class="text-danger">@ViewBag.messageemail</span>
             </div>
             <div class="form-group">
-                <label asp-for="Account.Password" class="control-label"></label>
-                <input type="password" asp-for="Account.Password" class="form-control" />
-                <span asp-validation-for="Account.Password" class="text-danger"></span>
+              
+                <input type="hidden" asp-for="Account.Password" class="form-control"  />
+              
             </div>
             <div class="form-group">
                 <label asp-for="Account.FirstName" class="control-label"></label>
                 <input asp-for="Account.FirstName" class="form-control" />
-                <span asp-validation-for="Account.FirstName" class="text-danger"></span>
-            </div>
+                
             <div class="form-group">
                 <label asp-for="Account.LastName" class="control-label"></label>
                 <input asp-for="Account.LastName" class="form-control" />
@@ -59,7 +58,9 @@
                 {
                  <div class="form-group">
                   <label asp-for="skillid" class="control-label">Skill</label>
-                    <select asp-for="skillid" class="form-control" asp-items="ViewBag.SkillId"></select>
+                    <select asp-for="skillid" class="form-control" asp-items="ViewBag.SkillId">
+                            <option value="">-- Select a skill --</option>
+                    </select>
                 </div>
                 }           
             <div class="form-group">
@@ -74,11 +75,14 @@
         var role = HttpContext.Session.GetInt32("Role");
         if (role == 3)
         {
-                    <a asp-page="/Interviews/HomePageInterviewer">Back to List</a>
+                    <a asp-page="/Interviews/HomePageInterviewer">Back to List</a> 
+                    
         }
         if (role == 4)
         {
-                    <a asp-page="/Home">Back to List</a>
+
+                    <a asp-page="/Home">Back to List</a> 
+                   
         }
     }
 </div>
