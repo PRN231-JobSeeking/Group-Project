@@ -2,6 +2,7 @@ using ClientRepository;
 using ClientRepository.Models;
 using ClientRepository.Service;
 using ClientRepository.Service.Implementation;
+using ClientRepository.Utils;
 using JobSeekingClient.Pages.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -108,8 +109,11 @@ namespace JobSeekingClient.Pages.Home
             if (roleId == null)
             {
                 return RedirectToPage("/Auth/Login");
+            } else if(roleId==(int)AccountRole.Administrator)
+            {
+                return RedirectToPage("/Accounts/IndexAdmin");
             }
-
+            
             int _newsMode = 0;
 
             if (int.TryParse(newMode, out _newsMode))

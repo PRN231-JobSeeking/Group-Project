@@ -36,15 +36,16 @@ namespace JobSeekingClient.Pages
             }
             if (role == (int)AccountRole.Administrator)
             {
-                return RedirectToPage("../Home");
+                return RedirectToPage("/Home");
             }
+            
             var application = await applicationService.GetModelAsync(path: StoredURI.Application + $"/Get/Id/{id}", token: token);
             if(application == null)
             {
                 return RedirectToPage("../Home");
             }
             if(application.ApplicantId != userId && role == (int)AccountRole.Applicant)
-            {
+            {    
                 return RedirectToPage("../Home");
             }
             Application = application;

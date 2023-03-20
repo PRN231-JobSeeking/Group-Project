@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Policy;
+using ClientRepository.Utils;
 
 namespace JobSeekingClient.Pages.Accounts
 {
@@ -50,15 +51,15 @@ namespace JobSeekingClient.Pages.Accounts
             {
                 return RedirectToPage("/Auth/Login");
             }
-            if (test != 4)
-            {
-                return RedirectToPage("./HomePage");
+            if (test == (int)AccountRole.Administrator || test == (int)AccountRole.HR)
+            {              
+                return RedirectToPage("/Home");
             }
             string path = StoredURI.Account + "/" + id;
             var find = await _accountService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);
             if (find == null)
             {
-                return RedirectToPage("./HomePage");
+                return RedirectToPage("/Home");
             }
             Account = find;
             if(listskillAsync().Result!=null)
@@ -75,6 +76,7 @@ namespace JobSeekingClient.Pages.Accounts
             string? token = HttpContext.Session.GetString("token");
             string path = StoredURI.Account + "/" + Account.Id;
             var find = await _accountService.GetModelAsync(path: path, token: token);
+            int? role = HttpContext.Session.GetInt32("Role");
             if (!ModelState.IsValid)
             {
                 if (listskillAsync().Result != null)
@@ -117,6 +119,7 @@ namespace JobSeekingClient.Pages.Accounts
                 await _userskillService.Add(uktmp, path: StoredURI.UserSkill, token: null);
             }
             await _accountService.Update(Account, path: StoredURI.Account + "/" + Account.Id.ToString(), token: token);
+            if(role==(int)AccountRole.Interviewer) { return RedirectToPage("/Interviews/HomePageInterviewer"); }
             return RedirectToPage("/Home");
         }
     }

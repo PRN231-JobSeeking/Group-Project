@@ -38,7 +38,7 @@ namespace JobSeekingClient.Pages.Accounts
             }
             if (test != 1)
             {
-                return RedirectToPage("./HomePage");
+                return RedirectToPage("/Home");
             }
             string path = StoredURI.Account + "/" + id;
             var find = await _accountService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);

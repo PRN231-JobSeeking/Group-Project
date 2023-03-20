@@ -3,6 +3,7 @@ using ClientRepository.Service;
 using ClientRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ClientRepository.Utils;
 
 namespace JobSeekingClient.Pages.Accounts
 {
@@ -29,9 +30,9 @@ namespace JobSeekingClient.Pages.Accounts
             {
                 return RedirectToPage("/Auth/Login");
             }
-            if (test != 4)
-            {
-                return RedirectToPage("./HomePage");
+            if (test == (int)AccountRole.Administrator || test == (int)AccountRole.HR)
+            {             
+                return RedirectToPage("/Home");
             }
             string path = StoredURI.Account + "/" + id;
             var find = await _accountService.GetModelAsync(path: path, expression: c => c.IsDeleted == false, token: token);
@@ -40,7 +41,7 @@ namespace JobSeekingClient.Pages.Accounts
 
             if (find == null)
             {
-                return RedirectToPage("./HomePage");
+                return RedirectToPage("/Home");
             }
             Account = find;
            
