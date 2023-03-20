@@ -133,10 +133,17 @@ namespace JobSeekingClient.Pages.Post
                 await OnGet();
                 return Page();
             }
+            var posts = await _postService.GetListAsync(expression: p => p.Title.ToLower().Equals(Post.Title.ToLower()) && p.Status == true && p.IsDeleted == false,path: StoredURI.Post + "/GetAll", token: token);
+            if(posts != null && posts.Count() > 0)
+            {
+                ViewData["Error"] = "Post Title already exist( you need to close post or complete all required amount to create this title)!";
+                await OnGet();
+                return Page();
+            }
             bool result = await _postService.Add(Post, path: StoredURI.Post, token: token);
             if(result)
             {
-                var posts = await _postService.GetListAsync(expression: p => p.Status == Post.Status && p.StartDate.CompareTo(Post.StartDate) == 0
+                posts = await _postService.GetListAsync(expression: p => p.Status == Post.Status && p.StartDate.CompareTo(Post.StartDate) == 0
                                                                             && p.IsDeleted == false && p.Amount == Post.Amount
                                                                             && p.CategoryId == Post.CategoryId && p.CreateDate.CompareTo(Post.CreateDate) == 0
                                                                             && p.EndDate.CompareTo(Post.EndDate) == 0 && p.Description.Equals(Post.Description)
