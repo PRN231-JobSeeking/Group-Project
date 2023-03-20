@@ -22,7 +22,7 @@ namespace AppRepository.Repositories.Implement
             var result = await base.Get(expression, includeProperties);
             foreach (var item in result)
             {
-                item.SkillRequired = _unitOfWork.PostSkillRepository.Get(c => c.PostId == item.Id).Result.ToList();
+                item.SkillRequired = _unitOfWork.PostSkillRepository.Get(c => c.PostId == item.Id, includeProperties: "Skill").Result.ToList();
             }
             return result;
         }

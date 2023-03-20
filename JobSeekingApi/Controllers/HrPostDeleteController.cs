@@ -49,14 +49,19 @@ namespace JobSeekingApi.Controllers
             //check if any applicant is going to be interviewed within that day
                 //get applications in that post within that day
             var applications = await _unitOfWork.ApplicationRepository.Get(c => c.PostId == id);
+            int count = 0;
             foreach (var item in applications)
             {
-                var interviews = await _unitOfWork.InterviewRepository.Get(c => c.ApplicationId == item.Id && c.Date.Equals(DateTime.Today));
-                if(interviews.Any())
-                {
-                    //there is/are interview(s) within today
-                    return BadRequest("Some interviews are currently in progress today!");
-                }
+                var interviews = await _unitOfWork.InterviewRepository.Get(c => c.ApplicationId == item.Id && c.Feedback == null);
+                //if(interviews.Any())
+                //{
+                //    //there is/are interview(s) within today
+                //    return BadRequest("There are interviews in this post have not been evaluated yet!");
+                //}
+                count += interviews.Count();
+            }
+            if(count > 0){
+                return BadRequest("There are "+ count +" interviews in this post have not been evaluated yet!");
             }
             await _unitOfWork.PostRepository.Delete(post);
             //after delete -> set status of other applicants 
