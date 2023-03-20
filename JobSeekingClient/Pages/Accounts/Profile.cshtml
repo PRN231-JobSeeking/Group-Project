@@ -66,6 +66,17 @@
 </div>
 <div>
     <a asp-page="./UserEdit" asp-route-id="@Model.Account?.Id">Edit</a> |
-    <a asp-page="/Home">Back to List</a>
+    @{
+        var role = HttpContext.Session.GetInt32("Role");
+        if(role==3)
+        {
+            <a asp-page="/Interviews/HomePageInterviewer">Back to List</a>
+        }
+        if(role==4)
+        {
+            <a asp-page="/Home">Back to List</a>
+        }
+    }
+        
 </div>
 

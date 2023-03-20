@@ -163,10 +163,10 @@ namespace JobSeekingClient.Pages.Applications
                     }
                 }
 
-                return RedirectToPage("./Index");
+                return RedirectToPage("/Home");
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("/Home");
         }
 
     }
