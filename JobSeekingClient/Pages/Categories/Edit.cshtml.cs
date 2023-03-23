@@ -12,16 +12,19 @@ using ClientRepository.Service;
 using ClientRepository.Utils;
 using ClientRepository;
 using ClientRepository.Models;
+using ClientRepository.Service.Implementation;
 
 namespace JobSeekingClient.Pages.Categories
 {
     public class EditModel : PageModel
     {
         private readonly ICategoryService _categoryService;
+        private readonly IPostService _postService;
 
-        public EditModel(ICategoryService categoryService)
+        public EditModel(ICategoryService categoryService, IPostService postService)
         {
             _categoryService = categoryService;
+            _postService = postService;
         }
 
         [BindProperty]
@@ -75,6 +78,13 @@ namespace JobSeekingClient.Pages.Categories
                         return Page();
                     }
                 }
+            }
+            var post = await _postService.GetListAsync(path: StoredURI.Post + "/GetAll", expression: c => c.IsDeleted == false && c.CategoryId == Category.Id, token: token);
+            if (post.Count > 0)
+            {
+                ViewData["Error"] = "Some post have this category";
+                await OnGetAsync(Category.Id);
+                return Page();
             }
             await _categoryService.Update(Category, path: StoredURI.Category + "/" + Category.Id.ToString(), token: token);
             return RedirectToPage("./Index");

@@ -12,16 +12,19 @@ using ClientRepository.Service;
 using ClientRepository.Models;
 using ClientRepository.Utils;
 using ClientRepository;
+using ClientRepository.Service.Implementation;
 
 namespace JobSeekingClient.Pages.Levels
 {
     public class EditModel : PageModel
     {
         private readonly ILevelService _levelService;
+        private readonly IPostService _postService;
 
-        public EditModel(ILevelService levelService)
+        public EditModel(ILevelService levelService, IPostService postService)
         {
             _levelService = levelService;
+            _postService = postService;
         }
 
         [BindProperty]
@@ -75,6 +78,13 @@ namespace JobSeekingClient.Pages.Levels
                         return Page();
                     }
                 }
+            }
+            var post = await _postService.GetListAsync(path: StoredURI.Post + "/GetAll", expression: c => c.IsDeleted == false && c.LevelId == Level.Id, token: token);
+            if (post.Count > 0)
+            {
+                ViewData["Error"] = "Some post have this level";
+                await OnGetAsync(Level.Id);
+                return Page();
             }
             await _levelService.Update(Level, path: StoredURI.Level + "/" + Level.Id.ToString(), token: token);
             return RedirectToPage("./Index");
