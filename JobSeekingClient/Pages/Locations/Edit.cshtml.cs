@@ -12,16 +12,19 @@ using ClientRepository.Service;
 using ClientRepository.Models;
 using ClientRepository.Utils;
 using ClientRepository;
+using ClientRepository.Service.Implementation;
 
 namespace JobSeekingClient.Pages.Locations
 {
     public class EditModel : PageModel
     {
         private readonly ILocationService _locationService;
+        private readonly IPostService _postService;
 
-        public EditModel(ILocationService locationService)
+        public EditModel(ILocationService locationService, IPostService postService)
         {
             _locationService = locationService;
+            _postService = postService;
         }
 
         [BindProperty]
@@ -75,6 +78,13 @@ namespace JobSeekingClient.Pages.Locations
                         return Page();
                     }
                 }
+            }
+            var post = await _postService.GetListAsync(path: StoredURI.Post + "/GetAll", expression: c => c.IsDeleted == false && c.LocationId == Location.Id, token: token);
+            if (post.Count > 0)
+            {
+                ViewData["Error"] = "Some post have this location";
+                await OnGetAsync(Location.Id);
+                return Page();
             }
             await _locationService.Update(Location, path: StoredURI.Location + "/" + Location.Id.ToString(), token: token);
             return RedirectToPage("./Index");
